@@ -1,0 +1,14 @@
+사용자 테이블명
+Account -> User
+
+Y, N으로 구분되는 nvarchar 타입 전부 bool 로 변경
+
+money -> int 일괄 수정
+
+DailyAccount 테이블
+TotalUnitPriceD -> DayUnitPrice
+TotalSellPriceD -> DaySellPrice
+TotalCashD -> CashDeal
+TotalCardD -> CardDeal
+
+PeriodAccount 테이블 추가
