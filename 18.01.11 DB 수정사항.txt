@@ -1,0 +1,19 @@
+identity로 바꿔줘야할 컬럼목록
+
+Stock 테이블 ProductNo
+Take_Back 테이블 TBackNo
+Disposal 테이블 DisposalNo
+Orders 테이블 OderNo
+DailyAccount 테이블 AccountNo
+PeriodAccount 테이블 PerAccountNo
+
+Sales 테이블 CardNumber int타입 -> nvarchar(20)
+
+유통기한 컬럼 (일/시) 4자리 추가
+Stock 테이블 누적판매량 컬럼 추가
+
+프로시저
+
+ProdCntUp / Down : 상품 재고 수량 중가/감소
+SelectProdQuantity : 바코드로 상품 수량 가져오기
+SelectPreferences : 환성설정 정보 뽑아내기
