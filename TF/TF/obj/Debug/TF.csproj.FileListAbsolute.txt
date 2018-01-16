@@ -1,0 +1,13 @@
+C:\C#\TF\TF\bin\Debug\TF.exe.config
+C:\C#\TF\TF\bin\Debug\TF.exe
+C:\C#\TF\TF\bin\Debug\TF.pdb
+C:\C#\TF\TF\obj\Debug\TF.csprojResolveAssemblyReference.cache
+C:\C#\TF\TF\obj\Debug\TF.Form1.resources
+C:\C#\TF\TF\obj\Debug\TF.Properties.Resources.resources
+C:\C#\TF\TF\obj\Debug\TF.csproj.GenerateResource.Cache
+C:\C#\TF\TF\obj\Debug\TF.csproj.CoreCompileInputs.cache
+C:\C#\TF\TF\obj\Debug\TF.exe
+C:\C#\TF\TF\obj\Debug\TF.pdb
+C:\C#\TF\TF\obj\Debug\TF.Form2.resources
+C:\C#\TF\TF\bin\Debug\Test.mdf
+C:\C#\TF\TF\bin\Debug\Test_log.ldf
