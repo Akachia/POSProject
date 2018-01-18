@@ -235,7 +235,7 @@ namespace formSales
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new POSproject_KSM.POS_Stock().Show();
+            new POSproject_KSM.POS_Stock(user).Show();
         }
 
         private void btnCalc_Click(object sender, EventArgs e)

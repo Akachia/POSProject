@@ -23,9 +23,15 @@ namespace POSproject_KSM
         //차후 싱글톤으로 만들자.
         DataSet ds = null;
         int i = 0;
+        string id = null;
         public POS_Stock()
         {
             InitializeComponent();
+        }
+
+        public POS_Stock(string id) : this()
+        {
+            this.id = id;
         }
 
         internal DataSet GetDataSet( )
@@ -110,6 +116,7 @@ namespace POSproject_KSM
         {
             SelectStock("SelectStock",dataGridView1);
             label1.Text = DateTime.Now.ToLongTimeString();
+            lbl_User.Text = id;
             timer1.Start();
             dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridView1.Columns[6].HeaderText = "수량";
@@ -153,29 +160,12 @@ namespace POSproject_KSM
         {
             if (i == 0)
             {
-                DataTable dss = MakeOrderTable();
-                //foreach (var item in Controls)
-                //{
-                //    if(item is TextBox)
-                //    {
-                //        TextBox tb = (TextBox)item;
-                //        tb.Enabled = true;
-                //    }
-                //}
                 tb_StQunt.Enabled = true;
                 i++;
             }
             else if(i==1)
             {
                 tb_StQunt.Enabled = false;
-                //foreach (var item in Controls)
-                //{
-                //    if (item is TextBox)
-                //    {
-                //        TextBox tb = (TextBox)item;
-                //        tb.Enabled = false;
-                //    }
-                //}
                 i = 0;
                 using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AwsDB"].ConnectionString))
                 {
@@ -259,10 +249,8 @@ namespace POSproject_KSM
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            order_From order_ = new order_From
-            {
-                Owner = this
-            };
+            order_From order_ = new order_From(id);
+            order_.Owner = this;
             order_.ShowDialog();
         }
         /// <summary>
@@ -289,6 +277,11 @@ namespace POSproject_KSM
         }
 
         private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
         {
 
         }

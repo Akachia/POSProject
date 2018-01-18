@@ -31,15 +31,16 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_Exit = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_Send = new System.Windows.Forms.Button();
             this.lbl_TtlPrice = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lbl_TtlsellPrice = new System.Windows.Forms.Label();
+            this.btn_allCk = new System.Windows.Forms.Button();
+            this.lbl_User = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -69,7 +70,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.lbl_User);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -78,24 +79,6 @@
             this.groupBox1.Size = new System.Drawing.Size(800, 63);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(480, 30);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 12);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "label3";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(231, 30);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 12);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "label2";
             // 
             // label1
             // 
@@ -118,14 +101,15 @@
             this.btn_Exit.UseVisualStyleBackColor = true;
             this.btn_Exit.Click += new System.EventHandler(this.btn_Exit_Click);
             // 
-            // button1
+            // btn_Send
             // 
-            this.button1.Location = new System.Drawing.Point(643, 521);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 75);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "보내기";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btn_Send.Location = new System.Drawing.Point(643, 521);
+            this.btn_Send.Name = "btn_Send";
+            this.btn_Send.Size = new System.Drawing.Size(75, 75);
+            this.btn_Send.TabIndex = 11;
+            this.btn_Send.Text = "보내기";
+            this.btn_Send.UseVisualStyleBackColor = true;
+            this.btn_Send.Click += new System.EventHandler(this.btn_Send_Click);
             // 
             // lbl_TtlPrice
             // 
@@ -155,7 +139,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(170, 24);
             this.label4.TabIndex = 15;
-            this.label4.Text = "총 발주 가격 : ";
+            this.label4.Text = "총 판매 가격 : ";
             // 
             // lbl_TtlsellPrice
             // 
@@ -167,16 +151,46 @@
             this.lbl_TtlsellPrice.TabIndex = 14;
             this.lbl_TtlsellPrice.Text = "  ";
             // 
+            // btn_allCk
+            // 
+            this.btn_allCk.Location = new System.Drawing.Point(565, 521);
+            this.btn_allCk.Name = "btn_allCk";
+            this.btn_allCk.Size = new System.Drawing.Size(75, 75);
+            this.btn_allCk.TabIndex = 16;
+            this.btn_allCk.Text = "전체선택";
+            this.btn_allCk.UseVisualStyleBackColor = true;
+            this.btn_allCk.Click += new System.EventHandler(this.btn_allCk_Click);
+            // 
+            // lbl_User
+            // 
+            this.lbl_User.AutoSize = true;
+            this.lbl_User.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lbl_User.Location = new System.Drawing.Point(547, 22);
+            this.lbl_User.Name = "lbl_User";
+            this.lbl_User.Size = new System.Drawing.Size(0, 21);
+            this.lbl_User.TabIndex = 4;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label2.Location = new System.Drawing.Point(405, 22);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(136, 21);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "현재 접속자 :";
+            // 
             // order_From
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.btn_allCk);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.lbl_TtlsellPrice);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.lbl_TtlPrice);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btn_Send);
             this.Controls.Add(this.btn_Exit);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dataGridView1);
@@ -197,15 +211,16 @@
 
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_Exit;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_Send;
         private System.Windows.Forms.Label lbl_TtlPrice;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lbl_TtlsellPrice;
+        private System.Windows.Forms.Button btn_allCk;
+        internal System.Windows.Forms.Label lbl_User;
+        internal System.Windows.Forms.Label label2;
     }
 }

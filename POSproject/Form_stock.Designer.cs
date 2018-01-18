@@ -46,7 +46,7 @@
             this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tb_StCate = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lbl_User = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -228,7 +228,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.lbl_User);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -237,24 +237,26 @@
             this.groupBox1.Size = new System.Drawing.Size(800, 63);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // label3
+            // lbl_User
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(480, 30);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 12);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "label3";
+            this.lbl_User.AutoSize = true;
+            this.lbl_User.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lbl_User.Location = new System.Drawing.Point(544, 22);
+            this.lbl_User.Name = "lbl_User";
+            this.lbl_User.Size = new System.Drawing.Size(0, 21);
+            this.lbl_User.TabIndex = 2;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(231, 30);
+            this.label2.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label2.Location = new System.Drawing.Point(402, 22);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 12);
+            this.label2.Size = new System.Drawing.Size(136, 21);
             this.label2.TabIndex = 1;
-            this.label2.Text = "label2";
+            this.label2.Text = "현재 접속자 :";
             // 
             // label1
             // 
@@ -435,7 +437,7 @@
         private System.Windows.Forms.TextBox tb_TtlSell;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Timer timer1;
-        internal System.Windows.Forms.Label label3;
+        internal System.Windows.Forms.Label lbl_User;
         internal System.Windows.Forms.Label label2;
         internal System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_LstOrd;

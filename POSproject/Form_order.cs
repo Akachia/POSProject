@@ -25,9 +25,9 @@ namespace POSproject_KSM
             InitializeComponent();
         }
 
-        public order_From(DataSet ds) : this()
+        public order_From(string ds) : this()
         {
-
+            lbl_User.Text = ds;
         }
         /// <summary>
         /// Dvg에 콤보박스를 만드는 함수
@@ -75,6 +75,8 @@ namespace POSproject_KSM
 
         private void Order_TtlPrice_Sum()
         {
+            orderTtl_Price = 0;
+            orderTtlSell_Price = 0;
             foreach (DataGridViewRow item in dataGridView1.Rows)
             {
                 orderTtl_Price += int.Parse(item.Cells[4].Value.ToString());
@@ -83,28 +85,24 @@ namespace POSproject_KSM
             {
                 orderTtlSell_Price += int.Parse(item.Cells[3].Value.ToString());
             }
-            string str = null;
-            char[] strs = orderTtl_Price.ToString().ToCharArray();
-            for (int i = strs.Length; i > 0; i-=3)
-            {
-                str += ',' + strs[i-2] + strs[i-1] + strs[i];
-            }
+            string ttlPrice = String.Format("{0:#,###}", orderTtl_Price);
+            string ttlSellPrice = String.Format("{0:#,###}", orderTtlSell_Price);
 
-            lbl_TtlPrice.Text = orderTtl_Price.ToString();
-            lbl_TtlsellPrice.Text = orderTtlSell_Price.ToString();
+            lbl_TtlPrice.Text = ttlPrice + "원";
+            lbl_TtlsellPrice.Text = ttlSellPrice + "원";
         }
 
         private void order_From_Load(object sender, EventArgs e)
         {
             POS_Stock pOS_ = Owner as POS_Stock;
-            
+
             ds = pOS_.MakeOrderTable().Copy();
-            
+
             dataGridView1.DataSource = pOS_.MakeOrderTable().Copy();
 
             dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
             label1.Text = pOS_.label1.Text;
-            Timer timer =  new Timer();
+            Timer timer = new Timer();
             timer.Tick += Timer1_Tick1;
             timer.Start();
             MakeComboCell();
@@ -114,30 +112,39 @@ namespace POSproject_KSM
 
         private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            int numVal = int.Parse(ds.Rows[dataGridView1.CurrentRow.Index].ItemArray[2].ToString());
-            int numVal1 = int.Parse(ds.Rows[dataGridView1.CurrentRow.Index].ItemArray[3].ToString());
-            //동적 생성한 셀에 데이터가 없어서 오류가 난다.
-            //MessageBox.Show();
-            if (dataGridView1.CurrentCell.GetType() == new DataGridViewComboBoxCell().GetType())
+            try
             {
-                int boxNum = int.Parse(dataGridView1.CurrentRow.Cells[5].Value.ToString().Split('b')[0]);
-                int boxNum1 = int.Parse(dataGridView1.CurrentRow.Cells[6].Value.ToString().Split('개')[0]);
-
-                //MessageBox.Show(boxNum.ToString());
-                //MessageBox.Show(boxNum1.ToString());
-
-                if (boxNum == 0 && boxNum1 == 0)
+                int numVal = int.Parse(ds.Rows[dataGridView1.CurrentRow.Index].ItemArray[2].ToString());
+                int numVal1 = int.Parse(ds.Rows[dataGridView1.CurrentRow.Index].ItemArray[3].ToString());
+                //동적 생성한 셀에 데이터가 없어서 오류가 난다.
+                //MessageBox.Show();
+                if (dataGridView1.CurrentCell.GetType() == new DataGridViewComboBoxCell().GetType())
                 {
-                    dataGridView1.CurrentRow.Cells[3].Value = numVal;
-                    dataGridView1.CurrentRow.Cells[4].Value = numVal1;
+                    int boxNum = int.Parse(dataGridView1.CurrentRow.Cells[5].Value.ToString().Split('b')[0]);
+                    int boxNum1 = int.Parse(dataGridView1.CurrentRow.Cells[6].Value.ToString().Split('개')[0]);
+
+                    //MessageBox.Show(boxNum.ToString());
+                    //MessageBox.Show(boxNum1.ToString());
+
+                    if (boxNum == 0 && boxNum1 == 0)
+                    {
+                        dataGridView1.CurrentRow.Cells[3].Value = numVal;
+                        dataGridView1.CurrentRow.Cells[4].Value = numVal1;
+                    }
+                    else
+                    {
+                        dataGridView1.CurrentRow.Cells[3].Value = (boxNum * 15) * numVal + (boxNum1 * numVal);
+                        dataGridView1.CurrentRow.Cells[4].Value = (boxNum * 15) * numVal1 + (boxNum1 * numVal1);
+                    }
+                    Order_TtlPrice_Sum();
                 }
-                else
-                {
-                    dataGridView1.CurrentRow.Cells[3].Value = (boxNum * 15) * numVal + (boxNum1 * numVal);
-                    dataGridView1.CurrentRow.Cells[4].Value = (boxNum * 15) * numVal1 + (boxNum1 * numVal1);
-                }
+                //발주 가격과 판매가격을 알려주는 함수
             }
-            Order_TtlPrice_Sum();
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("발주 물건을 선택해 주세요!","알림", MessageBoxButtons.OK , MessageBoxIcon.Warning);
+                this.Close();
+            }
         }
 
         private void Timer1_Tick1(object sender, EventArgs e)
@@ -148,6 +155,90 @@ namespace POSproject_KSM
         private void btn_Exit_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btn_allCk_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow item in dataGridView1.Rows)
+            {
+                DataGridViewCheckBoxCell checkBoxCell = (DataGridViewCheckBoxCell)item.Cells[0];
+                checkBoxCell.Value = true;
+            }
+        }
+
+        private void btn_Send_Click(object sender, EventArgs e)
+        {
+            DataSet oDs = new DataSet();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("InsertOrders2", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UOrderTtlPrice", orderTtlSell_Price);
+                    cmd.Parameters.AddWithValue("@UOrderCustomer", lbl_User.Text);
+
+                    int i = cmd.ExecuteNonQuery();
+                    if (i > 0)
+                    {
+                        MessageBox.Show("발주 성공");
+                    }
+                    else
+                    {
+                        MessageBox.Show("통신실패 다시 해주세요");
+                    }
+                }
+            }
+                int last_idx = 0;
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+                MessageBox.Show(last_idx.ToString());
+                using (SqlCommand cmd = new SqlCommand("SelectLastOrderNo", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                    dataAdapter.SelectCommand = cmd;
+
+                    dataAdapter.Fill(oDs);
+                    last_idx = int.Parse(oDs.Tables[0].Rows[0].ItemArray[0].ToString());
+                }
+
+            }
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+                for (int j = 0; j < dataGridView1.Rows.Count; j++)
+                {
+                    using (SqlCommand cmd = new SqlCommand("InsertStockOrder", con))
+                    {
+                        DataGridViewCheckBoxCell dgvCell = (DataGridViewCheckBoxCell)dataGridView1.Rows[j].Cells[0];
+                        if (dgvCell.Value != new DataGridViewCheckBoxCell().FalseValue)
+                        {
+                            //MessageBox.Show(" : " + (dgvCell.RowIndex +1).ToString());
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@IOrderNo", last_idx);
+                            cmd.Parameters.AddWithValue("@IProductNo", dataGridView1.Rows[j].Cells[1].Value);
+
+                            int boxNum = int.Parse(dataGridView1.Rows[j].Cells[5].Value.ToString().Split('b')[0]);
+                            int boxNum1 = int.Parse(dataGridView1.Rows[j].Cells[6].Value.ToString().Split('개')[0]);
+
+                            cmd.Parameters.AddWithValue("@IProductOrderQuantity", ((boxNum * 15) + boxNum1));
+                            int i = cmd.ExecuteNonQuery();
+                            if (i > 0)
+                            {
+                                MessageBox.Show("발주 성공");
+                            }
+                            else
+                            {
+                                MessageBox.Show("통신실패 다시 해주세요");
+                            }
+
+                        }
+                    }
+                }
+            }
         }
     }
 }
