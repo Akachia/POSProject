@@ -33,6 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbl_curWorkTime = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -42,8 +43,8 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btn_mgr = new System.Windows.Forms.Button();
-            this.lbl_curWorkTime = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btn_CheckOut = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -51,7 +52,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(701, 12);
+            this.button1.Location = new System.Drawing.Point(700, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 82);
             this.button1.TabIndex = 2;
@@ -92,6 +93,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(450, 464);
             this.panel1.TabIndex = 3;
+            // 
+            // lbl_curWorkTime
+            // 
+            this.lbl_curWorkTime.AutoSize = true;
+            this.lbl_curWorkTime.Font = new System.Drawing.Font("휴먼둥근헤드라인", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lbl_curWorkTime.Location = new System.Drawing.Point(6, 323);
+            this.lbl_curWorkTime.Name = "lbl_curWorkTime";
+            this.lbl_curWorkTime.Size = new System.Drawing.Size(110, 17);
+            this.lbl_curWorkTime.TabIndex = 8;
+            this.lbl_curWorkTime.Text = "근무 시간 : ";
             // 
             // label7
             // 
@@ -173,7 +184,7 @@
             // 
             // btn_mgr
             // 
-            this.btn_mgr.Location = new System.Drawing.Point(596, 12);
+            this.btn_mgr.Location = new System.Drawing.Point(522, 12);
             this.btn_mgr.Name = "btn_mgr";
             this.btn_mgr.Size = new System.Drawing.Size(75, 82);
             this.btn_mgr.TabIndex = 5;
@@ -181,19 +192,18 @@
             this.btn_mgr.UseVisualStyleBackColor = true;
             this.btn_mgr.Click += new System.EventHandler(this.btn_mgr_Click);
             // 
-            // lbl_curWorkTime
-            // 
-            this.lbl_curWorkTime.AutoSize = true;
-            this.lbl_curWorkTime.Font = new System.Drawing.Font("휴먼둥근헤드라인", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lbl_curWorkTime.Location = new System.Drawing.Point(6, 323);
-            this.lbl_curWorkTime.Name = "lbl_curWorkTime";
-            this.lbl_curWorkTime.Size = new System.Drawing.Size(110, 17);
-            this.lbl_curWorkTime.TabIndex = 8;
-            this.lbl_curWorkTime.Text = "근무 시간 : ";
-            // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // btn_CheckOut
+            // 
+            this.btn_CheckOut.Location = new System.Drawing.Point(611, 12);
+            this.btn_CheckOut.Name = "btn_CheckOut";
+            this.btn_CheckOut.Size = new System.Drawing.Size(75, 82);
+            this.btn_CheckOut.TabIndex = 6;
+            this.btn_CheckOut.Text = "퇴근";
+            this.btn_CheckOut.UseVisualStyleBackColor = true;
             // 
             // UserAccount
             // 
@@ -201,6 +211,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.btn_CheckOut);
             this.Controls.Add(this.btn_mgr);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
@@ -237,5 +248,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lbl_curWorkTime;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btn_CheckOut;
     }
 }

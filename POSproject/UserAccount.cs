@@ -13,6 +13,7 @@ namespace POSproject
     public partial class UserAccount : Form
     {
         string user;
+        TimeSpan time;
         public UserAccount()
         {
             InitializeComponent();
@@ -30,14 +31,18 @@ namespace POSproject
         private void UserAccount_Load(object sender, EventArgs e)
         {
             lbl_checkin.Text = lbl_checkin.Text + Prcd.checkin;
-            lbl_curWorkTime.Text = lbl_curWorkTime.Text + (DateTime.Now - Prcd.checkin);
-            timer1.Start();
+
+           
+
+            
+             timer1.Start();
         }
 
         private void btn_mgr_Click(object sender, EventArgs e)
         {
-            
-            
+            new Form_UserManagement().Show();
+
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -47,7 +52,8 @@ namespace POSproject
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            lbl_curWorkTime.Text = "근무 시간 : " + (DateTime.Now.Subtract(Prcd.checkin));
+            time = DateTime.Now.Subtract(Prcd.checkin);
+            lbl_curWorkTime.Text = "근무 시간 : " + (time);
         }
     }
 }

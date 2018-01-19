@@ -76,6 +76,12 @@
     <Compile Include="Form_Main.Designer.cs">
       <DependentUpon>Form_Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_UserManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_UserManagement.Designer.cs">
+      <DependentUpon>Form_UserManagement.cs</DependentUpon>
+    </Compile>
     <Compile Include="OrderDetail.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,6 +111,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Main.resx">
       <DependentUpon>Form_Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_UserManagement.resx">
+      <DependentUpon>Form_UserManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -34,6 +34,7 @@ namespace POSproject
                 Form_Main ua =new Form_Main(DateTime.Now,id);
                 ua.Owner = this;
                 ua.Show();
+                Prcd.checkin = DateTime.Now;
                 //this.Dispose();
             }
             else
