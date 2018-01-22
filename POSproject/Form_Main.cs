@@ -214,10 +214,6 @@ namespace formSales
 
             lbl_user.Left = lbl_user.Left - 3;
 
-
-
-
-
             if (lbl_user.Right < 0)
 
                 lbl_user.Left = this.Width-lbl_time.Left;

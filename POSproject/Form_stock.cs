@@ -14,14 +14,11 @@ using System.IO;
 namespace POSproject_KSM
 {
     //DB싱글톤 
-   
     public partial class POS_Stock : Form
-    {
-        //기본 이미지가 없는것을 표시할때 사용하는 이미지를 저장한 경로
-        //string defualtPath = @"C:\Users\gd3-6\Documents\project+\img\noImage.gif";
-        //string ddd = 
+    { 
         //차후 싱글톤으로 만들자.
         DataSet ds = null;
+        DataTable data = null;
         int i = 0;
         string id = null;
         public POS_Stock()
@@ -52,12 +49,12 @@ namespace POSproject_KSM
         /// <returns></returns>
         internal DataTable MakeOrderTable()
         {
-            //값타입이라 계속 같이 동반자살하네 ㅅㅂ넘이
-
-            DataTable data = null; 
+            if (data != null)
+            {
+                data.Clear(); 
+            }
             data = ds.Tables[0].Copy();
             int count = data.Rows.Count;
-
             //ds의 구조만 전해주고 데이터는 지운다.
             for (int i = 0;i < count;i++ )
             {
@@ -80,6 +77,7 @@ namespace POSproject_KSM
             //지운데이터를 반영한다.
             data.AcceptChanges();
 
+            MessageBox.Show(data.Rows.Count.ToString());
             //MessageBox.Show(data.Rows.Count.ToString());
             //MessageBox.Show(data.Columns.Count.ToString());
 
@@ -89,7 +87,6 @@ namespace POSproject_KSM
         internal void SelectStock(string procesor, DataGridView dgv)
         {
             ds = GetDataSet();
-            
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 con.Open();
@@ -167,7 +164,7 @@ namespace POSproject_KSM
             {
                 tb_StQunt.Enabled = false;
                 i = 0;
-                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AwsDB"].ConnectionString))
+                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
                 {
                     
                     con.Open();
@@ -239,7 +236,6 @@ namespace POSproject_KSM
             {
                 Byte[] bImg = (byte[])dataGridView1.CurrentRow.Cells[11].Value;
                 pictureBox1.Image = new Bitmap(new MemoryStream(bImg));
-
             }
         }
         /// <summary>
@@ -273,7 +269,7 @@ namespace POSproject_KSM
 
         private void btn_LstOrd_Click(object sender, EventArgs e)
         {
-            
+            new OrderDetail().ShowDialog();
         }
 
         private void button2_Click(object sender, EventArgs e)

@@ -18,8 +18,11 @@ namespace POSproject_KSM
     public partial class order_From : Form
     {
         DataTable ds = null;
+        DataTable ds2 = null;
         int orderTtl_Price = 0;
         int orderTtlSell_Price = 0;
+        decimal barcodeNo = 0;
+
         public order_From()
         {
             InitializeComponent();
@@ -72,7 +75,25 @@ namespace POSproject_KSM
             dataGridView1.Columns[7].HeaderText = "현재수량";
         }
 
+        private decimal GenBarcode(decimal bar)
+        {
+            string str = "1880";
+            string str2;
+            DateTime date = DateTime.Now;
+            str2 = date.ToShortDateString().Split('-')[0];
+            str2 += date.ToShortDateString().Split('-')[1];
+            str2 += date.ToShortDateString().Split('-')[2];
+            str2 = str2.Substring(2);
+            str += str2;
 
+            str += bar.ToString().Substring(10);
+            MessageBox.Show(str);
+            return decimal.Parse(str);
+        }
+
+        /// <summary>
+        /// 전체 발주가격을 계산하는 메서드
+        /// </summary>
         private void Order_TtlPrice_Sum()
         {
             orderTtl_Price = 0;
@@ -97,8 +118,12 @@ namespace POSproject_KSM
             POS_Stock pOS_ = Owner as POS_Stock;
 
             ds = pOS_.MakeOrderTable().Copy();
-
-            dataGridView1.DataSource = pOS_.MakeOrderTable().Copy();
+            if (ds2 != null)
+            {
+                ds2.Clear();
+            }
+            ds2 = pOS_.MakeOrderTable();
+            dataGridView1.DataSource = ds2;
 
             dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
             label1.Text = pOS_.label1.Text;
@@ -109,22 +134,21 @@ namespace POSproject_KSM
             //수량을 콤보박스로 표현하기 
             //dataGridView1.Columns["Column2"].DisplayIndex = 4;
         }
-
+        /// <summary>
+        /// 그리드뷰에서 셀의 값이 변경되면 실행되는 함수 콤보박스만 해당된다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
-                int numVal = int.Parse(ds.Rows[dataGridView1.CurrentRow.Index].ItemArray[2].ToString());
-                int numVal1 = int.Parse(ds.Rows[dataGridView1.CurrentRow.Index].ItemArray[3].ToString());
-                //동적 생성한 셀에 데이터가 없어서 오류가 난다.
-                //MessageBox.Show();
                 if (dataGridView1.CurrentCell.GetType() == new DataGridViewComboBoxCell().GetType())
                 {
+                    int numVal = int.Parse(ds.Rows[dataGridView1.CurrentRow.Index].ItemArray[2].ToString());
+                    int numVal1 = int.Parse(ds.Rows[dataGridView1.CurrentRow.Index].ItemArray[3].ToString());
                     int boxNum = int.Parse(dataGridView1.CurrentRow.Cells[5].Value.ToString().Split('b')[0]);
                     int boxNum1 = int.Parse(dataGridView1.CurrentRow.Cells[6].Value.ToString().Split('개')[0]);
-
-                    //MessageBox.Show(boxNum.ToString());
-                    //MessageBox.Show(boxNum1.ToString());
 
                     if (boxNum == 0 && boxNum1 == 0)
                     {
@@ -146,7 +170,7 @@ namespace POSproject_KSM
                 this.Close();
             }
         }
-
+        // 타이머 함수
         private void Timer1_Tick1(object sender, EventArgs e)
         {
             label1.Text = DateTime.Now.ToLongTimeString();
@@ -155,8 +179,13 @@ namespace POSproject_KSM
         private void btn_Exit_Click(object sender, EventArgs e)
         {
             this.Close();
+            this.Dispose();
         }
-
+        /// <summary>
+        /// 모든 채크박스를 클릭해주는 함수
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_allCk_Click(object sender, EventArgs e)
         {
             foreach (DataGridViewRow item in dataGridView1.Rows)
@@ -165,10 +194,30 @@ namespace POSproject_KSM
                 checkBoxCell.Value = true;
             }
         }
-
+        /// <summary>
+        /// 보내기 함수
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_Send_Click(object sender, EventArgs e)
         {
             DataSet oDs = new DataSet();
+            int last_idx = 0;
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+                MessageBox.Show(last_idx.ToString());
+                using (SqlCommand cmd = new SqlCommand("SelectLastOrderNo", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                    dataAdapter.SelectCommand = cmd;
+
+                    dataAdapter.Fill(oDs);
+                    last_idx = int.Parse(oDs.Tables[0].Rows[0].ItemArray[0].ToString()) + 1;
+                    barcodeNo = decimal.Parse(oDs.Tables[0].Rows[0].ItemArray[5].ToString()) + 1;
+                }
+            }
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 con.Open();
@@ -177,6 +226,7 @@ namespace POSproject_KSM
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@UOrderTtlPrice", orderTtlSell_Price);
                     cmd.Parameters.AddWithValue("@UOrderCustomer", lbl_User.Text);
+                    cmd.Parameters.AddWithValue("@UOrderBarcode", GenBarcode(barcodeNo));
 
                     int i = cmd.ExecuteNonQuery();
                     if (i > 0)
@@ -189,23 +239,7 @@ namespace POSproject_KSM
                     }
                 }
             }
-                int last_idx = 0;
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
-            {
-                con.Open();
-                MessageBox.Show(last_idx.ToString());
-                using (SqlCommand cmd = new SqlCommand("SelectLastOrderNo", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter();
-                    dataAdapter.SelectCommand = cmd;
-
-                    dataAdapter.Fill(oDs);
-                    last_idx = int.Parse(oDs.Tables[0].Rows[0].ItemArray[0].ToString());
-                }
-
-            }
-
+            
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 con.Open();
@@ -231,14 +265,18 @@ namespace POSproject_KSM
                                 MessageBox.Show("발주 성공");
                             }
                             else
-                            {
+                            { 
                                 MessageBox.Show("통신실패 다시 해주세요");
                             }
-
                         }
                     }
                 }
             }
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

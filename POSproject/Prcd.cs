@@ -99,7 +99,7 @@ namespace POSproject
 
         static private bool CheckPwd(string id, string pwd)
         {
-            
+
             using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 //con.Open();
@@ -109,20 +109,20 @@ namespace POSproject
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@userid", id);
                     cmd.Parameters.AddWithValue("@userPwd", pwd);
-                    
 
-                    var sdr = cmd.ExecuteReader();
 
-                    if (sdr.HasRows)
+                    var sdr = cmd.ExecuteScalar();
+
+                    if (sdr.ToString() == "1")
                     {
 
 
-                        sdr.Close();
+
                         return true;
                     }
                     else
                     {
-                        sdr.Close();
+
                         return false;
                     }
                 }
