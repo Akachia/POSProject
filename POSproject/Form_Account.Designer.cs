@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -65,14 +67,6 @@
             this.button12 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            //this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -80,6 +74,13 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button4 = new System.Windows.Forms.Button();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnChart = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.btnNextYear = new System.Windows.Forms.Button();
+            this.btnPrevYear = new System.Windows.Forms.Button();
+            this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -87,7 +88,7 @@
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.tabPage3.SuspendLayout();
-            //((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.SuspendLayout();
             // 
             // label2
@@ -196,7 +197,7 @@
             // 
             // Column9
             // 
-            this.Column9.HeaderText = "가격";
+            this.Column9.HeaderText = "총 가격";
             this.Column9.Name = "Column9";
             // 
             // Column10
@@ -432,8 +433,6 @@
             // 
             this.tabPage2.Controls.Add(this.dataGridView2);
             this.tabPage2.Controls.Add(this.button4);
-            this.tabPage2.Controls.Add(this.button6);
-            this.tabPage2.Controls.Add(this.button7);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -458,75 +457,6 @@
             this.dataGridView2.RowTemplate.Height = 23;
             this.dataGridView2.Size = new System.Drawing.Size(816, 376);
             this.dataGridView2.TabIndex = 91;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(706, 388);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(116, 117);
-            this.button4.TabIndex = 102;
-            this.button4.Text = "메인 화면";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(128, 388);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(116, 117);
-            this.button6.TabIndex = 101;
-            this.button6.Text = "이전 년도";
-            this.button6.UseVisualStyleBackColor = true;
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(6, 388);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(116, 117);
-            this.button7.TabIndex = 100;
-            this.button7.Text = "이전 년도";
-            this.button7.UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.button5);
-            this.tabPage3.Controls.Add(this.button8);
-            this.tabPage3.Controls.Add(this.button9);
-            //this.tabPage3.Controls.Add(this.chart1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(831, 515);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "그래프";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(706, 388);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(116, 117);
-            this.button5.TabIndex = 105;
-            this.button5.Text = "메인 화면";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(128, 388);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(116, 117);
-            this.button8.TabIndex = 104;
-            this.button8.Text = "이전 년도";
-            this.button8.UseVisualStyleBackColor = true;
-            // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(6, 388);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(116, 117);
-            this.button9.TabIndex = 103;
-            this.button9.Text = "이전 년도";
-            this.button9.UseVisualStyleBackColor = true;
-           
             // 
             // Column1
             // 
@@ -569,7 +499,83 @@
             this.Column8.Name = "Column8";
             this.Column8.Width = 110;
             // 
-            // Form2
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(706, 388);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(116, 117);
+            this.button4.TabIndex = 102;
+            this.button4.Text = "메인 화면";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.chart);
+            this.tabPage3.Controls.Add(this.btnChart);
+            this.tabPage3.Controls.Add(this.button5);
+            this.tabPage3.Controls.Add(this.btnNextYear);
+            this.tabPage3.Controls.Add(this.btnPrevYear);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(831, 515);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "그래프";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btnChart
+            // 
+            this.btnChart.Location = new System.Drawing.Point(13, 388);
+            this.btnChart.Name = "btnChart";
+            this.btnChart.Size = new System.Drawing.Size(116, 117);
+            this.btnChart.TabIndex = 107;
+            this.btnChart.Text = "매출 차트 보기";
+            this.btnChart.UseVisualStyleBackColor = true;
+            this.btnChart.Click += new System.EventHandler(this.btnChart_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(706, 388);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(116, 117);
+            this.button5.TabIndex = 105;
+            this.button5.Text = "메인 화면";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // btnNextYear
+            // 
+            this.btnNextYear.Location = new System.Drawing.Point(407, 388);
+            this.btnNextYear.Name = "btnNextYear";
+            this.btnNextYear.Size = new System.Drawing.Size(116, 117);
+            this.btnNextYear.TabIndex = 104;
+            this.btnNextYear.Text = "다음 년도";
+            this.btnNextYear.UseVisualStyleBackColor = true;
+            // 
+            // btnPrevYear
+            // 
+            this.btnPrevYear.Location = new System.Drawing.Point(285, 388);
+            this.btnPrevYear.Name = "btnPrevYear";
+            this.btnPrevYear.Size = new System.Drawing.Size(116, 117);
+            this.btnPrevYear.TabIndex = 103;
+            this.btnPrevYear.Text = "이전 년도";
+            this.btnPrevYear.UseVisualStyleBackColor = true;
+            // 
+            // chart
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart.Legends.Add(legend1);
+            this.chart.Location = new System.Drawing.Point(6, 3);
+            this.chart.Name = "chart";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart.Series.Add(series1);
+            this.chart.Size = new System.Drawing.Size(822, 379);
+            this.chart.TabIndex = 108;
+            this.chart.Text = "chart1";
+            // 
+            // Form_Account
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -577,7 +583,7 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "Form2";
+            this.Name = "Form_Account";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form2";
             this.Load += new System.EventHandler(this.Form_Account_Load);
@@ -589,7 +595,7 @@
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.tabPage3.ResumeLayout(false);
-            //((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -629,18 +635,13 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button btnNextYear;
+        private System.Windows.Forms.Button btnPrevYear;
         //private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
@@ -648,5 +649,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.Button btnChart;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart;
     }
 }

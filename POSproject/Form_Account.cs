@@ -15,6 +15,7 @@ namespace TF
     public partial class Form_Account : Form
     {
         DataSet ds;
+        List<string[]> orderPrice = new List<string[]>();
 
         public Form_Account()
         {
@@ -23,7 +24,7 @@ namespace TF
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //new Form1().Show();
+            
         }
 
         private void Form_Account_Load(object sender, EventArgs e)
@@ -39,13 +40,17 @@ namespace TF
                 adapter.Fill(ds);
                 
                 DataTable table1 = ds.Tables[0]; // SellDate, ProductName, SellCount, SellPrice, CardWhether
-                DataTable table2 = ds.Tables[1]; // OrderTotalPrice, UserPay, WorkTime
+                DataTable table2 = ds.Tables[1]; // OrderDate, OrderTotalPrice
 
-                int cashD = 0;
-                int cardD = 0;
-                int cashM = 0;
-                int cardM = 0;
+                int cashD = 0; // 일 현금 매출
+                int cardD = 0; // 일 카드 매출
+                int cashM = 0; // 월 현금 매출
+                int cardM = 0; // 월 카드 매출
+                int order = 0; // 입고가
                 string standardDate = "";
+                string orderDate = "";
+                string[] orderArr;
+                int rowCount = 0;
 
                 foreach (DataRow row in table1.Rows)
                 {
@@ -62,6 +67,39 @@ namespace TF
                 txtCashD.Text += cashD;
                 txtCardD.Text += cardD;
                 txtTotalD.Text = (cashD + cardD).ToString();
+
+                foreach (DataRow row in table2.Rows)
+                {
+                    rowCount += 1;
+                    string[] date = row.ItemArray[0].ToString().Split('-');
+                    if (orderDate == "")
+                    {
+                        orderDate = date[0] + " - " + date[1];
+                    }
+
+                    if (orderDate == (date[0] + " - " + date[1]))
+                    {
+                        order += int.Parse(row.ItemArray[1].ToString());
+                        if (table2.Rows.Count == rowCount)
+                        {
+                            orderArr = new string[2];
+                            orderArr[0] = orderDate;
+                            orderArr[1] = order.ToString();
+
+                            orderPrice.Add(orderArr);
+                        }
+                    }
+                    else
+                    {
+                        orderArr = new string[2];
+                        orderArr[0] = orderDate;
+                        orderArr[1] = order.ToString();
+
+                        orderPrice.Add(orderArr);
+                        orderDate = date[0] + " - " + date[1];
+                        order = int.Parse(row.ItemArray[1].ToString());
+                    }
+                }
 
                 foreach (DataRow row in table1.Rows)
                 {
@@ -87,7 +125,13 @@ namespace TF
                     }
                     else
                     {
-                        dataGridView2.Rows.Add(standardDate, cashM, cardM, cashM + cardM, 0, 0, 0);
+                        foreach (string[] arr in orderPrice)
+                        {
+                            if (orderDate == standardDate)
+                            {
+                                dataGridView2.Rows.Add(standardDate, cashM, cardM, cashM + cardM, order, 0, 0);
+                            }
+                        }
                         standardDate = date[0] + " - " + date[1];
                         if (row.ItemArray[4].ToString() == "False")
                         {
@@ -99,15 +143,27 @@ namespace TF
                         }
                     }
                 }
-
-                dataGridView2.Rows.Add(standardDate, cashM, cardM, cashM + cardM, 0, 0, 0);
-
-                //this.dataGridView1.DataSource = ds.Tables[0];
+                foreach (string[] arr in orderPrice)
+                {
+                    if (orderDate == standardDate)
+                    {
+                        dataGridView2.Rows.Add(standardDate, cashM, cardM, cashM + cardM, order, 0, 0);
+                    }
+                }
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnChart_Click(object sender, EventArgs e)
         {
+            string now = DateTime.Now.Year.ToString();
+
+            foreach (string[] arr in orderPrice)
+            {
+                if (now == DateTime.Now.Year.ToString())
+                {
+                    chart.Series[0].Points.AddXY(arr[0], int.Parse(arr[1]));
+                }
+            }
         }
     }
 }
