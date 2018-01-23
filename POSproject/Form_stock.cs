@@ -49,19 +49,20 @@ namespace POSproject_KSM
         /// <returns></returns>
         internal DataTable MakeOrderTable()
         {
-            if (data != null)
-            {
-                data.Clear(); 
-            }
             data = ds.Tables[0].Copy();
             int count = data.Rows.Count;
+
             //ds의 구조만 전해주고 데이터는 지운다.
+            DataGridViewCheckBoxCell dgvCell = null;
+            //dataGridView1.Invalidate();
+            //dgvCell.FalseValue = 0;
             for (int i = 0;i < count;i++ )
             {
-                DataGridViewCheckBoxCell dgvCell = (DataGridViewCheckBoxCell)dataGridView1.Rows[i].Cells[0];
+                dgvCell = (DataGridViewCheckBoxCell)dataGridView1.Rows[i].Cells[0];
+                //MessageBox.Show(dgvCell.Value.ToString());
                 if (dgvCell.Value == new DataGridViewCheckBoxCell().FalseValue)
                 {
-                    //MessageBox.Show(" : " + (dgvCell.RowIndex +1).ToString());
+                    MessageBox.Show(" : " + (dgvCell.RowIndex +1).ToString());
                     data.Rows[i].Delete();
                 }
             }
@@ -101,7 +102,6 @@ namespace POSproject_KSM
                     dgv.DataSource = ds.Tables[0];
                 }
             }
-            
         }
 
         /// <summary>
@@ -128,6 +128,20 @@ namespace POSproject_KSM
             dataGridView1.Columns[10].HeaderText = "누적 판매량";
             dataGridView1.Select();
         }
+
+        /// <summary>
+        /// 채크박스의 데이터가 동적으로 연결되어있어 order폼로드 후 데이터가 남아있다. 
+        /// 체크박스의 내용을 false로 초기화 시켜준다.
+        /// </summary>
+        internal void CheckBoxinit()
+        {
+            foreach (DataGridViewRow item in dataGridView1.Rows)
+            {
+                item.Cells[0].Value = new DataGridViewCheckBoxCell().FalseValue;
+            }
+        }
+
+
         /// <summary>
         /// 시계를 돌리기위한 틱 이벤트
         /// </summary>
@@ -201,7 +215,6 @@ namespace POSproject_KSM
                             con.Close();
                             return;
                         }
-                        
                     }
                 }
             }
@@ -278,6 +291,16 @@ namespace POSproject_KSM
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_InStock_Click(object sender, EventArgs e)
+        {
+            new Form_InStock().ShowDialog(); 
+        }
+
+        private void btn_NewStock_Click(object sender, EventArgs e)
         {
 
         }

@@ -131,6 +131,7 @@ namespace POSproject_KSM
             timer.Tick += Timer1_Tick1;
             timer.Start();
             MakeComboCell();
+            pOS_.CheckBoxinit();
             //수량을 콤보박스로 표현하기 
             //dataGridView1.Columns["Column2"].DisplayIndex = 4;
         }
@@ -179,7 +180,6 @@ namespace POSproject_KSM
         private void btn_Exit_Click(object sender, EventArgs e)
         {
             this.Close();
-            this.Dispose();
         }
         /// <summary>
         /// 모든 채크박스를 클릭해주는 함수
@@ -275,6 +275,11 @@ namespace POSproject_KSM
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

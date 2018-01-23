@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form_InStock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_InStock.Designer.cs">
+      <DependentUpon>Form_InStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_order.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +97,9 @@
     <Compile Include="UserAccount.Designer.cs">
       <DependentUpon>UserAccount.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form_InStock.resx">
+      <DependentUpon>Form_InStock.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_order.resx">
       <DependentUpon>Form_order.cs</DependentUpon>
     </EmbeddedResource>

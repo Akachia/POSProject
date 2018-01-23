@@ -44,6 +44,7 @@ namespace POSproject_KSM
                     dataAdapter.Fill(ds);
 
                     dataGridView1.DataSource = ds.Tables[0];
+                    dataGridView1.Columns[4].ReadOnly = true;
                 }
                 con.Close();
             }

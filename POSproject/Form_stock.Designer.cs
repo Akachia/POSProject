@@ -40,7 +40,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Stock_exit = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_Order = new System.Windows.Forms.Button();
             this.btn_StUpdate = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -61,6 +61,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btn_LstOrd = new System.Windows.Forms.Button();
             this.btn_NewStock = new System.Windows.Forms.Button();
+            this.btn_InStock = new System.Windows.Forms.Button();
             label4 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
@@ -157,15 +158,15 @@
             this.Stock_exit.UseVisualStyleBackColor = true;
             this.Stock_exit.Click += new System.EventHandler(this.Stock_exit_Click);
             // 
-            // button1
+            // btn_Order
             // 
-            this.button1.Location = new System.Drawing.Point(722, 445);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 75);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "발주";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btn_Order.Location = new System.Drawing.Point(722, 445);
+            this.btn_Order.Name = "btn_Order";
+            this.btn_Order.Size = new System.Drawing.Size(75, 75);
+            this.btn_Order.TabIndex = 1;
+            this.btn_Order.Text = "발주";
+            this.btn_Order.UseVisualStyleBackColor = true;
+            this.btn_Order.Click += new System.EventHandler(this.button1_Click);
             // 
             // btn_StUpdate
             // 
@@ -368,7 +369,17 @@
             this.btn_NewStock.TabIndex = 24;
             this.btn_NewStock.Text = "상품 추가";
             this.btn_NewStock.UseVisualStyleBackColor = true;
-            this.btn_NewStock.Click += new System.EventHandler(this.button2_Click);
+            this.btn_NewStock.Click += new System.EventHandler(this.btn_NewStock_Click);
+            // 
+            // btn_InStock
+            // 
+            this.btn_InStock.Location = new System.Drawing.Point(722, 214);
+            this.btn_InStock.Name = "btn_InStock";
+            this.btn_InStock.Size = new System.Drawing.Size(75, 75);
+            this.btn_InStock.TabIndex = 25;
+            this.btn_InStock.Text = "입고";
+            this.btn_InStock.UseVisualStyleBackColor = true;
+            this.btn_InStock.Click += new System.EventHandler(this.btn_InStock_Click);
             // 
             // POS_Stock
             // 
@@ -377,6 +388,7 @@
             this.CancelButton = this.Stock_exit;
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.ControlBox = false;
+            this.Controls.Add(this.btn_InStock);
             this.Controls.Add(this.btn_NewStock);
             this.Controls.Add(this.btn_LstOrd);
             this.Controls.Add(this.pictureBox1);
@@ -400,7 +412,7 @@
             this.Controls.Add(label4);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btn_StUpdate);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btn_Order);
             this.Controls.Add(this.Stock_exit);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
@@ -422,9 +434,8 @@
         #endregion
 
         private System.Windows.Forms.Button Stock_exit;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_Order;
         private System.Windows.Forms.Button btn_StUpdate;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TextBox tb_StCate;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label9;
@@ -443,6 +454,8 @@
         private System.Windows.Forms.Button btn_LstOrd;
         private System.Windows.Forms.Button btn_NewStock;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
+        private System.Windows.Forms.Button btn_InStock;
+        internal System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 
