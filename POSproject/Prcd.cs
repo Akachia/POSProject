@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -128,5 +129,84 @@ namespace POSproject
                 }
             }
         }
+
+        static public Hashtable CheckInfo(string id)
+        {
+            Hashtable infoTable = new Hashtable();
+
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                //con.Open();
+                using (var cmd = new SqlCommand("SelectUserInfo", con))
+                {
+                    con.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@userid", id);
+                    var sdr = cmd.ExecuteReader();
+                    while (sdr.Read())
+                    {
+                        infoTable.Add("UserName", sdr["UserName"].ToString());
+                        infoTable.Add("UserPhone", sdr["UserPhone"].ToString());
+                        infoTable.Add("UserPic", sdr["UserPic"].ToString());
+                    }
+
+
+                    con.Close();
+
+                }
+
+            }
+
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                //con.Open();
+                using (var cmd = new SqlCommand("SelectPerferences", con))
+                {
+                    con.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    var sdr = cmd.ExecuteReader();
+                    while (sdr.Read())
+                    {
+                         infoTable.Add("StoreName",sdr["StoreName"].ToString());
+                        infoTable.Add("StoreAddr", sdr["Addr"].ToString());
+                        infoTable.Add("CallNumber", sdr["CallNumber"].ToString());
+                    }
+
+
+                    con.Close();
+                    
+                }
+
+            }
+
+            return infoTable;
+        }
+
+
+        static public void EndWork(string id, DateTime checkOut)
+        {
+
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                int workingtime = int.Parse(checkOut.Subtract(checkin).TotalHours.ToString().Split('.')[0]);
+                System.Windows.Forms.MessageBox.Show(workingtime+"  ");
+                //con.Open();
+                using (var cmd = new SqlCommand("EndWork", con))
+                {
+                    con.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@worker", id);
+                    cmd.Parameters.AddWithValue("@startTime", checkin);
+                    cmd.Parameters.AddWithValue("@endTime", checkOut);
+                    cmd.Parameters.AddWithValue("@workingtime", workingtime);
+                    int i = cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+        }
     }
+
+    
+
 }

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -30,12 +33,63 @@ namespace POSproject
         }
         private void UserAccount_Load(object sender, EventArgs e)
         {
+
+
+            #region 로드시 직원 정보 출력
             lbl_checkin.Text = lbl_checkin.Text + Prcd.checkin;
 
-           
 
-            
-             timer1.Start();
+            var infoTable = Prcd.CheckInfo(user);
+
+            IDictionaryEnumerator ide = infoTable.GetEnumerator();
+
+            while (ide.MoveNext())
+            {
+
+                if (ide.Key.ToString() == "UserName")
+                {
+                    lbl_name.Text = lbl_name.Text + ide.Value.ToString();
+                }
+                if (ide.Key.ToString() == "UserPhone")
+                {
+                    lbl_Phone.Text = lbl_Phone.Text + ide.Value.ToString();
+                }
+                if (ide.Key.ToString() == "UserPic")
+                {
+                    //pic_User.Image = Image.FromFile(ide.Value.ToString());
+                }
+                if (ide.Key.ToString() == "StoreName")
+                {
+                    lblStoreName.Text = lblStoreName.Text + ide.Value.ToString();
+
+                }
+                if (ide.Key.ToString() == "StoreAddr")
+                {
+                    lblStoreAddr.Text = lblStoreAddr.Text + ide.Value.ToString();
+
+                }
+                if (ide.Key.ToString() == "CallNumber")
+                {
+                    lblStoreCall.Text = lblStoreCall.Text + ide.Value.ToString();
+
+                }
+            }
+            #endregion
+
+            //using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            //{
+                
+            //    con.Open();
+
+            //    SqlDataAdapter adapter = new SqlDataAdapter("", con);
+
+            //    adapter.SelectCommand = new SqlCommand("", con);
+
+            //    DataSet ds = new DataSet();
+            //    adapter.Fill(ds);
+            //    this.dataGridView1.DataSource = ds.Tables[0];
+            //}
+            timer1.Start();
         }
 
         private void btn_mgr_Click(object sender, EventArgs e)
@@ -53,7 +107,27 @@ namespace POSproject
         private void timer1_Tick(object sender, EventArgs e)
         {
             time = DateTime.Now.Subtract(Prcd.checkin);
-            lbl_curWorkTime.Text = "근무 시간 : " + (time);
+            lbl_curWorkTime.Text = "근무 시간 : " + time.ToString().Split('.')[0];
+        }
+
+       
+
+        private void btn_CheckOut_Click(object sender, EventArgs e)
+        {
+            
+            Prcd.EndWork(user,DateTime.Now);
+            
+            this.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_InfoModify_Click(object sender, EventArgs e)
+        {
+            new Form_UserModify().Show();
         }
     }
 }
