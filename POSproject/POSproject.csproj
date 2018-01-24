@@ -153,5 +153,8 @@
     <Content Include="Resources\noImage.gif" />
     <None Include="Resources\noImage1.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BarcodeUsingFile\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

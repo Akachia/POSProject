@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Collections;
 
 namespace POSproject_KSM
 {
@@ -49,45 +50,62 @@ namespace POSproject_KSM
         /// <returns></returns>
         internal DataTable MakeOrderTable()
         {
-            data = ds.Tables[0].Copy();
-            int count = data.Rows.Count;
+            data = new DataTable();
+            int count = dataGridView1.Rows.Count;
 
-            //ds의 구조만 전해주고 데이터는 지운다.
+            DataColumn column;
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Int32");
+            column.ColumnName = "productNo";
+            data.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.String");
+            column.ColumnName = "productName";
+            data.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Int32");
+            column.ColumnName = "productPrice";
+            data.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Int32");
+            column.ColumnName = "productPrimePrice";
+            data.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Int32");
+            column.ColumnName = "productQuantity";
+            data.Columns.Add(column);
+
             DataGridViewCheckBoxCell dgvCell = null;
-            //dataGridView1.Invalidate();
-            //dgvCell.FalseValue = 0;
+
             for (int i = 0;i < count;i++ )
             {
                 dgvCell = (DataGridViewCheckBoxCell)dataGridView1.Rows[i].Cells[0];
                 //MessageBox.Show(dgvCell.Value.ToString());
-                if (dgvCell.Value == new DataGridViewCheckBoxCell().FalseValue)
+                if (dgvCell.Value != new DataGridViewCheckBoxCell().FalseValue)
                 {
-                    MessageBox.Show(" : " + (dgvCell.RowIndex +1).ToString());
-                    data.Rows[i].Delete();
+                    //MessageBox.Show(" : " + (dgvCell.RowIndex +1).ToString());
+                    DataRow myRow = data.NewRow();
+
+                    myRow["productNo"] = dataGridView1.Rows[i].Cells[1].Value;
+                    myRow["productName"] = dataGridView1.Rows[i].Cells[3].Value;
+                    myRow["productPrice"] = dataGridView1.Rows[i].Cells[4].Value;
+                    myRow["productPrimePrice"] = dataGridView1.Rows[i].Cells[5].Value;
+                    myRow["productQuantity"] = dataGridView1.Rows[i].Cells[6].Value;
+                    data.Rows.Add(myRow);
                 }
             }
-            //지워지면 열이 없어서져서 주의해야한다.
-            //그래서 같은열을 지우면 알아서 삭제된다.
-            
-            data.Columns.RemoveAt(6);
-            data.Columns.RemoveAt(6);
-            data.Columns.RemoveAt(6);
-            data.Columns.RemoveAt(6);
-            data.Columns.RemoveAt(6);
-            data.Columns.RemoveAt(1);
-            //지운데이터를 반영한다.
-            data.AcceptChanges();
-
-            MessageBox.Show(data.Rows.Count.ToString());
-            //MessageBox.Show(data.Rows.Count.ToString());
-            //MessageBox.Show(data.Columns.Count.ToString());
 
             return data;
         }
 
-        internal void SelectStock(string procesor, DataGridView dgv)
+        internal void SelectStock(string procesor)
         {
-            ds = GetDataSet();
+           DataSet ds = GetDataSet();
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 con.Open();
@@ -99,7 +117,7 @@ namespace POSproject_KSM
 
                     dataAdapter.Fill(ds);
 
-                    dgv.DataSource = ds.Tables[0];
+                    dataGridView1.DataSource = ds.Tables[0];
                 }
             }
         }
@@ -111,7 +129,7 @@ namespace POSproject_KSM
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
-            SelectStock("SelectStock",dataGridView1);
+            SelectStock("SelectStock");
             label1.Text = DateTime.Now.ToLongTimeString();
             lbl_User.Text = id;
             timer1.Start();
@@ -205,7 +223,7 @@ namespace POSproject_KSM
                         if (i == 1)
                         {
                             MessageBox.Show("저장");
-                            SelectStock("SelectStock",dataGridView1);
+                            SelectStock("SelectStock");
                             con.Close();
                             return;
                         }
@@ -297,7 +315,7 @@ namespace POSproject_KSM
 
         private void btn_InStock_Click(object sender, EventArgs e)
         {
-            new Form_InStock().ShowDialog(); 
+            new Form_InStock(id).ShowDialog(); 
         }
 
         private void btn_NewStock_Click(object sender, EventArgs e)

@@ -21,6 +21,7 @@ namespace POSproject_KSM
         DataTable ds2 = null;
         int orderTtl_Price = 0;
         int orderTtlSell_Price = 0;
+        int massageCount = 0;
         decimal barcodeNo = 0;
 
         public order_From()
@@ -67,7 +68,7 @@ namespace POSproject_KSM
                 item.Cells[5].Value = "0box";
                 item.Cells[6].Value = "0개";
             }
-
+            MessageBox.Show("Test");
             dataGridView1.Columns[1].HeaderText = "상품번호";
             dataGridView1.Columns[2].HeaderText = "이름";
             dataGridView1.Columns[3].HeaderText = "가격";
@@ -117,12 +118,12 @@ namespace POSproject_KSM
         {
             POS_Stock pOS_ = Owner as POS_Stock;
 
-            ds = pOS_.MakeOrderTable().Copy();
+            ds = pOS_.MakeOrderTable();
             if (ds2 != null)
             {
                 ds2.Clear();
             }
-            ds2 = pOS_.MakeOrderTable();
+            ds2 = ds.Copy();
             dataGridView1.DataSource = ds2;
 
             dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
@@ -167,8 +168,11 @@ namespace POSproject_KSM
             }
             catch (NullReferenceException)
             {
-                MessageBox.Show("발주 물건을 선택해 주세요!","알림", MessageBoxButtons.OK , MessageBoxIcon.Warning);
-                this.Close();
+                if (massageCount == 0)
+                {
+                    MessageBox.Show("발주 물건을 선택해 주세요!", "알림", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    massageCount++;
+                }
             }
         }
         // 타이머 함수
@@ -274,12 +278,7 @@ namespace POSproject_KSM
             }
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void btn_ExcelShow_Click(object sender, EventArgs e)
         {
 
         }

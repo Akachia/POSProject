@@ -16,15 +16,20 @@ namespace POSproject_KSM
     public partial class Form_InStock : Form
     {
         DataSet ds = null;
+        DataSet ds2 = null;
         public Form_InStock()
         {
             InitializeComponent();
         }
 
+        public  Form_InStock(string user) : this()
+        {
+            lbl_OrderCus.Text = user;
+        }
         private void btn_BarCh_Click(object sender, EventArgs e)
         {
-            
             ds = new DataSet();
+            ds2 = new DataSet();
             ds.Clear();
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
@@ -64,8 +69,22 @@ namespace POSproject_KSM
                     lv_OrderCh.Columns.Add("발주수량", 60, HorizontalAlignment.Center);
                     lv_OrderCh.EndUpdate();
                 }
+
+                using (SqlCommand cmd = new SqlCommand("SelectOrders2", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SOrderBarcode", decimal.Parse(tb_Barcode.Text));
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter();
+
+                    dataAdapter.SelectCommand = cmd;
+
+                    dataAdapter.Fill(ds2);
+                    lbl_TtlOrder.Text = ds2.Tables[0].Rows[0].ItemArray[0].ToString();
+                }
                 con.Close();
             }
+
+            
         }
 
         private void AddStockOrder()
@@ -77,28 +96,33 @@ namespace POSproject_KSM
                     con.Open();
                     foreach (DataRow item in ds.Tables[0].Rows)
                     {
+                        int i = 0;
                         using (SqlCommand cmd = new SqlCommand("UpdateStock2", con))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@UProductNo", int.Parse(item.ItemArray[2].ToString()));
                             cmd.Parameters.AddWithValue("@UProductQuantity", int.Parse(item.ItemArray[6].ToString()));
 
-                            int i = cmd.ExecuteNonQuery();
+                            i = cmd.ExecuteNonQuery();
+
+                            if (i==0)
+                            {
+                                MessageBox.Show("데이터 반영 실패");
+                                return;
+                            }
                         }
-                    }
-                    using (SqlConnection con2 = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
-                    {
-                        con2.Open();
-                        using (SqlCommand cmd = new SqlCommand("UpdateOrders2", con2))
+           
+                        using (SqlCommand cmd = new SqlCommand("UpdateOrders2", con))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@UOrderNo", int.Parse(ds.Tables[0].Rows[0].ItemArray[0].ToString()));
-                            int i = cmd.ExecuteNonQuery();
-                            if (i > 0)
+                            cmd.Parameters.AddWithValue("@UUserId ", lbl_OrderCus.Text);
+                            i += cmd.ExecuteNonQuery();
+                            if (i > 1)
                             {
                                 MessageBox.Show("데이터 반영");
                                 POS_Stock pOS_ = new POS_Stock();
-                                pOS_.SelectStock("SelectStock", pOS_.dataGridView1);
+                                pOS_.SelectStock("SelectStock");
                                 this.Close();
                             }
                             else
@@ -126,6 +150,11 @@ namespace POSproject_KSM
             {
                 btn_BarCh_Click(null,null);
             }
+        }
+
+        private void btn_Exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

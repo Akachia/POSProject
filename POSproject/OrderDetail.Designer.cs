@@ -110,7 +110,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 75);
             this.button1.TabIndex = 29;
-            this.button1.Text = "발주";
+            this.button1.Text = "재 발주";
             this.button1.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
@@ -175,7 +175,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "OrderDetail";
             this.Text = "OrderDetail";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.OrderDetail_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

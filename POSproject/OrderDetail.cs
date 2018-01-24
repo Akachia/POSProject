@@ -18,7 +18,6 @@ namespace POSproject_KSM
         public OrderDetail()
         {
             InitializeComponent();
-            
         }
 
         private void OrderDetail_Load(object sender, EventArgs e)
@@ -27,7 +26,9 @@ namespace POSproject_KSM
             //dataGridView2.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             OrderedStock();
         }
-
+        /// <summary>
+        /// 전체 주문을 보여준다.
+        /// </summary>
         private void OrderedStock()
         {
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
@@ -49,7 +50,10 @@ namespace POSproject_KSM
                 con.Close();
             }
         }
-
+        /// <summary>
+        /// 해당 발주의 자세한 내용을 나타낸다.
+        /// </summary>
+        /// <param name="orderNO"></param>
         private void DetailOrderedStock(int orderNO)
         {
             ds2 = new DataSet();
@@ -70,28 +74,25 @@ namespace POSproject_KSM
             }
         }
 
-        private void dataGridView1_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void btn_Exit_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
-        private void dataGridView1_Click_1(object sender, EventArgs e)
-        {
-            int orderNo = int.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
-            DetailOrderedStock(orderNo);
-        }
-
+        /// <summary>
+        /// 해당 셀을 더블클릭하면 세부 내역으로 들어가는 이벤트 함수이다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int orderNo = int.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
             DetailOrderedStock(orderNo);
         }
-
+        /// <summary>
+        /// 다시 전체 발주목록으로 돌아가는 버튼 클릭이벤트함수이다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_orderb_Click(object sender, EventArgs e)
         {
             OrderedStock();

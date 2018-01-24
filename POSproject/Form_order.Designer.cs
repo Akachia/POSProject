@@ -41,6 +41,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.lbl_TtlsellPrice = new System.Windows.Forms.Label();
             this.btn_allCk = new System.Windows.Forms.Button();
+            this.btn_ExcelShow = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -60,7 +61,6 @@
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(800, 385);
             this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // Column1
             // 
@@ -80,7 +80,6 @@
             this.groupBox1.Size = new System.Drawing.Size(800, 63);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // lbl_User
             // 
@@ -174,7 +173,7 @@
             // 
             // btn_allCk
             // 
-            this.btn_allCk.Location = new System.Drawing.Point(565, 521);
+            this.btn_allCk.Location = new System.Drawing.Point(487, 521);
             this.btn_allCk.Name = "btn_allCk";
             this.btn_allCk.Size = new System.Drawing.Size(75, 75);
             this.btn_allCk.TabIndex = 16;
@@ -182,11 +181,22 @@
             this.btn_allCk.UseVisualStyleBackColor = true;
             this.btn_allCk.Click += new System.EventHandler(this.btn_allCk_Click);
             // 
+            // btn_ExcelShow
+            // 
+            this.btn_ExcelShow.Location = new System.Drawing.Point(565, 521);
+            this.btn_ExcelShow.Name = "btn_ExcelShow";
+            this.btn_ExcelShow.Size = new System.Drawing.Size(75, 75);
+            this.btn_ExcelShow.TabIndex = 17;
+            this.btn_ExcelShow.Text = "엑셀파일 미리보기";
+            this.btn_ExcelShow.UseVisualStyleBackColor = true;
+            this.btn_ExcelShow.Click += new System.EventHandler(this.btn_ExcelShow_Click);
+            // 
             // order_From
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.btn_ExcelShow);
             this.Controls.Add(this.btn_allCk);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.lbl_TtlsellPrice);
@@ -199,7 +209,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "order_From";
             this.Text = "Order";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.order_From_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -224,5 +233,6 @@
         private System.Windows.Forms.Button btn_allCk;
         internal System.Windows.Forms.Label lbl_User;
         internal System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btn_ExcelShow;
     }
 }

@@ -38,7 +38,7 @@
             this.lbl_TtlOrder = new System.Windows.Forms.Label();
             this.lbl_OrderCus = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tb_InvisibleBar = new System.Windows.Forms.TextBox();
+            this.btn_Exit = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -74,7 +74,7 @@
             // 
             // btn_check
             // 
-            this.btn_check.Location = new System.Drawing.Point(258, 456);
+            this.btn_check.Location = new System.Drawing.Point(207, 456);
             this.btn_check.Name = "btn_check";
             this.btn_check.Size = new System.Drawing.Size(75, 35);
             this.btn_check.TabIndex = 0;
@@ -115,9 +115,8 @@
             this.lbl_TtlOrder.AutoSize = true;
             this.lbl_TtlOrder.Location = new System.Drawing.Point(84, 63);
             this.lbl_TtlOrder.Name = "lbl_TtlOrder";
-            this.lbl_TtlOrder.Size = new System.Drawing.Size(38, 12);
+            this.lbl_TtlOrder.Size = new System.Drawing.Size(0, 12);
             this.lbl_TtlOrder.TabIndex = 6;
-            this.lbl_TtlOrder.Text = "label3";
             // 
             // lbl_OrderCus
             // 
@@ -136,21 +135,22 @@
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             // 
-            // tb_InvisibleBar
+            // btn_Exit
             // 
-            this.tb_InvisibleBar.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.tb_InvisibleBar.Location = new System.Drawing.Point(296, 12);
-            this.tb_InvisibleBar.Name = "tb_InvisibleBar";
-            this.tb_InvisibleBar.Size = new System.Drawing.Size(185, 22);
-            this.tb_InvisibleBar.TabIndex = 11;
-            this.tb_InvisibleBar.Visible = false;
+            this.btn_Exit.Location = new System.Drawing.Point(314, 456);
+            this.btn_Exit.Name = "btn_Exit";
+            this.btn_Exit.Size = new System.Drawing.Size(75, 35);
+            this.btn_Exit.TabIndex = 12;
+            this.btn_Exit.Text = "취소";
+            this.btn_Exit.UseVisualStyleBackColor = true;
+            this.btn_Exit.Click += new System.EventHandler(this.btn_Exit_Click);
             // 
             // Form_InStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 500);
-            this.Controls.Add(this.tb_InvisibleBar);
+            this.Controls.Add(this.btn_Exit);
             this.Controls.Add(this.lbl_OrderCus);
             this.Controls.Add(label4);
             this.Controls.Add(this.lbl_TtlOrder);
@@ -179,6 +179,6 @@
         private System.Windows.Forms.Label lbl_TtlOrder;
         private System.Windows.Forms.Label lbl_OrderCus;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox tb_InvisibleBar;
+        private System.Windows.Forms.Button btn_Exit;
     }
 }
