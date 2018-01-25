@@ -15,9 +15,9 @@ namespace POSproject
         public static DateTime checkin;
         static public bool LogIn(string id, string pwd)
         {
-            if(CheckID(id))
+            if (CheckID(id))
             {
-                if(CheckPwd(id,pwd))
+                if (CheckPwd(id, pwd))
                 {
                     return true;
                 }
@@ -32,14 +32,14 @@ namespace POSproject
                 System.Windows.Forms.MessageBox.Show("ID를 확인해주세요!");
                 return false;
             }
-            
+
         }
 
 
         static private bool CheckID(string id)
         {
-            
-           
+
+
             using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 //con.Open();
@@ -74,7 +74,7 @@ namespace POSproject
             using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 //con.Open();
-                string admin=null;
+                string admin = null;
                 using (var cmd = new SqlCommand("CheckAdmin", con))
                 {
                     con.Open();
@@ -82,16 +82,16 @@ namespace POSproject
                     cmd.Parameters.AddWithValue("@userID", id);
 
                     var sdr = cmd.ExecuteReader();
-                    while(sdr.Read())
+                    while (sdr.Read())
                     {
                         if (!(sdr["Authority"].ToString() == null))
                         {
-                            admin= sdr["Authority"].ToString();
+                            admin = sdr["Authority"].ToString();
                             //System.Windows.Forms.MessageBox.Show("Test");
                         }
-                        
+
                     }
-                    
+
                 }
                 return admin;
             }
@@ -100,7 +100,7 @@ namespace POSproject
 
         static private bool CheckPwd(string id, string pwd)
         {
-            
+
             using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 //con.Open();
@@ -114,16 +114,16 @@ namespace POSproject
 
                     var sdr = cmd.ExecuteScalar();
 
-                    if (sdr.ToString()=="1")
+                    if (sdr.ToString() == "1")
                     {
 
 
-                       
+
                         return true;
                     }
                     else
                     {
-                       
+
                         return false;
                     }
                 }
@@ -148,6 +148,7 @@ namespace POSproject
                         infoTable.Add("UserName", sdr["UserName"].ToString());
                         infoTable.Add("UserPhone", sdr["UserPhone"].ToString());
                         infoTable.Add("UserPic", sdr["UserPic"].ToString());
+                        System.Windows.Forms.MessageBox.Show(sdr["UserPic"].ToString());
                     }
 
 
@@ -168,14 +169,14 @@ namespace POSproject
                     var sdr = cmd.ExecuteReader();
                     while (sdr.Read())
                     {
-                         infoTable.Add("StoreName",sdr["StoreName"].ToString());
+                        infoTable.Add("StoreName", sdr["StoreName"].ToString());
                         infoTable.Add("StoreAddr", sdr["Addr"].ToString());
                         infoTable.Add("CallNumber", sdr["CallNumber"].ToString());
                     }
 
 
                     con.Close();
-                    
+
                 }
 
             }
@@ -190,7 +191,7 @@ namespace POSproject
             using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 int workingtime = int.Parse(checkOut.Subtract(checkin).TotalHours.ToString().Split('.')[0]);
-                System.Windows.Forms.MessageBox.Show(workingtime+"  ");
+
                 //con.Open();
                 using (var cmd = new SqlCommand("EndWork", con))
                 {
@@ -205,8 +206,127 @@ namespace POSproject
                 }
             }
         }
+
+        static public DataSet TodayWorker()
+        {
+            DataSet ds = new DataSet();
+
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+
+                con.Open();
+                using (var cmd = new SqlCommand("SelectWorker", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@searchDay", DateTime.Now.ToShortDateString());
+                    cmd.Parameters.AddWithValue("@endDay", DateTime.Now.AddDays(1).ToShortDateString());
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+
+
+                    adapter.Fill(ds);
+
+                }
+            }
+            return ds;
+
+        }
+
+        static public Hashtable CheckUser(string id)
+        {
+            Hashtable infoTable = new Hashtable();
+
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                //con.Open();
+                using (var cmd = new SqlCommand("SelectUserInfo", con))
+                {
+                    con.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@userid", id);
+                    var sdr = cmd.ExecuteReader();
+                    while (sdr.Read())
+                    {
+                        infoTable.Add("UserName", sdr["UserName"].ToString());
+
+                        infoTable.Add("UserPhone", sdr["UserPhone"].ToString());
+                        infoTable.Add("UserPic", sdr["UserPic"]);
+                    }
+
+
+                    con.Close();
+
+                }
+
+            }
+            return infoTable;
+        }
+
+
+        static public bool UserModify(string id,string pwd,string phone,byte[] img)
+        {
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                //con.Open();
+                if (pwd != "")
+                {
+                    using (var cmd = new SqlCommand("UserUpdate", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+
+                        cmd.Parameters.AddWithValue("@userId", id);
+                        cmd.Parameters.AddWithValue("@userPwd", pwd);
+                        cmd.Parameters.AddWithValue("@userPhone", phone);
+                        cmd.Parameters.AddWithValue("@userPic", img);
+
+                        //
+                        con.Open();
+
+                        int i = cmd.ExecuteNonQuery();
+                        //select문을 제외한 sql쿼리문은 ExecuteNonQuery()를 이용하여 실행
+                        if (i == 1)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+
+
+                    }
+                }
+                else
+                {
+                    using (var cmd = new SqlCommand("UserUpdateNoPwd", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+
+                        cmd.Parameters.AddWithValue("@userId", id);
+                        cmd.Parameters.AddWithValue("@userPhone", phone);
+                        cmd.Parameters.AddWithValue("@userPic", img);
+
+                        //
+                        con.Open();
+
+                        int i = cmd.ExecuteNonQuery();
+                        //select문을 제외한 sql쿼리문은 ExecuteNonQuery()를 이용하여 실행
+                        if (i == 1)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+
+
+                    }
+                }
+            }
+        }
+
     }
-
-    
-
 }

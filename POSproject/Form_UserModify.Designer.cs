@@ -28,22 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txt_chkPwd = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.pnl_CheckPwd = new System.Windows.Forms.Panel();
+            this.btn_Chk = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
+            this.pnl_Modify = new System.Windows.Forms.Panel();
+            this.lbl_Pwd = new System.Windows.Forms.Label();
+            this.lbl_Id = new System.Windows.Forms.Label();
+            this.lbl_Phone = new System.Windows.Forms.Label();
+            this.lbl_Name = new System.Windows.Forms.Label();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnConfirm = new System.Windows.Forms.Button();
+            this.btnLoad = new System.Windows.Forms.Button();
+            this.txt_Pwd = new System.Windows.Forms.TextBox();
+            this.txt_Phone = new System.Windows.Forms.TextBox();
+            this.txt_Id = new System.Windows.Forms.TextBox();
+            this.txt_Name = new System.Windows.Forms.TextBox();
+            this.openPic = new System.Windows.Forms.OpenFileDialog();
+            this.picUser = new System.Windows.Forms.PictureBox();
+            this.pnl_CheckPwd.SuspendLayout();
+            this.pnl_Modify.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picUser)).BeginInit();
             this.SuspendLayout();
             // 
-            // textBox1
+            // txt_chkPwd
             // 
-            this.textBox1.Location = new System.Drawing.Point(124, 187);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(127, 21);
-            this.textBox1.TabIndex = 0;
+            this.txt_chkPwd.Location = new System.Drawing.Point(124, 187);
+            this.txt_chkPwd.Name = "txt_chkPwd";
+            this.txt_chkPwd.Size = new System.Drawing.Size(127, 21);
+            this.txt_chkPwd.TabIndex = 0;
             // 
             // label1
             // 
@@ -55,31 +69,26 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "비밀번호를 한번 더 입력해주세요!";
             // 
-            // panel1
+            // pnl_CheckPwd
             // 
-            this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Location = new System.Drawing.Point(-1, -1);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(398, 398);
-            this.panel1.TabIndex = 2;
+            this.pnl_CheckPwd.BackColor = System.Drawing.Color.White;
+            this.pnl_CheckPwd.Controls.Add(this.btn_Chk);
+            this.pnl_CheckPwd.Controls.Add(this.label2);
+            this.pnl_CheckPwd.Controls.Add(this.label1);
+            this.pnl_CheckPwd.Controls.Add(this.txt_chkPwd);
+            this.pnl_CheckPwd.Location = new System.Drawing.Point(2, 3);
+            this.pnl_CheckPwd.Name = "pnl_CheckPwd";
+            this.pnl_CheckPwd.Size = new System.Drawing.Size(386, 389);
+            this.pnl_CheckPwd.TabIndex = 2;
             // 
-            // textBox2
+            // btn_Chk
             // 
-            this.textBox2.Location = new System.Drawing.Point(96, 24);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 21);
-            this.textBox2.TabIndex = 3;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(96, 65);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 21);
-            this.textBox3.TabIndex = 4;
+            this.btn_Chk.Location = new System.Drawing.Point(257, 185);
+            this.btn_Chk.Name = "btn_Chk";
+            this.btn_Chk.Size = new System.Drawing.Size(35, 35);
+            this.btn_Chk.TabIndex = 3;
+            this.btn_Chk.UseVisualStyleBackColor = true;
+            this.btn_Chk.Click += new System.EventHandler(this.btn_Chk_Click);
             // 
             // label2
             // 
@@ -91,41 +100,175 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "비밀번호 ▶";
             // 
-            // button1
+            // pnl_Modify
             // 
-            this.button1.Location = new System.Drawing.Point(257, 185);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(35, 35);
-            this.button1.TabIndex = 3;
-            this.button1.UseVisualStyleBackColor = true;
+            this.pnl_Modify.Controls.Add(this.lbl_Pwd);
+            this.pnl_Modify.Controls.Add(this.lbl_Id);
+            this.pnl_Modify.Controls.Add(this.lbl_Phone);
+            this.pnl_Modify.Controls.Add(this.lbl_Name);
+            this.pnl_Modify.Controls.Add(this.btnCancel);
+            this.pnl_Modify.Controls.Add(this.btnConfirm);
+            this.pnl_Modify.Controls.Add(this.btnLoad);
+            this.pnl_Modify.Controls.Add(this.picUser);
+            this.pnl_Modify.Controls.Add(this.txt_Pwd);
+            this.pnl_Modify.Controls.Add(this.txt_Phone);
+            this.pnl_Modify.Controls.Add(this.txt_Id);
+            this.pnl_Modify.Controls.Add(this.txt_Name);
+            this.pnl_Modify.Location = new System.Drawing.Point(12, 12);
+            this.pnl_Modify.Name = "pnl_Modify";
+            this.pnl_Modify.Size = new System.Drawing.Size(397, 397);
+            this.pnl_Modify.TabIndex = 3;
+            // 
+            // lbl_Pwd
+            // 
+            this.lbl_Pwd.AutoSize = true;
+            this.lbl_Pwd.Location = new System.Drawing.Point(163, 241);
+            this.lbl_Pwd.Name = "lbl_Pwd";
+            this.lbl_Pwd.Size = new System.Drawing.Size(53, 12);
+            this.lbl_Pwd.TabIndex = 27;
+            this.lbl_Pwd.Text = "비밀번호";
+            // 
+            // lbl_Id
+            // 
+            this.lbl_Id.AutoSize = true;
+            this.lbl_Id.Location = new System.Drawing.Point(14, 198);
+            this.lbl_Id.Name = "lbl_Id";
+            this.lbl_Id.Size = new System.Drawing.Size(29, 12);
+            this.lbl_Id.TabIndex = 26;
+            this.lbl_Id.Text = "이름";
+            // 
+            // lbl_Phone
+            // 
+            this.lbl_Phone.AutoSize = true;
+            this.lbl_Phone.Location = new System.Drawing.Point(164, 198);
+            this.lbl_Phone.Name = "lbl_Phone";
+            this.lbl_Phone.Size = new System.Drawing.Size(53, 12);
+            this.lbl_Phone.TabIndex = 25;
+            this.lbl_Phone.Text = "전화번호";
+            // 
+            // lbl_Name
+            // 
+            this.lbl_Name.AutoSize = true;
+            this.lbl_Name.Location = new System.Drawing.Point(20, 241);
+            this.lbl_Name.Name = "lbl_Name";
+            this.lbl_Name.Size = new System.Drawing.Size(16, 12);
+            this.lbl_Name.TabIndex = 24;
+            this.lbl_Name.Text = "ID";
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(275, 349);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 23;
+            this.btnCancel.Text = "취소";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnConfirm
+            // 
+            this.btnConfirm.Location = new System.Drawing.Point(194, 349);
+            this.btnConfirm.Name = "btnConfirm";
+            this.btnConfirm.Size = new System.Drawing.Size(75, 23);
+            this.btnConfirm.TabIndex = 22;
+            this.btnConfirm.Text = "수정";
+            this.btnConfirm.UseVisualStyleBackColor = true;
+            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.Location = new System.Drawing.Point(126, 141);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(75, 23);
+            this.btnLoad.TabIndex = 21;
+            this.btnLoad.Text = "불러오기";
+            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            // 
+            // txt_Pwd
+            // 
+            this.txt_Pwd.Location = new System.Drawing.Point(224, 238);
+            this.txt_Pwd.Name = "txt_Pwd";
+            this.txt_Pwd.Size = new System.Drawing.Size(100, 21);
+            this.txt_Pwd.TabIndex = 19;
+            // 
+            // txt_Phone
+            // 
+            this.txt_Phone.Location = new System.Drawing.Point(224, 195);
+            this.txt_Phone.Name = "txt_Phone";
+            this.txt_Phone.Size = new System.Drawing.Size(100, 21);
+            this.txt_Phone.TabIndex = 18;
+            // 
+            // txt_Id
+            // 
+            this.txt_Id.Location = new System.Drawing.Point(57, 238);
+            this.txt_Id.Name = "txt_Id";
+            this.txt_Id.ReadOnly = true;
+            this.txt_Id.Size = new System.Drawing.Size(100, 21);
+            this.txt_Id.TabIndex = 17;
+            // 
+            // txt_Name
+            // 
+            this.txt_Name.Location = new System.Drawing.Point(58, 195);
+            this.txt_Name.Name = "txt_Name";
+            this.txt_Name.ReadOnly = true;
+            this.txt_Name.Size = new System.Drawing.Size(100, 21);
+            this.txt_Name.TabIndex = 16;
+            // 
+            // openPic
+            // 
+            this.openPic.FileName = "openFileDialog1";
+            // 
+            // picUser
+            // 
+            this.picUser.Image = global::POSproject.Properties.Resources.nouserpic;
+            this.picUser.Location = new System.Drawing.Point(101, 9);
+            this.picUser.Name = "picUser";
+            this.picUser.Size = new System.Drawing.Size(127, 126);
+            this.picUser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picUser.TabIndex = 20;
+            this.picUser.TabStop = false;
             // 
             // Form_UserModify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 400);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnl_Modify);
+            this.Controls.Add(this.pnl_CheckPwd);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form_UserModify";
             this.Text = "Form_UserModify";
             this.Load += new System.EventHandler(this.Form_UserModify_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.pnl_CheckPwd.ResumeLayout(false);
+            this.pnl_CheckPwd.PerformLayout();
+            this.pnl_Modify.ResumeLayout(false);
+            this.pnl_Modify.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picUser)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txt_chkPwd;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Panel pnl_CheckPwd;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_Chk;
+        private System.Windows.Forms.OpenFileDialog openPic;
+        private System.Windows.Forms.Panel pnl_Modify;
+        private System.Windows.Forms.Label lbl_Pwd;
+        private System.Windows.Forms.Label lbl_Id;
+        private System.Windows.Forms.Label lbl_Phone;
+        private System.Windows.Forms.Label lbl_Name;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnConfirm;
+        private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.PictureBox picUser;
+        private System.Windows.Forms.TextBox txt_Pwd;
+        private System.Windows.Forms.TextBox txt_Phone;
+        private System.Windows.Forms.TextBox txt_Id;
+        private System.Windows.Forms.TextBox txt_Name;
     }
 }

@@ -242,7 +242,7 @@ namespace POSproject_KSM
             tb_TtlSell.Text = dataGridView1.CurrentRow.Cells[10].Value.ToString();
             if (dataGridView1.CurrentRow.Cells[11].Value == DBNull.Value)
             {
-                pictureBox1.Image = POSproject.Properties.Resources.noImage;
+                //pictureBox1.Image = POSproject.Properties.Resources.noImage;
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             }
             else

@@ -12,8 +12,14 @@ namespace POSproject
 {
     public partial class Form_UserManagement : Form
     {
+        string user;
         public Form_UserManagement()
         {
+            InitializeComponent();
+        }
+        public Form_UserManagement(string user)
+        {
+            this.user = user;
             InitializeComponent();
         }
     }

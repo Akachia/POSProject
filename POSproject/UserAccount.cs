@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,7 +57,14 @@ namespace POSproject
                 }
                 if (ide.Key.ToString() == "UserPic")
                 {
-                    //pic_User.Image = Image.FromFile(ide.Value.ToString());
+                    byte[] newimg = Encoding.UTF8.GetBytes(ide.Value.ToString());
+
+                    
+                    
+                    if (ide.Value.ToString() != "")
+                    {
+                        pic_User.Image = new Bitmap(new MemoryStream(newimg));
+                    }
                 }
                 if (ide.Key.ToString() == "StoreName")
                 {
@@ -76,25 +84,23 @@ namespace POSproject
             }
             #endregion
 
-            //using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
-            //{
-                
-            //    con.Open();
 
-            //    SqlDataAdapter adapter = new SqlDataAdapter("", con);
 
-            //    adapter.SelectCommand = new SqlCommand("", con);
+            DataSet ds = Prcd.TodayWorker();
+            DataTableReader ie = ds.Tables[0].CreateDataReader();
 
-            //    DataSet ds = new DataSet();
-            //    adapter.Fill(ds);
-            //    this.dataGridView1.DataSource = ds.Tables[0];
-            //}
+            while(ie.Read())
+            {
+                textBox1.Text += ie[0]+" - 출근 : "+ie[1].ToString()+"\r\n";
+            }
+           
+            
             timer1.Start();
         }
 
         private void btn_mgr_Click(object sender, EventArgs e)
         {
-            new Form_UserManagement().Show();
+            new Form_UserManagement(user).Show();
 
 
         }
@@ -127,7 +133,7 @@ namespace POSproject
 
         private void btn_InfoModify_Click(object sender, EventArgs e)
         {
-            new Form_UserModify().Show();
+            new Form_UserModify(user).Show();
         }
     }
 }

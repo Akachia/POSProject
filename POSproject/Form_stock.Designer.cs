@@ -335,7 +335,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox1.ErrorImage = global::POSproject.Properties.Resources.noImage;
+            //this.pictureBox1.ErrorImage = global::POSproject.Properties.Resources.noImage;
             this.pictureBox1.Location = new System.Drawing.Point(461, 66);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(133, 102);

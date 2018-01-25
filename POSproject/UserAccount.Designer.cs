@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lbl_curWorkTime = new System.Windows.Forms.Label();
             this.lblStoreAddr = new System.Windows.Forms.Label();
@@ -40,13 +39,13 @@
             this.lbl_checkin = new System.Windows.Forms.Label();
             this.lbl_Phone = new System.Windows.Forms.Label();
             this.lbl_name = new System.Windows.Forms.Label();
-            this.pic_User = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btn_mgr = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btn_CheckOut = new System.Windows.Forms.Button();
             this.btn_InfoModify = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.pic_User = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_User)).BeginInit();
             this.SuspendLayout();
@@ -69,15 +68,6 @@
             this.label1.Size = new System.Drawing.Size(85, 12);
             this.label1.TabIndex = 1;
             this.label1.Text = "금일 출근 현황";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(536, 311);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(240, 266);
-            this.dataGridView1.TabIndex = 0;
             // 
             // panel1
             // 
@@ -165,14 +155,6 @@
             this.lbl_name.TabIndex = 1;
             this.lbl_name.Text = "이름 : ";
             // 
-            // pic_User
-            // 
-            this.pic_User.Location = new System.Drawing.Point(277, 4);
-            this.pic_User.Name = "pic_User";
-            this.pic_User.Size = new System.Drawing.Size(170, 202);
-            this.pic_User.TabIndex = 0;
-            this.pic_User.TabStop = false;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -217,12 +199,31 @@
             this.btn_InfoModify.UseVisualStyleBackColor = true;
             this.btn_InfoModify.Click += new System.EventHandler(this.btn_InfoModify_Click);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(536, 319);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(239, 249);
+            this.textBox1.TabIndex = 8;
+            // 
+            // pic_User
+            // 
+            this.pic_User.Image = global::POSproject.Properties.Resources.nouserpic;
+            this.pic_User.Location = new System.Drawing.Point(277, 4);
+            this.pic_User.Name = "pic_User";
+            this.pic_User.Size = new System.Drawing.Size(170, 202);
+            this.pic_User.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pic_User.TabIndex = 0;
+            this.pic_User.TabStop = false;
+            // 
             // UserAccount
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.btn_InfoModify);
             this.Controls.Add(this.btn_CheckOut);
             this.Controls.Add(this.btn_mgr);
@@ -230,12 +231,10 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.dataGridView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "UserAccount";
             this.Text = "UserAccount";
             this.Load += new System.EventHandler(this.UserAccount_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_User)).EndInit();
@@ -248,7 +247,6 @@
 
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btn_mgr;
@@ -263,5 +261,6 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btn_CheckOut;
         private System.Windows.Forms.Button btn_InfoModify;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

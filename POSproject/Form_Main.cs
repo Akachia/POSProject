@@ -44,7 +44,7 @@ namespace formSales
             dataGridView1.AllowUserToAddRows = false;
 
             f1 = (Form_LogIn)Owner;
-            f1.Hide();
+            f1.Visible=false;
 
             timer1.Start();
         }
