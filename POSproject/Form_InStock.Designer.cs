@@ -74,7 +74,7 @@
             // 
             // btn_check
             // 
-            this.btn_check.Location = new System.Drawing.Point(207, 456);
+            this.btn_check.Location = new System.Drawing.Point(207, 458);
             this.btn_check.Name = "btn_check";
             this.btn_check.Size = new System.Drawing.Size(75, 35);
             this.btn_check.TabIndex = 0;
@@ -137,7 +137,7 @@
             // 
             // btn_Exit
             // 
-            this.btn_Exit.Location = new System.Drawing.Point(314, 456);
+            this.btn_Exit.Location = new System.Drawing.Point(314, 458);
             this.btn_Exit.Name = "btn_Exit";
             this.btn_Exit.Size = new System.Drawing.Size(75, 35);
             this.btn_Exit.TabIndex = 12;

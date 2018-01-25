@@ -15,6 +15,7 @@ namespace POSproject_KSM
     {
         DataSet ds = null;
         DataSet ds2 = null;
+        DataGridViewTextBoxColumn textBoxCell = null;
         public OrderDetail()
         {
             InitializeComponent();
@@ -85,8 +86,21 @@ namespace POSproject_KSM
         /// <param name="e"></param>
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            int orderNo = int.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
-            DetailOrderedStock(orderNo);
+            if (dataGridView1.Columns[7].IsDataBound)
+            {
+                int orderNo = int.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
+                DetailOrderedStock(orderNo);
+                textBoxCell = new DataGridViewTextBoxColumn();
+                textBoxCell.Width = 75;
+                textBoxCell.HeaderText = "발주 금액";
+                dataGridView1.Columns.Insert(7, textBoxCell);
+
+                foreach (DataGridViewRow item in dataGridView1.Rows)
+                {
+                    int tt = (int)item.Cells[5].Value * (int)item.Cells[6].Value;
+                    item.Cells[7].Value = tt.ToString() + "원";
+                }
+            }
         }
         /// <summary>
         /// 다시 전체 발주목록으로 돌아가는 버튼 클릭이벤트함수이다.
@@ -95,7 +109,17 @@ namespace POSproject_KSM
         /// <param name="e"></param>
         private void btn_orderb_Click(object sender, EventArgs e)
         {
+            textBoxCell.Dispose();
             OrderedStock();
+        }
+
+        private void btn_ReOrder_Click(object sender, EventArgs e)
+        {
+            dataGridView1_CellDoubleClick(null, null);
+            order_From order_ = new order_From(ds2);
+            order_.Owner = this;
+            order_.Show();
+            //this.Close();
         }
     }
 }

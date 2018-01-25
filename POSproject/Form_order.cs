@@ -33,6 +33,15 @@ namespace POSproject_KSM
         {
             lbl_User.Text = ds;
         }
+
+        public order_From(DataSet ds) : this()
+        {
+            this.ds = ds.Tables[0];
+            ds2 = this.ds.Copy();
+            ds2.Columns.RemoveAt(0);
+            ds2.Columns.RemoveAt(0);
+            
+        }
         /// <summary>
         /// Dvg에 콤보박스를 만드는 함수
         /// </summary>
@@ -116,14 +125,45 @@ namespace POSproject_KSM
 
         private void order_From_Load(object sender, EventArgs e)
         {
-            POS_Stock pOS_ = Owner as POS_Stock;
-
-            ds = pOS_.MakeOrderTable();
-            if (ds2 != null)
+            if (ds2!=null)
             {
-                ds2.Clear();
+                Load_FromDOrder();
             }
-            ds2 = ds.Copy();
+            else
+            {
+                Load_FromStock();
+            }
+        }
+        /// <summary>
+        /// OrderDetail form에서 넘어올때 실행되는 함수
+        /// </summary>
+        private void Load_FromDOrder()
+        {
+            dataGridView1.DataSource = ds2;
+
+            dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
+            label1.Text = DateTime.Now.ToLongDateString();
+            Timer timer = new Timer();
+            timer.Tick += Timer1_Tick1;
+            timer.Start();
+            MakeComboCell();
+        }
+        /// <summary>
+        /// stock폼에서 넘어올때 실행되는 함수
+        /// </summary>
+        private void Load_FromStock()
+        {
+            POS_Stock pOS_ = Owner as POS_Stock;
+            if (ds == null)
+            {
+                ds = pOS_.MakeOrderTable();
+                if (ds2 != null)
+                {
+                    ds2.Clear();
+                }
+                ds2 = ds.Copy();
+            }
+
             dataGridView1.DataSource = ds2;
 
             dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
@@ -133,6 +173,7 @@ namespace POSproject_KSM
             timer.Start();
             MakeComboCell();
             pOS_.CheckBoxinit();
+
             //수량을 콤보박스로 표현하기 
             //dataGridView1.Columns["Column2"].DisplayIndex = 4;
         }

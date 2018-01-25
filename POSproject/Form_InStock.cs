@@ -83,8 +83,6 @@ namespace POSproject_KSM
                 }
                 con.Close();
             }
-
-            
         }
 
         private void AddStockOrder()
@@ -111,7 +109,7 @@ namespace POSproject_KSM
                                 return;
                             }
                         }
-           
+                        
                         using (SqlCommand cmd = new SqlCommand("UpdateOrders2", con))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;

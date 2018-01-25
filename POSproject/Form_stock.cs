@@ -102,7 +102,10 @@ namespace POSproject_KSM
 
             return data;
         }
-
+        /// <summary>
+        /// 현재
+        /// </summary>
+        /// <param name="procesor"></param>
         internal void SelectStock(string procesor)
         {
            DataSet ds = GetDataSet();
@@ -211,8 +214,7 @@ namespace POSproject_KSM
                         cmd.Parameters.AddWithValue("@UProductPrimeCost", dataGridView1.CurrentRow.Cells[5].Value);
                         cmd.Parameters.AddWithValue("@UProductQuantity", int.Parse(tb_StQunt.Text));
                         cmd.Parameters.AddWithValue("@UProductCategory", dataGridView1.CurrentRow.Cells[7].Value);
-                        cmd.Parameters.AddWithValue("@UShelf_life", dataGridView1.CurrentRow.Cells[9].Value);
-                        cmd.Parameters.AddWithValue("@USales_volume", dataGridView1.CurrentRow.Cells[10].Value);
+                        cmd.Parameters.AddWithValue("@USales_volume", dataGridView1.CurrentRow.Cells[9].Value);
                         cmd.Parameters.AddWithValue("@UDisCount", dataGridView1.CurrentRow.Cells[8].Value);
                         ImageConverter converter = new ImageConverter();
                         byte[] bImg = (byte[])converter.ConvertTo(pictureBox1.Image, typeof(byte[]));
@@ -256,16 +258,15 @@ namespace POSproject_KSM
             tb_TtlPrice.Text = (int.Parse(dataGridView1.CurrentRow.Cells[4].Value.ToString()) 
                 * int.Parse(dataGridView1.CurrentRow.Cells[6].Value.ToString())).ToString() + "원"; 
             tb_StBar.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
-            tb_ShelfLIfe.Text = dataGridView1.CurrentRow.Cells[9].Value.ToString();
-            tb_TtlSell.Text = dataGridView1.CurrentRow.Cells[10].Value.ToString();
-            if (dataGridView1.CurrentRow.Cells[11].Value == DBNull.Value)
+            tb_TtlSell.Text = dataGridView1.CurrentRow.Cells[9].Value.ToString();
+            if (dataGridView1.CurrentRow.Cells[10].Value == DBNull.Value)
             {
                 pictureBox1.Image = POSproject.Properties.Resources.noImage;
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             }
             else
             {
-                Byte[] bImg = (byte[])dataGridView1.CurrentRow.Cells[11].Value;
+                Byte[] bImg = (byte[])dataGridView1.CurrentRow.Cells[10].Value;
                 pictureBox1.Image = new Bitmap(new MemoryStream(bImg));
             }
         }
@@ -274,7 +275,7 @@ namespace POSproject_KSM
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
+        private void btn_OrderClick(object sender, EventArgs e)
         {
             order_From order_ = new order_From(id);
             order_.Owner = this;
@@ -320,7 +321,12 @@ namespace POSproject_KSM
 
         private void btn_NewStock_Click(object sender, EventArgs e)
         {
+            new Form_NewStock(id, 0).ShowDialog();
+        }
 
+        private void btn_DIsposal_Click(object sender, EventArgs e)
+        {
+            new Form_NewStock(id,1).ShowDialog();
         }
     }
 }

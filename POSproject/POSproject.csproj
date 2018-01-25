@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BarcodeLib">
+      <HintPath>.\BarcodeLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -51,6 +54,12 @@
     </Compile>
     <Compile Include="Form_InStock.Designer.cs">
       <DependentUpon>Form_InStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_NewStock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_NewStock.Designer.cs">
+      <DependentUpon>Form_NewStock.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_order.cs">
       <SubType>Form</SubType>
@@ -100,6 +109,9 @@
     <EmbeddedResource Include="Form_InStock.resx">
       <DependentUpon>Form_InStock.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_NewStock.resx">
+      <DependentUpon>Form_NewStock.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_order.resx">
       <DependentUpon>Form_order.cs</DependentUpon>
     </EmbeddedResource>
@@ -140,6 +152,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\orderTemplate.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -153,8 +166,6 @@
     <Content Include="Resources\noImage.gif" />
     <None Include="Resources\noImage1.gif" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BarcodeUsingFile\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,7 +11,7 @@ namespace POSproject
 {
     class Prcd
     {
-        public DateTime checkin;
+        //public DateTime checkin;
         static public bool LogIn(string id, string pwd)
         {
             if(CheckID(id))

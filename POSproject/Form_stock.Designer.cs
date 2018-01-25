@@ -62,6 +62,8 @@
             this.btn_LstOrd = new System.Windows.Forms.Button();
             this.btn_NewStock = new System.Windows.Forms.Button();
             this.btn_InStock = new System.Windows.Forms.Button();
+            this.btn_DIsposal = new System.Windows.Forms.Button();
+            this.btn_UpStock = new System.Windows.Forms.Button();
             label4 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
@@ -160,13 +162,13 @@
             // 
             // btn_Order
             // 
-            this.btn_Order.Location = new System.Drawing.Point(722, 445);
+            this.btn_Order.Location = new System.Drawing.Point(722, 446);
             this.btn_Order.Name = "btn_Order";
             this.btn_Order.Size = new System.Drawing.Size(75, 75);
             this.btn_Order.TabIndex = 1;
             this.btn_Order.Text = "발주";
             this.btn_Order.UseVisualStyleBackColor = true;
-            this.btn_Order.Click += new System.EventHandler(this.button1_Click);
+            this.btn_Order.Click += new System.EventHandler(this.btn_OrderClick);
             // 
             // btn_StUpdate
             // 
@@ -238,7 +240,6 @@
             this.groupBox1.Size = new System.Drawing.Size(800, 63);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // lbl_User
             // 
@@ -353,7 +354,7 @@
             // 
             // btn_LstOrd
             // 
-            this.btn_LstOrd.Location = new System.Drawing.Point(722, 368);
+            this.btn_LstOrd.Location = new System.Drawing.Point(722, 370);
             this.btn_LstOrd.Name = "btn_LstOrd";
             this.btn_LstOrd.Size = new System.Drawing.Size(75, 75);
             this.btn_LstOrd.TabIndex = 23;
@@ -363,7 +364,7 @@
             // 
             // btn_NewStock
             // 
-            this.btn_NewStock.Location = new System.Drawing.Point(722, 291);
+            this.btn_NewStock.Location = new System.Drawing.Point(722, 294);
             this.btn_NewStock.Name = "btn_NewStock";
             this.btn_NewStock.Size = new System.Drawing.Size(75, 75);
             this.btn_NewStock.TabIndex = 24;
@@ -373,13 +374,32 @@
             // 
             // btn_InStock
             // 
-            this.btn_InStock.Location = new System.Drawing.Point(722, 214);
+            this.btn_InStock.Location = new System.Drawing.Point(722, 218);
             this.btn_InStock.Name = "btn_InStock";
             this.btn_InStock.Size = new System.Drawing.Size(75, 75);
             this.btn_InStock.TabIndex = 25;
             this.btn_InStock.Text = "입고";
             this.btn_InStock.UseVisualStyleBackColor = true;
             this.btn_InStock.Click += new System.EventHandler(this.btn_InStock_Click);
+            // 
+            // btn_DIsposal
+            // 
+            this.btn_DIsposal.Location = new System.Drawing.Point(722, 142);
+            this.btn_DIsposal.Name = "btn_DIsposal";
+            this.btn_DIsposal.Size = new System.Drawing.Size(75, 75);
+            this.btn_DIsposal.TabIndex = 26;
+            this.btn_DIsposal.Text = "폐기";
+            this.btn_DIsposal.UseVisualStyleBackColor = true;
+            this.btn_DIsposal.Click += new System.EventHandler(this.btn_DIsposal_Click);
+            // 
+            // btn_UpStock
+            // 
+            this.btn_UpStock.Location = new System.Drawing.Point(722, 66);
+            this.btn_UpStock.Name = "btn_UpStock";
+            this.btn_UpStock.Size = new System.Drawing.Size(75, 75);
+            this.btn_UpStock.TabIndex = 27;
+            this.btn_UpStock.Text = "상품 업데이트";
+            this.btn_UpStock.UseVisualStyleBackColor = true;
             // 
             // POS_Stock
             // 
@@ -388,6 +408,8 @@
             this.CancelButton = this.Stock_exit;
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.ControlBox = false;
+            this.Controls.Add(this.btn_UpStock);
+            this.Controls.Add(this.btn_DIsposal);
             this.Controls.Add(this.btn_InStock);
             this.Controls.Add(this.btn_NewStock);
             this.Controls.Add(this.btn_LstOrd);
@@ -455,6 +477,8 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
         private System.Windows.Forms.Button btn_InStock;
         internal System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button btn_DIsposal;
+        private System.Windows.Forms.Button btn_UpStock;
     }
 }
 

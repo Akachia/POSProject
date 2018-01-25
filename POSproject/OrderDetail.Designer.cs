@@ -36,7 +36,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_ReOrder = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
             this.btn_orderb = new System.Windows.Forms.Button();
@@ -103,15 +103,16 @@
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 21);
             this.dateTimePicker1.TabIndex = 28;
             // 
-            // button1
+            // btn_ReOrder
             // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.button1.Location = new System.Drawing.Point(643, 521);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 75);
-            this.button1.TabIndex = 29;
-            this.button1.Text = "재 발주";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btn_ReOrder.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btn_ReOrder.Location = new System.Drawing.Point(643, 521);
+            this.btn_ReOrder.Name = "btn_ReOrder";
+            this.btn_ReOrder.Size = new System.Drawing.Size(75, 75);
+            this.btn_ReOrder.TabIndex = 29;
+            this.btn_ReOrder.Text = "재 발주";
+            this.btn_ReOrder.UseVisualStyleBackColor = true;
+            this.btn_ReOrder.Click += new System.EventHandler(this.btn_ReOrder_Click);
             // 
             // dataGridView1
             // 
@@ -168,7 +169,7 @@
             this.Controls.Add(this.btn_orderb);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btn_ReOrder);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.btn_Exit);
             this.Controls.Add(this.groupBox1);
@@ -190,7 +191,7 @@
         internal System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_ReOrder;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btn_orderb;
