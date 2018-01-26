@@ -1,6 +1,6 @@
 ﻿namespace POSproject_KSM
 {
-    partial class POS_Stock
+    partial class Form_stock
     {
         /// <summary>
         /// 필수 디자이너 변수입니다.
@@ -237,6 +237,7 @@
             this.groupBox1.Size = new System.Drawing.Size(800, 63);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // label3
             // 
@@ -335,7 +336,6 @@
             // pictureBox1
             // 
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            //this.pictureBox1.ErrorImage = global::POSproject.Properties.Resources.noImage;
             this.pictureBox1.Location = new System.Drawing.Point(461, 66);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(133, 102);
@@ -368,7 +368,7 @@
             this.btn_NewStock.UseVisualStyleBackColor = true;
             this.btn_NewStock.Click += new System.EventHandler(this.button2_Click);
             // 
-            // POS_Stock
+            // Form_stock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -403,11 +403,10 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "POS_Stock";
+            this.Name = "Form_stock";
             this.ShowIcon = false;
             this.Text = "Stock";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

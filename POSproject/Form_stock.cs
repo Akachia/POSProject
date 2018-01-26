@@ -15,15 +15,14 @@ namespace POSproject_KSM
 {
     //DB싱글톤 
    
-    public partial class POS_Stock : Form
+    public partial class Form_stock : Form
     {
         //기본 이미지가 없는것을 표시할때 사용하는 이미지를 저장한 경로
         //string defualtPath = @"C:\Users\gd3-6\Documents\project+\img\noImage.gif";
-        //string ddd = 
         //차후 싱글톤으로 만들자.
         DataSet ds = null;
         int i = 0;
-        public POS_Stock()
+        public Form_stock()
         {
             InitializeComponent();
         }
@@ -47,9 +46,7 @@ namespace POSproject_KSM
         internal DataTable MakeOrderTable()
         {
             //값타입이라 계속 같이 동반자살하네 ㅅㅂ넘이
-
-            DataTable data = null; 
-            data = ds.Tables[0].Copy();
+            DataTable data = ds.Tables[0].Copy();
             int count = data.Rows.Count;
 
             //ds의 구조만 전해주고 데이터는 지운다.
@@ -74,8 +71,8 @@ namespace POSproject_KSM
             //지운데이터를 반영한다.
             data.AcceptChanges();
 
-            //MessageBox.Show(data.Rows.Count.ToString());
-            //MessageBox.Show(data.Columns.Count.ToString());
+            MessageBox.Show(data.Rows.Count.ToString());
+            MessageBox.Show(data.Columns.Count.ToString());
 
             return data;
         }
@@ -106,7 +103,7 @@ namespace POSproject_KSM
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Form1_Load(object sender, EventArgs e)
+        private void Form_stock_Load(object sender, EventArgs e)
         {
             SelectStock("SelectStock",dataGridView1);
             label1.Text = DateTime.Now.ToLongTimeString();
@@ -177,7 +174,7 @@ namespace POSproject_KSM
                 //    }
                 //}
                 i = 0;
-                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AwsDB"].ConnectionString))
+                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
                 {
                     
                     con.Open();
@@ -242,11 +239,12 @@ namespace POSproject_KSM
             tb_TtlSell.Text = dataGridView1.CurrentRow.Cells[10].Value.ToString();
             if (dataGridView1.CurrentRow.Cells[11].Value == DBNull.Value)
             {
-                //pictureBox1.Image = POSproject.Properties.Resources.noImage;
+                //pictureBox1.Image = new Bitmap(defualtPath);
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             }
             else
             {
+                
                 Byte[] bImg = (byte[])dataGridView1.CurrentRow.Cells[11].Value;
                 pictureBox1.Image = new Bitmap(new MemoryStream(bImg));
 
@@ -259,7 +257,7 @@ namespace POSproject_KSM
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            order_From order_ = new order_From
+            Form_order order_ = new Form_order
             {
                 Owner = this
             };
@@ -289,6 +287,11 @@ namespace POSproject_KSM
         }
 
         private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
         {
 
         }

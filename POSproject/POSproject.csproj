@@ -35,7 +35,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,17 +47,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form_order.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form_order.Designer.cs">
-      <DependentUpon>Form_order.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form_stock.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form_stock.Designer.cs">
       <DependentUpon>Form_stock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_order.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_order.Designer.cs">
+      <DependentUpon>Form_order.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_Account.cs">
       <SubType>Form</SubType>
@@ -77,43 +77,20 @@
     <Compile Include="Form_Main.Designer.cs">
       <DependentUpon>Form_Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form_UserManagement.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form_UserManagement.Designer.cs">
-      <DependentUpon>Form_UserManagement.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Form_UserModify.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form_UserModify.Designer.cs">
-      <DependentUpon>Form_UserModify.cs</DependentUpon>
-    </Compile>
-    <Compile Include="OrderDetail.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OrderDetail.Designer.cs">
-      <DependentUpon>OrderDetail.cs</DependentUpon>
-    </Compile>
     <Compile Include="Prcd.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="UserAccount.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UserAccount.Designer.cs">
       <DependentUpon>UserAccount.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Form_order.resx">
-      <DependentUpon>Form_order.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form_stock.resx">
       <DependentUpon>Form_stock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_order.resx">
+      <DependentUpon>Form_order.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Account.resx">
       <DependentUpon>Form_Account.cs</DependentUpon>
@@ -124,17 +101,16 @@
     <EmbeddedResource Include="Form_Main.resx">
       <DependentUpon>Form_Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form_UserManagement.resx">
-      <DependentUpon>Form_UserManagement.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form_UserModify.resx">
-      <DependentUpon>Form_UserModify.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <EmbeddedResource Include="UserAccount.resx">
       <DependentUpon>UserAccount.cs</DependentUpon>
     </EmbeddedResource>
@@ -155,12 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\if_lock-512x512px_345379.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\if_Enter_7289341.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\nouserpic.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
