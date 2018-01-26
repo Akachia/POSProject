@@ -147,8 +147,8 @@ namespace POSproject
                     {
                         infoTable.Add("UserName", sdr["UserName"].ToString());
                         infoTable.Add("UserPhone", sdr["UserPhone"].ToString());
-                        infoTable.Add("UserPic", sdr["UserPic"].ToString());
-                        System.Windows.Forms.MessageBox.Show(sdr["UserPic"].ToString());
+                        infoTable.Add("UserPic", sdr["UserPic"]);
+                     
                     }
 
 

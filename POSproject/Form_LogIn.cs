@@ -31,9 +31,9 @@ namespace POSproject
 
             if(Prcd.LogIn(id, pwd))
             {
-                Form_Main ua =new Form_Main(DateTime.Now,id);
-                ua.Owner = this;
-                ua.Show();
+                Form_Main FM =new Form_Main(DateTime.Now,id);
+                FM.Owner = this;
+                FM.Show();
                 
                 Prcd.checkin = DateTime.Now;
                 //this.Dispose();

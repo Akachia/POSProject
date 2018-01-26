@@ -41,12 +41,14 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnConfirm = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
+            this.picUser = new System.Windows.Forms.PictureBox();
             this.txt_Pwd = new System.Windows.Forms.TextBox();
             this.txt_Phone = new System.Windows.Forms.TextBox();
             this.txt_Id = new System.Windows.Forms.TextBox();
             this.txt_Name = new System.Windows.Forms.TextBox();
             this.openPic = new System.Windows.Forms.OpenFileDialog();
-            this.picUser = new System.Windows.Forms.PictureBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.pnl_CheckPwd.SuspendLayout();
             this.pnl_Modify.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picUser)).BeginInit();
@@ -71,7 +73,7 @@
             // 
             // pnl_CheckPwd
             // 
-            this.pnl_CheckPwd.BackColor = System.Drawing.Color.White;
+            this.pnl_CheckPwd.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.pnl_CheckPwd.Controls.Add(this.btn_Chk);
             this.pnl_CheckPwd.Controls.Add(this.label2);
             this.pnl_CheckPwd.Controls.Add(this.label1);
@@ -83,6 +85,7 @@
             // 
             // btn_Chk
             // 
+            this.btn_Chk.Image = global::POSproject.Properties.Resources.if_Enter_7289341;
             this.btn_Chk.Location = new System.Drawing.Point(257, 185);
             this.btn_Chk.Name = "btn_Chk";
             this.btn_Chk.Size = new System.Drawing.Size(35, 35);
@@ -102,6 +105,9 @@
             // 
             // pnl_Modify
             // 
+            this.pnl_Modify.BackColor = System.Drawing.Color.White;
+            this.pnl_Modify.Controls.Add(this.lblTitle);
+            this.pnl_Modify.Controls.Add(this.label3);
             this.pnl_Modify.Controls.Add(this.lbl_Pwd);
             this.pnl_Modify.Controls.Add(this.lbl_Id);
             this.pnl_Modify.Controls.Add(this.lbl_Phone);
@@ -114,15 +120,15 @@
             this.pnl_Modify.Controls.Add(this.txt_Phone);
             this.pnl_Modify.Controls.Add(this.txt_Id);
             this.pnl_Modify.Controls.Add(this.txt_Name);
-            this.pnl_Modify.Location = new System.Drawing.Point(12, 12);
+            this.pnl_Modify.Location = new System.Drawing.Point(5, 6);
             this.pnl_Modify.Name = "pnl_Modify";
-            this.pnl_Modify.Size = new System.Drawing.Size(397, 397);
+            this.pnl_Modify.Size = new System.Drawing.Size(404, 403);
             this.pnl_Modify.TabIndex = 3;
             // 
             // lbl_Pwd
             // 
             this.lbl_Pwd.AutoSize = true;
-            this.lbl_Pwd.Location = new System.Drawing.Point(163, 241);
+            this.lbl_Pwd.Location = new System.Drawing.Point(176, 288);
             this.lbl_Pwd.Name = "lbl_Pwd";
             this.lbl_Pwd.Size = new System.Drawing.Size(53, 12);
             this.lbl_Pwd.TabIndex = 27;
@@ -131,7 +137,7 @@
             // lbl_Id
             // 
             this.lbl_Id.AutoSize = true;
-            this.lbl_Id.Location = new System.Drawing.Point(14, 198);
+            this.lbl_Id.Location = new System.Drawing.Point(27, 245);
             this.lbl_Id.Name = "lbl_Id";
             this.lbl_Id.Size = new System.Drawing.Size(29, 12);
             this.lbl_Id.TabIndex = 26;
@@ -140,7 +146,7 @@
             // lbl_Phone
             // 
             this.lbl_Phone.AutoSize = true;
-            this.lbl_Phone.Location = new System.Drawing.Point(164, 198);
+            this.lbl_Phone.Location = new System.Drawing.Point(177, 245);
             this.lbl_Phone.Name = "lbl_Phone";
             this.lbl_Phone.Size = new System.Drawing.Size(53, 12);
             this.lbl_Phone.TabIndex = 25;
@@ -149,7 +155,7 @@
             // lbl_Name
             // 
             this.lbl_Name.AutoSize = true;
-            this.lbl_Name.Location = new System.Drawing.Point(20, 241);
+            this.lbl_Name.Location = new System.Drawing.Point(33, 288);
             this.lbl_Name.Name = "lbl_Name";
             this.lbl_Name.Size = new System.Drawing.Size(16, 12);
             this.lbl_Name.TabIndex = 24;
@@ -177,7 +183,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(126, 141);
+            this.btnLoad.Location = new System.Drawing.Point(153, 189);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 21;
@@ -185,23 +191,33 @@
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
+            // picUser
+            // 
+            this.picUser.Image = global::POSproject.Properties.Resources.nouserpic;
+            this.picUser.Location = new System.Drawing.Point(128, 57);
+            this.picUser.Name = "picUser";
+            this.picUser.Size = new System.Drawing.Size(127, 126);
+            this.picUser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picUser.TabIndex = 20;
+            this.picUser.TabStop = false;
+            // 
             // txt_Pwd
             // 
-            this.txt_Pwd.Location = new System.Drawing.Point(224, 238);
+            this.txt_Pwd.Location = new System.Drawing.Point(237, 285);
             this.txt_Pwd.Name = "txt_Pwd";
             this.txt_Pwd.Size = new System.Drawing.Size(100, 21);
             this.txt_Pwd.TabIndex = 19;
             // 
             // txt_Phone
             // 
-            this.txt_Phone.Location = new System.Drawing.Point(224, 195);
+            this.txt_Phone.Location = new System.Drawing.Point(237, 242);
             this.txt_Phone.Name = "txt_Phone";
             this.txt_Phone.Size = new System.Drawing.Size(100, 21);
             this.txt_Phone.TabIndex = 18;
             // 
             // txt_Id
             // 
-            this.txt_Id.Location = new System.Drawing.Point(57, 238);
+            this.txt_Id.Location = new System.Drawing.Point(70, 285);
             this.txt_Id.Name = "txt_Id";
             this.txt_Id.ReadOnly = true;
             this.txt_Id.Size = new System.Drawing.Size(100, 21);
@@ -209,7 +225,7 @@
             // 
             // txt_Name
             // 
-            this.txt_Name.Location = new System.Drawing.Point(58, 195);
+            this.txt_Name.Location = new System.Drawing.Point(71, 242);
             this.txt_Name.Name = "txt_Name";
             this.txt_Name.ReadOnly = true;
             this.txt_Name.Size = new System.Drawing.Size(100, 21);
@@ -219,15 +235,24 @@
             // 
             this.openPic.FileName = "openFileDialog1";
             // 
-            // picUser
+            // label3
             // 
-            this.picUser.Image = global::POSproject.Properties.Resources.nouserpic;
-            this.picUser.Location = new System.Drawing.Point(101, 9);
-            this.picUser.Name = "picUser";
-            this.picUser.Size = new System.Drawing.Size(127, 126);
-            this.picUser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picUser.TabIndex = 20;
-            this.picUser.TabStop = false;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(39, 309);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(287, 12);
+            this.label3.TabIndex = 28;
+            this.label3.Text = "* 비밀번호를 바꾸지 않을때에는 비워두시면 됩니다.";
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("휴먼모음T", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblTitle.Location = new System.Drawing.Point(121, 20);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(134, 21);
+            this.lblTitle.TabIndex = 29;
+            this.lblTitle.Text = "직원 정보 수정";
             // 
             // Form_UserModify
             // 
@@ -270,5 +295,7 @@
         private System.Windows.Forms.TextBox txt_Phone;
         private System.Windows.Forms.TextBox txt_Id;
         private System.Windows.Forms.TextBox txt_Name;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label label3;
     }
 }

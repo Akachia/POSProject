@@ -1,4 +1,5 @@
-﻿using System;
+﻿using formSales;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +17,7 @@ namespace POSproject
 {
     public partial class UserAccount : Form
     {
+        Form_Main FM;
         string user;
         TimeSpan time;
         public UserAccount()
@@ -35,7 +37,10 @@ namespace POSproject
         private void UserAccount_Load(object sender, EventArgs e)
         {
 
+            FM = (Form_Main)Owner;
+            FM.Visible = false;
 
+            
             #region 로드시 직원 정보 출력
             lbl_checkin.Text = lbl_checkin.Text + Prcd.checkin;
 
@@ -57,7 +62,7 @@ namespace POSproject
                 }
                 if (ide.Key.ToString() == "UserPic")
                 {
-                    byte[] newimg = Encoding.UTF8.GetBytes(ide.Value.ToString());
+                    byte[] newimg = (byte[])ide.Value;
 
                     
                     
@@ -107,6 +112,7 @@ namespace POSproject
 
         private void button1_Click(object sender, EventArgs e)
         {
+            FM.Visible = true;
             this.Close();
         }
 

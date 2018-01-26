@@ -18,7 +18,7 @@ namespace formSales
 {
     public partial class Form_Main : Form
     {
-        Form_LogIn f1;
+        Form_LogIn FL;
         string user;
         public Form_Main()
         {
@@ -43,8 +43,8 @@ namespace formSales
         {
             dataGridView1.AllowUserToAddRows = false;
 
-            f1 = (Form_LogIn)Owner;
-            f1.Visible=false;
+            FL = (Form_LogIn)Owner;
+            FL.Visible=false;
 
             timer1.Start();
         }
@@ -225,12 +225,14 @@ namespace formSales
 
         private void btnUserSet_Click(object sender, EventArgs e)
         {
-            new UserAccount(user).Show();
+            UserAccount ua = new UserAccount(user);
+            ua.Owner = this;
+            ua.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            f1.Close();
+            this.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)

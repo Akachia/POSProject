@@ -60,7 +60,7 @@ namespace POSproject
                     }
                     if (ide.Key.ToString() == "UserPic")
                     {
-                        byte[] newimg = Encoding.UTF8.GetBytes(ide.Value.ToString());
+                        byte[] newimg = (byte[])ide.Value;
                         if (ide.Value.ToString() != "")
                         {
                             picUser.Image = new Bitmap(new MemoryStream(newimg));
@@ -87,12 +87,12 @@ namespace POSproject
             }
             else
             {
-                Bitmap bit = new Bitmap(POSproject.Properties.Resources.nouserpic);
-                using (var stream = new MemoryStream())
-                {
-                    bit.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
-                   img= stream.ToArray();
-                }
+                ImageConverter converter = new ImageConverter();
+                img = (byte[])converter.ConvertTo(picUser.Image, typeof(byte[]));
+                
+
+
+               
 
             }
 
@@ -123,5 +123,7 @@ namespace POSproject
                 file = openPic.FileName;
             }
         }
+
+       
     }
 }

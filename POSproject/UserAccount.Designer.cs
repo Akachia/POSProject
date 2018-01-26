@@ -39,13 +39,13 @@
             this.lbl_checkin = new System.Windows.Forms.Label();
             this.lbl_Phone = new System.Windows.Forms.Label();
             this.lbl_name = new System.Windows.Forms.Label();
+            this.pic_User = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btn_mgr = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btn_CheckOut = new System.Windows.Forms.Button();
             this.btn_InfoModify = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.pic_User = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_User)).BeginInit();
             this.SuspendLayout();
@@ -155,6 +155,16 @@
             this.lbl_name.TabIndex = 1;
             this.lbl_name.Text = "이름 : ";
             // 
+            // pic_User
+            // 
+            this.pic_User.Image = global::POSproject.Properties.Resources.nouserpic;
+            this.pic_User.Location = new System.Drawing.Point(307, 4);
+            this.pic_User.Name = "pic_User";
+            this.pic_User.Size = new System.Drawing.Size(140, 136);
+            this.pic_User.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pic_User.TabIndex = 0;
+            this.pic_User.TabStop = false;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -206,16 +216,6 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(239, 249);
             this.textBox1.TabIndex = 8;
-            // 
-            // pic_User
-            // 
-            this.pic_User.Image = global::POSproject.Properties.Resources.nouserpic;
-            this.pic_User.Location = new System.Drawing.Point(277, 4);
-            this.pic_User.Name = "pic_User";
-            this.pic_User.Size = new System.Drawing.Size(170, 202);
-            this.pic_User.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pic_User.TabIndex = 0;
-            this.pic_User.TabStop = false;
             // 
             // UserAccount
             // 
