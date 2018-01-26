@@ -10,21 +10,26 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Collections;
 
 namespace POSproject_KSM
 {
     //DB싱글톤 
-   
-    public partial class Form_stock : Form
-    {
-        //기본 이미지가 없는것을 표시할때 사용하는 이미지를 저장한 경로
-        //string defualtPath = @"C:\Users\gd3-6\Documents\project+\img\noImage.gif";
+    public partial class POS_Stock : Form
+    { 
         //차후 싱글톤으로 만들자.
         DataSet ds = null;
+        DataTable data = null;
         int i = 0;
-        public Form_stock()
+        string id = null;
+        public POS_Stock()
         {
             InitializeComponent();
+        }
+
+        public POS_Stock(string id) : this()
+        {
+            this.id = id;
         }
 
         internal DataSet GetDataSet( )
@@ -45,42 +50,65 @@ namespace POSproject_KSM
         /// <returns></returns>
         internal DataTable MakeOrderTable()
         {
-            //값타입이라 계속 같이 동반자살하네 ㅅㅂ넘이
-            DataTable data = ds.Tables[0].Copy();
-            int count = data.Rows.Count;
+            data = new DataTable();
+            int count = dataGridView1.Rows.Count;
 
-            //ds의 구조만 전해주고 데이터는 지운다.
+            DataColumn column;
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Int32");
+            column.ColumnName = "productNo";
+            data.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.String");
+            column.ColumnName = "productName";
+            data.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Int32");
+            column.ColumnName = "productPrice";
+            data.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Int32");
+            column.ColumnName = "productPrimePrice";
+            data.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Int32");
+            column.ColumnName = "productQuantity";
+            data.Columns.Add(column);
+
+            DataGridViewCheckBoxCell dgvCell = null;
+
             for (int i = 0;i < count;i++ )
             {
-                DataGridViewCheckBoxCell dgvCell = (DataGridViewCheckBoxCell)dataGridView1.Rows[i].Cells[0];
-                if (dgvCell.Value == new DataGridViewCheckBoxCell().FalseValue)
+                dgvCell = (DataGridViewCheckBoxCell)dataGridView1.Rows[i].Cells[0];
+                //MessageBox.Show(dgvCell.Value.ToString());
+                if (dgvCell.Value != new DataGridViewCheckBoxCell().FalseValue)
                 {
                     //MessageBox.Show(" : " + (dgvCell.RowIndex +1).ToString());
-                    data.Rows[i].Delete();
+                    DataRow myRow = data.NewRow();
+
+                    myRow["productNo"] = dataGridView1.Rows[i].Cells[1].Value;
+                    myRow["productName"] = dataGridView1.Rows[i].Cells[3].Value;
+                    myRow["productPrice"] = dataGridView1.Rows[i].Cells[4].Value;
+                    myRow["productPrimePrice"] = dataGridView1.Rows[i].Cells[5].Value;
+                    myRow["productQuantity"] = dataGridView1.Rows[i].Cells[6].Value;
+                    data.Rows.Add(myRow);
                 }
             }
-            //지워지면 열이 없어서져서 주의해야한다.
-            //그래서 같은열을 지우면 알아서 삭제된다.
-            
-            data.Columns.RemoveAt(6);
-            data.Columns.RemoveAt(6);
-            data.Columns.RemoveAt(6);
-            data.Columns.RemoveAt(6);
-            data.Columns.RemoveAt(6);
-            data.Columns.RemoveAt(1);
-            //지운데이터를 반영한다.
-            data.AcceptChanges();
-
-            MessageBox.Show(data.Rows.Count.ToString());
-            MessageBox.Show(data.Columns.Count.ToString());
 
             return data;
         }
-
-        internal void SelectStock(string procesor, DataGridView dgv)
+        /// <summary>
+        /// 현재
+        /// </summary>
+        /// <param name="procesor"></param>
+        internal void SelectStock(string procesor)
         {
-            ds = GetDataSet();
-            
+           DataSet ds = GetDataSet();
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 con.Open();
@@ -92,10 +120,9 @@ namespace POSproject_KSM
 
                     dataAdapter.Fill(ds);
 
-                    dgv.DataSource = ds.Tables[0];
+                    dataGridView1.DataSource = ds.Tables[0];
                 }
             }
-            
         }
 
         /// <summary>
@@ -103,10 +130,11 @@ namespace POSproject_KSM
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Form_stock_Load(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
-            SelectStock("SelectStock",dataGridView1);
+            SelectStock("SelectStock");
             label1.Text = DateTime.Now.ToLongTimeString();
+            lbl_User.Text = id;
             timer1.Start();
             dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridView1.Columns[6].HeaderText = "수량";
@@ -121,6 +149,20 @@ namespace POSproject_KSM
             dataGridView1.Columns[10].HeaderText = "누적 판매량";
             dataGridView1.Select();
         }
+
+        /// <summary>
+        /// 채크박스의 데이터가 동적으로 연결되어있어 order폼로드 후 데이터가 남아있다. 
+        /// 체크박스의 내용을 false로 초기화 시켜준다.
+        /// </summary>
+        internal void CheckBoxinit()
+        {
+            foreach (DataGridViewRow item in dataGridView1.Rows)
+            {
+                item.Cells[0].Value = new DataGridViewCheckBoxCell().FalseValue;
+            }
+        }
+
+
         /// <summary>
         /// 시계를 돌리기위한 틱 이벤트
         /// </summary>
@@ -150,29 +192,12 @@ namespace POSproject_KSM
         {
             if (i == 0)
             {
-                DataTable dss = MakeOrderTable();
-                //foreach (var item in Controls)
-                //{
-                //    if(item is TextBox)
-                //    {
-                //        TextBox tb = (TextBox)item;
-                //        tb.Enabled = true;
-                //    }
-                //}
                 tb_StQunt.Enabled = true;
                 i++;
             }
             else if(i==1)
             {
                 tb_StQunt.Enabled = false;
-                //foreach (var item in Controls)
-                //{
-                //    if (item is TextBox)
-                //    {
-                //        TextBox tb = (TextBox)item;
-                //        tb.Enabled = false;
-                //    }
-                //}
                 i = 0;
                 using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
                 {
@@ -189,8 +214,7 @@ namespace POSproject_KSM
                         cmd.Parameters.AddWithValue("@UProductPrimeCost", dataGridView1.CurrentRow.Cells[5].Value);
                         cmd.Parameters.AddWithValue("@UProductQuantity", int.Parse(tb_StQunt.Text));
                         cmd.Parameters.AddWithValue("@UProductCategory", dataGridView1.CurrentRow.Cells[7].Value);
-                        cmd.Parameters.AddWithValue("@UShelf_life", dataGridView1.CurrentRow.Cells[9].Value);
-                        cmd.Parameters.AddWithValue("@USales_volume", dataGridView1.CurrentRow.Cells[10].Value);
+                        cmd.Parameters.AddWithValue("@USales_volume", dataGridView1.CurrentRow.Cells[9].Value);
                         cmd.Parameters.AddWithValue("@UDisCount", dataGridView1.CurrentRow.Cells[8].Value);
                         ImageConverter converter = new ImageConverter();
                         byte[] bImg = (byte[])converter.ConvertTo(pictureBox1.Image, typeof(byte[]));
@@ -201,7 +225,7 @@ namespace POSproject_KSM
                         if (i == 1)
                         {
                             MessageBox.Show("저장");
-                            SelectStock("SelectStock",dataGridView1);
+                            SelectStock("SelectStock");
                             con.Close();
                             return;
                         }
@@ -211,7 +235,6 @@ namespace POSproject_KSM
                             con.Close();
                             return;
                         }
-                        
                     }
                 }
             }
@@ -235,19 +258,16 @@ namespace POSproject_KSM
             tb_TtlPrice.Text = (int.Parse(dataGridView1.CurrentRow.Cells[4].Value.ToString()) 
                 * int.Parse(dataGridView1.CurrentRow.Cells[6].Value.ToString())).ToString() + "원"; 
             tb_StBar.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
-            tb_ShelfLIfe.Text = dataGridView1.CurrentRow.Cells[9].Value.ToString();
-            tb_TtlSell.Text = dataGridView1.CurrentRow.Cells[10].Value.ToString();
-            if (dataGridView1.CurrentRow.Cells[11].Value == DBNull.Value)
+            tb_TtlSell.Text = dataGridView1.CurrentRow.Cells[9].Value.ToString();
+            if (dataGridView1.CurrentRow.Cells[10].Value == DBNull.Value)
             {
-                //pictureBox1.Image = new Bitmap(defualtPath);
+                pictureBox1.Image = POSproject.Properties.Resources.noImage;
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             }
             else
             {
-                
-                Byte[] bImg = (byte[])dataGridView1.CurrentRow.Cells[11].Value;
+                Byte[] bImg = (byte[])dataGridView1.CurrentRow.Cells[10].Value;
                 pictureBox1.Image = new Bitmap(new MemoryStream(bImg));
-
             }
         }
         /// <summary>
@@ -255,12 +275,10 @@ namespace POSproject_KSM
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
+        private void btn_OrderClick(object sender, EventArgs e)
         {
-            Form_order order_ = new Form_order
-            {
-                Owner = this
-            };
+            order_From order_ = new order_From(id);
+            order_.Owner = this;
             order_.ShowDialog();
         }
         /// <summary>
@@ -283,7 +301,7 @@ namespace POSproject_KSM
 
         private void btn_LstOrd_Click(object sender, EventArgs e)
         {
-            
+            new OrderDetail().ShowDialog();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -294,6 +312,21 @@ namespace POSproject_KSM
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_InStock_Click(object sender, EventArgs e)
+        {
+            new Form_InStock(id).ShowDialog(); 
+        }
+
+        private void btn_NewStock_Click(object sender, EventArgs e)
+        {
+            new Form_NewStock(id, 0).ShowDialog();
+        }
+
+        private void btn_DIsposal_Click(object sender, EventArgs e)
+        {
+            new Form_NewStock(id,1).ShowDialog();
         }
     }
 }
