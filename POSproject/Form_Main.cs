@@ -41,7 +41,10 @@ namespace formSales
         int totalPrice = 0; // 물품 합산 금액
         int totalDis = 0; // 총 할인 금액
         int finalPrice = 0; // 총 계산금액
-        
+        int checkProdno = 0;
+        int prodCount = 0;
+
+
         private void Form1_Load(object sender, EventArgs e)
         {
             txtBarcode.Focus();
@@ -66,15 +69,18 @@ namespace formSales
                 using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
                 {
                     con.Open();
-
-                    using (var cmd = new SqlCommand("CheckProdQuan", con))
+                    using (var cmd = new SqlCommand("SelectStock2", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@barcode", txtBarcode.Text);
+                        cmd.Parameters.AddWithValue("@SProductBarcode", txtBarcode.Text);
+
+                        checkProdno = (int)cmd.ExecuteScalar();
                     }
 
                     using (var cmd = new SqlCommand("SelectSalesStock", con))
                     {
+                        prodCount = 0;
+
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@barcode", txtBarcode.Text);
                         cmd.Parameters.AddWithValue("@count", 1); // 최초 상품등록시 수량은 1개
@@ -89,7 +95,7 @@ namespace formSales
                         }
                         sdr.Close();
 
-                        int prodCount = (int)cmd.ExecuteScalar(); // 상품 재고수량 확인
+                        prodCount = (int)cmd.ExecuteScalar(); // 상품 재고수량 확인
                         if (prodCount <= 0)
                         {
                             MessageBox.Show("상품 수량이 부족하여 판매할 수 없습니다.");
@@ -98,10 +104,34 @@ namespace formSales
                             return;
                         }
 
+                        checkItem = new string[2];
+
+                        for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                        {
+                            if ((int)dataGridView1.Rows[i].Cells[0].Value == checkProdno)
+                            {
+                                checkItem = CheckItemCount(checkProdno, (int)dataGridView1.Rows[i].Cells[2].Value);
+
+                                if (checkItem[0].ToString() == "1")
+                                {
+                                    dataGridView1.Rows[i].Cells[2].Value = (int)dataGridView1.Rows[i].Cells[2].Value + 1;
+                                    txtProdCount.Text = "";
+                                    Reset();
+                                    priceCalc(i);
+                                    Total();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("재고가 부족합니다. 잔여 수량 : " + checkItem[1].ToString());
+                                    txtBarcode.Text = "";
+                                    return;
+                                }
+                            }
+                        }
+
                         adapter.SelectCommand = cmd;
                         adapter.Fill(ds);
                     }
-
                 }
                 this.dataGridView1.DataSource = ds.Tables[0];
 
@@ -194,7 +224,7 @@ namespace formSales
             finalPrice = 0;
         }
 
-        private string[] CheckItemCount(int selectNo) // + (-는 필요없음 -> 수동증가 +증가 모두 막아놨음)
+        private string[] CheckItemCount(int prodNo, int rowCount) // + (-는 필요없음 -> 수동증가 +증가 모두 막아놨음)
         {
             string[] reCheckItem = new string[2];
             using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
@@ -203,11 +233,11 @@ namespace formSales
                 using (var cmd = new SqlCommand("CheckProdQuanProdNo", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@prodNo", selectNo);
+                    cmd.Parameters.AddWithValue("@prodNo", prodNo);
 
                     int ProdCount = (int)cmd.ExecuteScalar();
 
-                    if (ProdCount < (int)dataGridView1.CurrentRow.Cells[2].Value + 1) // 재고량 < 증가량 => 판매불가
+                    if (ProdCount < rowCount + 1) // 재고량 < 증가량 => 판매불가
                     {
                         con.Close();
                         reCheckItem[0] = "0";
@@ -293,7 +323,7 @@ namespace formSales
             try
             {
                 checkItem = new string[2];
-                checkItem = CheckItemCount((int)dataGridView1.CurrentRow.Cells[0].Value);
+                checkItem = CheckItemCount((int)dataGridView1.CurrentRow.Cells[0].Value, (int)dataGridView1.CurrentRow.Cells[2].Value);
                 if (checkItem[0].ToString() == "1")
                 {
                     dataGridView1.CurrentRow.Cells[2].Value = int.Parse(dataGridView1.CurrentRow.Cells[2].Value.ToString()) + 1;

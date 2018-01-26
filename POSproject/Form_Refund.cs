@@ -17,6 +17,7 @@ namespace POSproject
         DataSet ds = new DataSet();
         DataSet ds2 = new DataSet();
         SqlDataAdapter adapter = new SqlDataAdapter();
+        int checkTakeBack = 0;
 
         public Form_Refund()
         {
@@ -79,6 +80,38 @@ namespace POSproject
             }
         }
 
+        private void CheckRefund(int prodNo)
+        {
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand("CheckTakeBack", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@sellNo", long.Parse(txtSellNo.Text));
+                    cmd.Parameters.AddWithValue("@prodNo", prodNo);
+
+                    checkTakeBack = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        private void ModRefund(int prodNo, int Count) // 이미 존재하는 동일한 거래번호-상품에 대한 환불 내용 수정
+        {
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand("ModTakeBack", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@sellNo", long.Parse(txtSellNo.Text));
+                    cmd.Parameters.AddWithValue("@prodNo", prodNo);
+                    cmd.Parameters.AddWithValue("@reCount", Count);
+                    cmd.ExecuteReader();
+                }
+            }
+        }
+
         private void txtTotalPrice_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -137,14 +170,15 @@ namespace POSproject
             }
         }
 
-        private void btnRecount_Click(object sender, EventArgs e) // 선택상품 일부 반품
+        private void btnRecount_Click(object sender, EventArgs e) // 선택상품 일부 환불
         {
+            checkTakeBack = 0;
             try
             {
                 int Count = (int)dataGridView1.CurrentRow.Cells[2].Value; // 기존 수량 보존
                 int reCount = int.Parse(txtReCount.Text); // 반품할 물품 수량
 
-                // 반품할 물품 수량이 기존수량보다 많을경우
+                // 환불할 물품 수량이 기존수량보다 많을경우
                 if (Count < reCount)
                 {
                     MessageBox.Show("입력 수량을 다시 확인해주세요.");
@@ -152,9 +186,18 @@ namespace POSproject
                     return;
                 }
 
-                dataGridView1.CurrentRow.Cells[2].Value = Count - reCount;
+                CheckRefund((int)dataGridView1.CurrentRow.Cells[0].Value);
 
-                Refund((int)dataGridView1.CurrentRow.Cells[0].Value, Count, reCount);
+                if (checkTakeBack == 0) // 이전에 환불된 동일한 상품이 없다면
+                {
+                    Refund((int)dataGridView1.CurrentRow.Cells[0].Value, Count, reCount);
+                }
+                else
+                {
+                    ModRefund((int)dataGridView1.CurrentRow.Cells[0].Value, reCount);
+                }
+
+                dataGridView1.CurrentRow.Cells[2].Value = Count - reCount;
 
                 MessageBox.Show(dataGridView1.CurrentRow.Cells[1].Value.ToString() + " 상품이 " + reCount.ToString() + "개 환불 처리 되었습니다.");
                 
@@ -179,9 +222,18 @@ namespace POSproject
             {
                 int Count = (int)dataGridView1.CurrentRow.Cells[2].Value; // 기존 수량, 반품할 수량
 
-                dataGridView1.CurrentRow.Cells[2].Value = 0;
+                CheckRefund((int)dataGridView1.CurrentRow.Cells[0].Value);
 
-                Refund((int)dataGridView1.CurrentRow.Cells[0].Value, Count, Count);
+                if (checkTakeBack == 0)
+                {
+                    Refund((int)dataGridView1.CurrentRow.Cells[0].Value, Count, Count); 
+                }
+                else
+                {
+                    ModRefund((int)dataGridView1.CurrentRow.Cells[0].Value, Count);
+                }
+
+                dataGridView1.CurrentRow.Cells[2].Value = 0;
 
                 MessageBox.Show(dataGridView1.CurrentRow.Cells[1].Value.ToString() + " 상품이 " + Count.ToString() + "개 환불 처리 되었습니다.");
 
@@ -206,14 +258,24 @@ namespace POSproject
             try
             {
                 int rows = dataGridView1.Rows.Count;
-                MessageBox.Show(rows.ToString());
+                //MessageBox.Show(rows.ToString());
                 for (int i = 0; i < rows; i++)
                 {
+                    checkTakeBack = 0;
                     int prodNo = (int)dataGridView1.Rows[i].Cells[0].Value;
                     int count = (int)dataGridView1.Rows[i].Cells[2].Value;
                     dataGridView1.Rows[i].Cells[2].Value = 0;
 
-                    Refund(prodNo, count, count);
+                    CheckRefund(prodNo);
+
+                    if (checkTakeBack == 0)
+                    {
+                        Refund(prodNo, count, count); 
+                    }
+                    else
+                    {
+                        ModRefund(prodNo, count);
+                    }
                 }
                 MessageBox.Show("모든 상품이 환불 처리 되었습니다.");
 
