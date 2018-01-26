@@ -8,6 +8,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Data.OleDb;
 using System.Windows.Forms;
 /// <summary>
 /// 자주 발주하는 제품 선택 -> 제품테이블에 데이터가 있어야 되서 안됨
@@ -17,6 +19,10 @@ namespace POSproject_KSM
 {
     public partial class order_From : Form
     {
+
+        Excel.Application excelApp = null;
+        Excel.Workbook wb = null;
+        Excel.Worksheet ws = null;
         DataTable ds = null;
         DataTable ds2 = null;
         int orderTtl_Price = 0;
@@ -77,7 +83,6 @@ namespace POSproject_KSM
                 item.Cells[5].Value = "0box";
                 item.Cells[6].Value = "0개";
             }
-            MessageBox.Show("Test");
             dataGridView1.Columns[1].HeaderText = "상품번호";
             dataGridView1.Columns[2].HeaderText = "이름";
             dataGridView1.Columns[3].HeaderText = "가격";
@@ -97,7 +102,7 @@ namespace POSproject_KSM
             str += str2;
 
             str += bar.ToString().Substring(10);
-            MessageBox.Show(str);
+            //MessageBox.Show(str);
             return decimal.Parse(str);
         }
 
@@ -133,6 +138,8 @@ namespace POSproject_KSM
             {
                 Load_FromStock();
             }
+
+            dataGridView1.Columns[1].SortMode = DataGridViewColumnSortMode.Automatic;
         }
         /// <summary>
         /// OrderDetail form에서 넘어올때 실행되는 함수
@@ -259,13 +266,11 @@ namespace POSproject_KSM
                     dataAdapter.SelectCommand = cmd;
 
                     dataAdapter.Fill(oDs);
+
                     last_idx = int.Parse(oDs.Tables[0].Rows[0].ItemArray[0].ToString()) + 1;
                     barcodeNo = decimal.Parse(oDs.Tables[0].Rows[0].ItemArray[5].ToString()) + 1;
                 }
-            }
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
-            {
-                con.Open();
+
                 using (SqlCommand cmd = new SqlCommand("InsertOrders2", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -274,13 +279,10 @@ namespace POSproject_KSM
                     cmd.Parameters.AddWithValue("@UOrderBarcode", GenBarcode(barcodeNo));
 
                     int i = cmd.ExecuteNonQuery();
-                    if (i > 0)
-                    {
-                        MessageBox.Show("발주 성공");
-                    }
-                    else
+                    if (i==0)
                     {
                         MessageBox.Show("통신실패 다시 해주세요");
+                        return;
                     }
                 }
             }
@@ -288,10 +290,12 @@ namespace POSproject_KSM
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 con.Open();
+                int i = 0;
                 for (int j = 0; j < dataGridView1.Rows.Count; j++)
                 {
                     using (SqlCommand cmd = new SqlCommand("InsertStockOrder", con))
                     {
+                        
                         DataGridViewCheckBoxCell dgvCell = (DataGridViewCheckBoxCell)dataGridView1.Rows[j].Cells[0];
                         if (dgvCell.Value != new DataGridViewCheckBoxCell().FalseValue)
                         {
@@ -304,24 +308,89 @@ namespace POSproject_KSM
                             int boxNum1 = int.Parse(dataGridView1.Rows[j].Cells[6].Value.ToString().Split('개')[0]);
 
                             cmd.Parameters.AddWithValue("@IProductOrderQuantity", ((boxNum * 15) + boxNum1));
-                            int i = cmd.ExecuteNonQuery();
-                            if (i > 0)
-                            {
-                                MessageBox.Show("발주 성공");
-                            }
-                            else
-                            { 
-                                MessageBox.Show("통신실패 다시 해주세요");
-                            }
+                            i = cmd.ExecuteNonQuery();
+
                         }
                     }
+                }
+                if (i > 0)
+                {
+                    MessageBox.Show("발주 성공");
+                }
+                else
+                {
+                    MessageBox.Show("통신실패 다시 해주세요");
+                    return;
                 }
             }
         }
 
         private void btn_ExcelShow_Click(object sender, EventArgs e)
         {
+            excelApp = new Excel.Application();
 
+            string excelPath = @"C:\Users\gd3-6\Documents\POSProject\POSproject\Resources\orderTemplate.xlsx";
+
+            string szConn = @"Provider=Microsoft.ACE.OLEDB.12.0;
+                Data Source=" + excelPath + ";Extended Properties='Excel 8.0;HDR=No'";
+
+            Excel.Workbook wb = excelApp.Workbooks.Open(excelPath);
+                        //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                        //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                        //Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            Excel.Worksheet ws = (Excel.Worksheet)wb.Worksheets[1];
+
+
+            excelApp = new Excel.Application();
+
+            // 엑셀 파일 열기
+            wb = excelApp.Workbooks.Open(excelPath);
+
+            // 첫번째 Worksheet
+            ws = wb.Worksheets.get_Item(1) as Excel.Worksheet;
+
+            // 현재 Worksheet에서 사용된 Range 전체를 선택
+            //Excel.Range rng = ws.UsedRange;
+
+            //int r = 10;
+            DataGridViewRowCollection rows = dataGridView1.Rows;
+            for (int i = 10; i < rows.Count+10; i++)
+            {
+                for (int j = 1; j < 7; j++)
+                {
+                    if (j == 6)
+                    {
+                        MessageBox.Show(ds2.Rows[i - 10].ItemArray[j - 1].ToString());
+                        ws.Cells[i, j] = ds2.Rows[i - 10].ItemArray[j - 1];
+                    }
+                    else if(j==7)
+                    {
+                        MessageBox.Show(ds2.Rows[i - 10].ItemArray[j - 1].ToString());
+                        ws.Cells[i, j] = ds2.Rows[i - 10].ItemArray[j - 1];
+                    }
+                    else
+                    {
+                        MessageBox.Show(ds2.Rows[i - 10].ItemArray[j - 1].ToString());
+                        ws.Cells[i, j] = ds2.Rows[i - 10].ItemArray[j - 1];
+                    }
+                }
+            }
+
+            // 엑셀파일 저장
+            wb.SaveAs(excelPath, Excel.XlFileFormat.xlWorkbookNormal);
+            excelApp.Visible = true;
+            bool userDidntCancel = excelApp.Dialogs[Excel.XlBuiltInDialog.xlDialogPrintPreview].Show(
+                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            wb.Close(false, Type.Missing, Type.Missing);
+            excelApp.Quit();
         }
     }
 }
