@@ -128,7 +128,7 @@ namespace POSproject
         {
             
             Prcd.EndWork(user,DateTime.Now);
-            
+            new Form_LogIn().Show();
             this.Close();
         }
 

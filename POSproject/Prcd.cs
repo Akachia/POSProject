@@ -231,7 +231,30 @@ namespace POSproject
             return ds;
 
         }
+        static public DataSet UserManagementLoad(string id)
+        {
+            DataSet ds = new DataSet();
 
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+
+                con.Open();
+                using (var cmd = new SqlCommand("SelectUserInfo", con))
+                {
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@userid", id);
+                   
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+
+
+                    adapter.Fill(ds);
+
+                }
+            }
+            return ds;
+
+        }
         static public Hashtable CheckUser(string id)
         {
             Hashtable infoTable = new Hashtable();

@@ -18,7 +18,7 @@ namespace formSales
 {
     public partial class Form_Main : Form
     {
-        Form_LogIn f1;
+        Form_LogIn FL;
         string user;
         public Form_Main()
         {
@@ -56,8 +56,8 @@ namespace formSales
                 dataGridView1.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
             }
 
-            f1 = (Form_LogIn)Owner;
-            f1.Hide();
+            FL = (Form_LogIn)Owner;
+            FL.Visible = false;
 
             timer1.Start();
         }
@@ -415,25 +415,28 @@ namespace formSales
 
 
             lbl_user.Left = lbl_user.Left - 3;
-            
+
+
             if (lbl_user.Right < 0)
 
-                lbl_user.Left = this.Width-lbl_time.Left;
+                lbl_user.Left = this.Width - lbl_time.Left;
         }
 
         private void btnUserSet_Click(object sender, EventArgs e)
         {
-            new UserAccount(user).Show();
+            UserAccount ua = new UserAccount(user);
+            ua.Owner = this;
+            ua.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            f1.Close();
+            this.Dispose();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new POSproject_KSM.POS_Stock().Show();
+            new POSproject_KSM.POS_Stock(user).Show();
         }
 
         private void btnCalc_Click(object sender, EventArgs e)

@@ -334,11 +334,12 @@ namespace POSproject_KSM
             string szConn = @"Provider=Microsoft.ACE.OLEDB.12.0;
                 Data Source=" + excelPath + ";Extended Properties='Excel 8.0;HDR=No'";
 
-            Excel.Workbook wb = excelApp.Workbooks.Open(excelPath);
-                        //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                        //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                        //Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            Excel.Worksheet ws = (Excel.Worksheet)wb.Worksheets[1];
+
+            //Excel.Workbook wb = excelApp.Workbooks.Open(excelPath);
+            //            //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //            //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //            //Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            //Excel.Worksheet ws = (Excel.Worksheet)wb.Worksheets[1];
 
 
             excelApp = new Excel.Application();
@@ -356,7 +357,7 @@ namespace POSproject_KSM
             DataGridViewRowCollection rows = dataGridView1.Rows;
             for (int i = 10; i < rows.Count+10; i++)
             {
-                for (int j = 1; j < 7; j++)
+                for (int j = 1; j < 6; j++)
                 {
                     if (j == 6)
                     {
@@ -378,14 +379,14 @@ namespace POSproject_KSM
 
             // 엑셀파일 저장
             wb.SaveAs(excelPath, Excel.XlFileFormat.xlWorkbookNormal);
-            excelApp.Visible = true;
-            bool userDidntCancel = excelApp.Dialogs[Excel.XlBuiltInDialog.xlDialogPrintPreview].Show(
-                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            //excelApp.Visible = true;
+            //bool userDidntCancel = excelApp.Dialogs[Excel.XlBuiltInDialog.xlDialogPrintPreview].Show(
+            //                            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //                            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //                            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //                            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //                            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //                            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
