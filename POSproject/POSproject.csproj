@@ -32,15 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BarcodeLib">
-      <HintPath>.\BarcodeLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web.DataVisualization" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form_Card.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Card.Designer.cs">
+      <DependentUpon>Form_Card.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_InStock.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,6 +72,12 @@
     </Compile>
     <Compile Include="Form_order.Designer.cs">
       <DependentUpon>Form_order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Refund.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Refund.Designer.cs">
+      <DependentUpon>Form_Refund.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_stock.cs">
       <SubType>Form</SubType>
@@ -94,6 +103,18 @@
     <Compile Include="Form_Main.Designer.cs">
       <DependentUpon>Form_Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_UserManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_UserManagement.Designer.cs">
+      <DependentUpon>Form_UserManagement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_UserModify.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_UserModify.Designer.cs">
+      <DependentUpon>Form_UserModify.cs</DependentUpon>
+    </Compile>
     <Compile Include="OrderDetail.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,12 +124,20 @@
     <Compile Include="Prcd.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="UserAccount.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UserAccount.Designer.cs">
       <DependentUpon>UserAccount.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form_Card.resx">
+      <DependentUpon>Form_Card.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_InStock.resx">
       <DependentUpon>Form_InStock.cs</DependentUpon>
     </EmbeddedResource>
@@ -117,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_order.resx">
       <DependentUpon>Form_order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Refund.resx">
+      <DependentUpon>Form_Refund.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_stock.resx">
       <DependentUpon>Form_stock.cs</DependentUpon>
@@ -130,19 +162,20 @@
     <EmbeddedResource Include="Form_Main.resx">
       <DependentUpon>Form_Main.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_UserManagement.resx">
+      <DependentUpon>Form_UserManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_UserModify.resx">
+      <DependentUpon>Form_UserModify.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OrderDetail.resx">
       <DependentUpon>OrderDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="UserAccount.resx">
       <DependentUpon>UserAccount.cs</DependentUpon>
     </EmbeddedResource>
@@ -166,9 +199,42 @@
     <None Include="Resources\if_lock-512x512px_345379.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\noImage.gif" />
-    <None Include="Resources\noImage1.gif" />
+    <None Include="Resources\if_Enter_7289341.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\nouserpic.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\noimage.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>9</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

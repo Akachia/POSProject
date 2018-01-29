@@ -259,24 +259,12 @@ namespace POSproject_KSM
             {
                 con.Open();
                 MessageBox.Show(last_idx.ToString());
-                using (SqlCommand cmd = new SqlCommand("SelectLastOrderNo", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter();
-                    dataAdapter.SelectCommand = cmd;
-
-                    dataAdapter.Fill(oDs);
-
-                    last_idx = int.Parse(oDs.Tables[0].Rows[0].ItemArray[0].ToString()) + 1;
-                    barcodeNo = decimal.Parse(oDs.Tables[0].Rows[0].ItemArray[5].ToString()) + 1;
-                }
 
                 using (SqlCommand cmd = new SqlCommand("InsertOrders2", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@UOrderTtlPrice", orderTtlSell_Price);
                     cmd.Parameters.AddWithValue("@UOrderCustomer", lbl_User.Text);
-                    cmd.Parameters.AddWithValue("@UOrderBarcode", GenBarcode(barcodeNo));
 
                     int i = cmd.ExecuteNonQuery();
                     if (i==0)
@@ -285,35 +273,30 @@ namespace POSproject_KSM
                         return;
                     }
                 }
-            }
-            
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
-            {
-                con.Open();
-                int i = 0;
+                int hi = 0;
                 for (int j = 0; j < dataGridView1.Rows.Count; j++)
                 {
                     using (SqlCommand cmd = new SqlCommand("InsertStockOrder", con))
                     {
-                        
+
                         DataGridViewCheckBoxCell dgvCell = (DataGridViewCheckBoxCell)dataGridView1.Rows[j].Cells[0];
                         if (dgvCell.Value != new DataGridViewCheckBoxCell().FalseValue)
                         {
                             //MessageBox.Show(" : " + (dgvCell.RowIndex +1).ToString());
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@IOrderNo", last_idx);
+                            //cmd.Parameters.AddWithValue("@IOrderNo", last_idx);
                             cmd.Parameters.AddWithValue("@IProductNo", dataGridView1.Rows[j].Cells[1].Value);
 
                             int boxNum = int.Parse(dataGridView1.Rows[j].Cells[5].Value.ToString().Split('b')[0]);
                             int boxNum1 = int.Parse(dataGridView1.Rows[j].Cells[6].Value.ToString().Split('개')[0]);
 
                             cmd.Parameters.AddWithValue("@IProductOrderQuantity", ((boxNum * 15) + boxNum1));
-                            i = cmd.ExecuteNonQuery();
+                            hi = cmd.ExecuteNonQuery();
 
                         }
                     }
                 }
-                if (i > 0)
+                if (hi > 0)
                 {
                     MessageBox.Show("발주 성공");
                 }
@@ -327,24 +310,24 @@ namespace POSproject_KSM
 
         private void btn_ExcelShow_Click(object sender, EventArgs e)
         {
-            excelApp = new Excel.Application();
-
             string excelPath = @"C:\Users\gd3-6\Documents\POSProject\POSproject\Resources\orderTemplate.xlsx";
 
             string szConn = @"Provider=Microsoft.ACE.OLEDB.12.0;
                 Data Source=" + excelPath + ";Extended Properties='Excel 8.0;HDR=No'";
 
-            Excel.Workbook wb = excelApp.Workbooks.Open(excelPath);
-                        //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                        //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                        //Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            Excel.Worksheet ws = (Excel.Worksheet)wb.Worksheets[1];
 
+            //Excel.Workbook wb = excelApp.Workbooks.Open(excelPath,
+            //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            //Excel.Worksheet ws = (Excel.Worksheet)wb.Worksheets[1];
 
-            excelApp = new Excel.Application();
+            //excelApp = new Excel.Application();
 
             // 엑셀 파일 열기
-            wb = excelApp.Workbooks.Open(excelPath);
+            wb = excelApp.Workbooks.Open(excelPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            Type.Missing, Type.Missing, Type.Missing, Type.Missing);
 
             // 첫번째 Worksheet
             ws = wb.Worksheets.get_Item(1) as Excel.Worksheet;
@@ -356,7 +339,7 @@ namespace POSproject_KSM
             DataGridViewRowCollection rows = dataGridView1.Rows;
             for (int i = 10; i < rows.Count+10; i++)
             {
-                for (int j = 1; j < 7; j++)
+                for (int j = 1; j < 6; j++)
                 {
                     if (j == 6)
                     {

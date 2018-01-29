@@ -116,7 +116,7 @@ namespace POSproject_KSM
                             cmd.Parameters.AddWithValue("@UOrderNo", int.Parse(ds.Tables[0].Rows[0].ItemArray[0].ToString()));
                             cmd.Parameters.AddWithValue("@UUserId ", lbl_OrderCus.Text);
                             i += cmd.ExecuteNonQuery();
-                            if (i > 1)
+                            if (i == ds.Tables[0].Rows.Count)
                             {
                                 MessageBox.Show("데이터 반영");
                                 POS_Stock pOS_ = new POS_Stock();

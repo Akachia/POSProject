@@ -18,7 +18,6 @@ namespace POSproject_KSM
         string bar = null;
         char[] cBar;
         POS_Stock pOS_ = null;
-        // 폐기 1, 등록 0
         string ProductNO = null;
         Image img = POSproject.Properties.Resources.noImage;
         int disOrNew;
@@ -42,13 +41,6 @@ namespace POSproject_KSM
             timer.Tick += Timer1_Tick1;
             timer.Interval = 1000;
             timer.Start();
-            if (disOrNew == 1)
-            {
-                tb_category.Enabled = false;
-                tb_name.Enabled = false;
-                tb_price.Enabled = false;
-                tb_primePrice.Enabled = false;
-            }
         }
 
         private void Timer1_Tick1(object sender, EventArgs e)
@@ -58,108 +50,11 @@ namespace POSproject_KSM
 
         private void btn_NCh_Click(object sender, EventArgs e)
         {
-            if (disOrNew == 0)
-            {
-                InsertStock();
-                pOS_ = Owner as POS_Stock;
-                pOS_.SelectStock("SelectStock");
-                this.Close();
-            }
-            else
-            {
-                DisposalItem();
-            }
+            InsertStock();
+            pOS_ = Owner as POS_Stock;
+            pOS_.SelectStock("SelectStock");
+            this.Close();
         }
-        /// <summary>
-        /// 폐기상품정보 가져오기
-        /// </summary>
-        private void SelectDisposalItem()
-        {
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
-            {
-                con.Open();
-                using (SqlCommand cmd = new SqlCommand("SelectStock2", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SProductBarcode", bar);
-                    SqlDataReader sdr = cmd.ExecuteReader();//select문 실행
-                    if (!sdr.HasRows)
-                    {
-                        MessageBox.Show("Not Data");
-                        return;
-                    }
-                    else
-                    {
-                        while (sdr.Read())
-                        {
-                            ProductNO = sdr["ProductNo"].ToString();
-                            tb_category.Text = sdr["ProductCategory"].ToString();
-                            tb_name.Text = sdr["ProductName"].ToString();
-                            tb_price.Text = sdr["ProductPrice"].ToString();
-                            tb_primePrice.Text = sdr["ProductPrimeCost"].ToString();
-                            Byte[] bImg = (Byte[])sdr["ProductImage"];
-                            pictureBox1.Image = new Bitmap(new MemoryStream(bImg));
-                            if (sdr["ProductQuantity"].ToString() == "0")
-                            {
-                                MessageBox.Show("재고가 없습니다.");
-                            }
-                        }
-                        
-                    }
-                }
-            }
-        }
-        /// <summary>
-        /// 폐기 테이블에 정보를 올리고 
-        /// 재고테이블에 -1을 한다.
-        /// </summary>
-        private void DisposalItem()
-        {
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
-            {
-                con.Open();
-                using (SqlCommand cmd = new SqlCommand("InsertDisposal", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    MessageBox.Show(ProductNO);
-                    cmd.Parameters.AddWithValue("@IProductNo",int.Parse(ProductNO));
-                    cmd.Parameters.AddWithValue("@IDisposalCount", 1);
-
-                    int i = cmd.ExecuteNonQuery();//insert문 1=저장 0=저장 안됨
-
-                    if (i == 0)
-                    { 
-                        MessageBox.Show("저장 안됨");
-                        con.Close();
-                        return;
-                    }
-                }
-
-                using (SqlCommand cmd = new SqlCommand("UpdateStock2", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cmd.Parameters.AddWithValue("@UProductNo", int.Parse(ProductNO));
-                    cmd.Parameters.AddWithValue("@UProductQuantity", -1);
-
-                    int i = cmd.ExecuteNonQuery();//insert문 1=저장 0=저장 안됨
-
-                    if (i == 1)
-                    {
-                        MessageBox.Show("저장");
-                        con.Close();
-                        return;
-                    }
-                    else
-                    {
-                        MessageBox.Show("저장 안됨2");
-                        con.Close();
-                        return;
-                    }
-                }
-            }
-        }
-
         private void InsertStock()
         {
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
@@ -213,7 +108,7 @@ namespace POSproject_KSM
 
         private void tb_barcode_Leave(object sender, EventArgs e)
         {
-            if (disOrNew == 0)
+            if (tb_barcode.Text.Length >= 13)
             {
                 BarcodeFit();
             }
@@ -224,7 +119,6 @@ namespace POSproject_KSM
             if (tb_barcode.TextLength == 18 && disOrNew==1)
             {
                 BarcodeFit();
-                SelectDisposalItem();
             }
         }
     }

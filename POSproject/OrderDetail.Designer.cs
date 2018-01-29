@@ -40,6 +40,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
             this.btn_orderb = new System.Windows.Forms.Button();
+            this.btn_OrderDel = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -161,11 +162,22 @@
             this.btn_orderb.UseVisualStyleBackColor = true;
             this.btn_orderb.Click += new System.EventHandler(this.btn_orderb_Click);
             // 
+            // btn_OrderDel
+            // 
+            this.btn_OrderDel.Location = new System.Drawing.Point(565, 521);
+            this.btn_OrderDel.Name = "btn_OrderDel";
+            this.btn_OrderDel.Size = new System.Drawing.Size(75, 75);
+            this.btn_OrderDel.TabIndex = 33;
+            this.btn_OrderDel.Text = "발주취소";
+            this.btn_OrderDel.UseVisualStyleBackColor = true;
+            this.btn_OrderDel.Click += new System.EventHandler(this.btn_OrderDel_Click);
+            // 
             // OrderDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.btn_OrderDel);
             this.Controls.Add(this.btn_orderb);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.dataGridView1);
@@ -195,5 +207,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btn_orderb;
+        private System.Windows.Forms.Button btn_OrderDel;
     }
 }
