@@ -48,6 +48,7 @@
             this.tb_price = new System.Windows.Forms.TextBox();
             this.tb_name = new System.Windows.Forms.TextBox();
             this.tb_primePrice = new System.Windows.Forms.TextBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             label2 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
@@ -198,6 +199,7 @@
             this.btn_search.TabIndex = 6;
             this.btn_search.Text = "이미지 찾기";
             this.btn_search.UseVisualStyleBackColor = true;
+            this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
             // 
             // cb_quantiy
             // 
@@ -249,6 +251,10 @@
             this.tb_primePrice.Size = new System.Drawing.Size(100, 22);
             this.tb_primePrice.TabIndex = 2;
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // Form_NewStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -298,5 +304,6 @@
         private System.Windows.Forms.TextBox tb_price;
         private System.Windows.Forms.TextBox tb_name;
         private System.Windows.Forms.TextBox tb_primePrice;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }

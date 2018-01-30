@@ -165,6 +165,7 @@
             this.Name = "Form_InStock";
             this.Text = "Form_InStock";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.Form_InStock_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

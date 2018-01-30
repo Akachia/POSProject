@@ -28,7 +28,7 @@ namespace POSproject_KSM
         int orderTtl_Price = 0;
         int orderTtlSell_Price = 0;
         int massageCount = 0;
-        decimal barcodeNo = 0;
+        //decimal barcodeNo = 0;
 
         public order_From()
         {

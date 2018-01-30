@@ -22,6 +22,9 @@ namespace POSproject_KSM
         DataTable data = null;
         int i = 0;
         string id = null;
+        string valid_discount = null;
+        string valid_Quantiy = null;
+        string[] autoCom = null;
         public POS_Stock()
         {
             InitializeComponent();
@@ -121,6 +124,11 @@ namespace POSproject_KSM
                     dataAdapter.Fill(ds);
 
                     dataGridView1.DataSource = ds.Tables[0];
+                    autoCom = new string[ds.Tables[0].Rows.Count];
+                    for (int i = 0; i < autoCom.Length; i++)
+                    {
+                        autoCom[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString();
+                    }
                 }
             }
         }
@@ -132,7 +140,13 @@ namespace POSproject_KSM
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.tb_Search.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.tb_Search.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             SelectStock("SelectStock");
+            AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
+            collection.AddRange(autoCom);
+            this.tb_Search.AutoCompleteCustomSource = collection;
             label1.Text = DateTime.Now.ToLongTimeString();
             lbl_User.Text = id;
             timer1.Start();
@@ -145,8 +159,8 @@ namespace POSproject_KSM
             dataGridView1.Columns[1].HeaderText = "상품번호";
             dataGridView1.Columns[8].HeaderText = "할인";
             dataGridView1.Columns[7].HeaderText = "종류";
-            dataGridView1.Columns[9].HeaderText = "유통기한";
-            dataGridView1.Columns[10].HeaderText = "누적 판매량";
+            dataGridView1.Columns[9].HeaderText = "누적 판매량";
+            dataGridView1.Columns[10].HeaderText = "상품 이미지";
             dataGridView1.Select();
         }
 
@@ -193,15 +207,16 @@ namespace POSproject_KSM
             if (i == 0)
             {
                 tb_StQunt.Enabled = true;
+                tb_ShelfLIfe.Enabled = true;
                 i++;
             }
             else if(i==1)
             {
                 tb_StQunt.Enabled = false;
+                tb_ShelfLIfe.Enabled = false;
                 i = 0;
                 using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
                 {
-                    
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand("UpdateStock", con))
                     {
@@ -258,6 +273,7 @@ namespace POSproject_KSM
             tb_TtlPrice.Text = (int.Parse(dataGridView1.CurrentRow.Cells[4].Value.ToString()) 
                 * int.Parse(dataGridView1.CurrentRow.Cells[6].Value.ToString())).ToString() + "원"; 
             tb_StBar.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+            tb_ShelfLIfe.Text = dataGridView1.CurrentRow.Cells[8].Value.ToString();
             tb_TtlSell.Text = dataGridView1.CurrentRow.Cells[9].Value.ToString();
             if (dataGridView1.CurrentRow.Cells[10].Value == DBNull.Value)
             {
@@ -269,6 +285,8 @@ namespace POSproject_KSM
                 Byte[] bImg = (byte[])dataGridView1.CurrentRow.Cells[10].Value;
                 pictureBox1.Image = new Bitmap(new MemoryStream(bImg));
             }
+            valid_Quantiy = tb_StQunt.Text;
+            valid_discount = tb_ShelfLIfe.Text;
         }
         /// <summary>
         /// 발주 폼으로 가게한다.
@@ -291,7 +309,10 @@ namespace POSproject_KSM
         {
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.ShowDialog();
-            pictureBox1.Image = new Bitmap(openFile.FileName);
+            if (openFile.FileName != "")
+            {
+                pictureBox1.Image = new Bitmap(openFile.FileName);
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -321,12 +342,65 @@ namespace POSproject_KSM
 
         private void btn_NewStock_Click(object sender, EventArgs e)
         {
-            new Form_NewStock(id, 0).ShowDialog();
+            new Form_NewStock(id).ShowDialog();
         }
 
         private void btn_DIsposal_Click(object sender, EventArgs e)
         {
-            new Form_NewStock(id,1).ShowDialog();
+            new Form_Disposal(id).ShowDialog();
+        }
+
+        private void tb_ShelfLIfe_TextChanged(object sender, EventArgs e)
+        {
+            string sPattern = "^[0-9]{1}$|^[1-4]{1}[0-9]{1}$|^50$|^\\t";
+
+            if (tb_ShelfLIfe.Text != "0" || tb_ShelfLIfe.Text != null)
+            {
+                if (System.Text.RegularExpressions.Regex.IsMatch(tb_ShelfLIfe.Text, sPattern))
+                {
+                    valid_discount = tb_ShelfLIfe.Text;
+                }
+                else
+                {
+                    tb_ShelfLIfe.Text = valid_discount;
+                    MessageBox.Show("0~ 50의 숫자만 입력해주세요");
+                }
+            }
+
+        }
+
+        private void tb_Search_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_search_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow item in dataGridView1.Rows)
+            {
+                if (tb_Search.Text == item.Cells["ProductName"].Value.ToString())
+                {
+                    dataGridView1.ClearSelection();
+                    item.Selected = true;
+                    dataGridView1.CurrentCell = item.Cells[0];
+                    dataGridView1_Click(null, null);
+                }
+            }
+        }
+
+        private void tb_StQunt_TextChanged(object sender, EventArgs e)
+        {
+            string sPattern = "^[0-9]{0,4}$";
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(tb_StQunt.Text, sPattern))
+            {
+                valid_Quantiy = tb_StQunt.Text;
+            }
+            else
+            {
+                tb_StQunt.Text = valid_Quantiy;
+                MessageBox.Show("5자리 이하 숫자만 입력해주세요");
+            }
         }
     }
 }

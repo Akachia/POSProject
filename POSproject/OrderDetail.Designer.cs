@@ -30,17 +30,22 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.Label label3;
             this.btn_Exit = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lbl_User = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.btn_ReOrder = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
             this.btn_orderb = new System.Windows.Forms.Button();
             this.btn_OrderDel = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker4 = new System.Windows.Forms.DateTimePicker();
+            this.btn_Prod = new System.Windows.Forms.Button();
+            label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -96,13 +101,6 @@
             this.label1.Size = new System.Drawing.Size(58, 21);
             this.label1.TabIndex = 0;
             this.label1.Text = "label1";
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(12, 69);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 21);
-            this.dateTimePicker1.TabIndex = 28;
             // 
             // btn_ReOrder
             // 
@@ -172,17 +170,63 @@
             this.btn_OrderDel.UseVisualStyleBackColor = true;
             this.btn_OrderDel.Click += new System.EventHandler(this.btn_OrderDel_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(231, 76);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(14, 12);
+            this.label4.TabIndex = 38;
+            this.label4.Text = "~";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(12, 76);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(37, 12);
+            label3.TabIndex = 37;
+            label3.Text = "날짜 :";
+            // 
+            // dateTimePicker3
+            // 
+            this.dateTimePicker3.Location = new System.Drawing.Point(251, 70);
+            this.dateTimePicker3.Name = "dateTimePicker3";
+            this.dateTimePicker3.Size = new System.Drawing.Size(169, 21);
+            this.dateTimePicker3.TabIndex = 36;
+            // 
+            // dateTimePicker4
+            // 
+            this.dateTimePicker4.Location = new System.Drawing.Point(55, 70);
+            this.dateTimePicker4.Name = "dateTimePicker4";
+            this.dateTimePicker4.Size = new System.Drawing.Size(170, 21);
+            this.dateTimePicker4.TabIndex = 35;
+            // 
+            // btn_Prod
+            // 
+            this.btn_Prod.Location = new System.Drawing.Point(426, 70);
+            this.btn_Prod.Name = "btn_Prod";
+            this.btn_Prod.Size = new System.Drawing.Size(75, 22);
+            this.btn_Prod.TabIndex = 39;
+            this.btn_Prod.Text = "기간검색";
+            this.btn_Prod.UseVisualStyleBackColor = true;
+            this.btn_Prod.Click += new System.EventHandler(this.btn_Prod_Click);
+            // 
             // OrderDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.btn_Prod);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(label3);
+            this.Controls.Add(this.dateTimePicker3);
+            this.Controls.Add(this.dateTimePicker4);
             this.Controls.Add(this.btn_OrderDel);
             this.Controls.Add(this.btn_orderb);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btn_ReOrder);
-            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.btn_Exit);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -193,6 +237,7 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -202,11 +247,14 @@
         internal System.Windows.Forms.Label lbl_User;
         internal System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button btn_ReOrder;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btn_orderb;
         private System.Windows.Forms.Button btn_OrderDel;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DateTimePicker dateTimePicker3;
+        private System.Windows.Forms.DateTimePicker dateTimePicker4;
+        private System.Windows.Forms.Button btn_Prod;
     }
 }

@@ -172,5 +172,10 @@ namespace POSproject_KSM
             }
            
         }
+
+        private void btn_Prod_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

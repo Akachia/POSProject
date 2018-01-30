@@ -18,25 +18,26 @@ namespace POSproject_KSM
         string bar = null;
         char[] cBar;
         POS_Stock pOS_ = null;
-        string ProductNO = null;
         Image img = POSproject.Properties.Resources.noImage;
-        int disOrNew;
         public Form_NewStock()
         {
             InitializeComponent();
         }
 
-        public Form_NewStock(string id, int i) : this()
+        public Form_NewStock(string id) : this()
         {
             lbl_user.Text = id;
-            disOrNew = i;
         }
 
         private void Form_NewStock_Load(object sender, EventArgs e)
         {
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pOS_ = Owner as POS_Stock;
+            for (int i = 0; i < 6; i++)
+            {
+                cb_quantiy.Items.Add(i);
+            }
 
-            //lbl_Timer.Text = pOS_.label1.Text;
             Timer timer = new Timer();
             timer.Tick += Timer1_Tick1;
             timer.Interval = 1000;
@@ -52,7 +53,7 @@ namespace POSproject_KSM
         {
             InsertStock();
             pOS_ = Owner as POS_Stock;
-            pOS_.SelectStock("SelectStock");
+            //pOS_.SelectStock("SelectStock");
             this.Close();
         }
         private void InsertStock()
@@ -116,10 +117,19 @@ namespace POSproject_KSM
 
         private void tb_barcode_TextChanged(object sender, EventArgs e)
         {
-            if (tb_barcode.TextLength == 18 && disOrNew==1)
+
+            if (tb_barcode.TextLength == 18)
             {
                 BarcodeFit();
             }
+        }
+
+        private void btn_search_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.ShowDialog();
+            pictureBox1.Image = new Bitmap(openFile.FileName);
+            img = pictureBox1.Image;
         }
     }
 }
