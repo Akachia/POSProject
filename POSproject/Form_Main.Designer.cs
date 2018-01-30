@@ -33,20 +33,22 @@
             this.button1 = new System.Windows.Forms.Button();
             this.btnCalc = new System.Windows.Forms.Button();
             this.btnPrint = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnRefund = new System.Windows.Forms.Button();
             this.btnUserSet = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.btnSetting = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnCntMin = new System.Windows.Forms.Button();
             this.MethodsOfPayment = new System.Windows.Forms.GroupBox();
             this.rbtCard = new System.Windows.Forms.RadioButton();
             this.rbtCash = new System.Windows.Forms.RadioButton();
-            this.btnCntMod = new System.Windows.Forms.Button();
-            this.txtProdCount = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.btnCntPlus = new System.Windows.Forms.Button();
             this.btnPay = new System.Windows.Forms.Button();
+            this.btnCntMod = new System.Windows.Forms.Button();
             this.btnCancle = new System.Windows.Forms.Button();
+            this.txtProdCount = new System.Windows.Forms.TextBox();
             this.btnRegister = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
             this.txtBarcode = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -60,25 +62,20 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtTotalPrice = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.btnNum7 = new System.Windows.Forms.Button();
-            this.btnNum8 = new System.Windows.Forms.Button();
-            this.btnNum9 = new System.Windows.Forms.Button();
-            this.btnNumRemove = new System.Windows.Forms.Button();
-            this.btnNumOK = new System.Windows.Forms.Button();
-            this.btnNum6 = new System.Windows.Forms.Button();
-            this.btnNum5 = new System.Windows.Forms.Button();
-            this.btnNum4 = new System.Windows.Forms.Button();
-            this.btnNum3 = new System.Windows.Forms.Button();
-            this.btnNum2 = new System.Windows.Forms.Button();
-            this.btnNum1 = new System.Windows.Forms.Button();
-            this.numThreeZero = new System.Windows.Forms.Button();
-            this.numTwoZero = new System.Windows.Forms.Button();
-            this.numZero = new System.Windows.Forms.Button();
             this.lbl_time = new System.Windows.Forms.Label();
             this.lbl_user = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.button2 = new System.Windows.Forms.Button();
+            this.btn50000 = new System.Windows.Forms.Button();
+            this.btn500 = new System.Windows.Forms.Button();
+            this.btn100 = new System.Windows.Forms.Button();
+            this.btn10000 = new System.Windows.Forms.Button();
+            this.btn50 = new System.Windows.Forms.Button();
+            this.btn5000 = new System.Windows.Forms.Button();
+            this.btn10 = new System.Windows.Forms.Button();
+            this.btn1000 = new System.Windows.Forms.Button();
+            this.btnPayReset = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.MethodsOfPayment.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -122,15 +119,17 @@
             this.btnPrint.TabIndex = 4;
             this.btnPrint.Text = "영수증출력";
             this.btnPrint.UseVisualStyleBackColor = true;
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
-            // button4
+            // btnRefund
             // 
-            this.button4.Location = new System.Drawing.Point(710, 261);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 57);
-            this.button4.TabIndex = 8;
-            this.button4.Text = "환불";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnRefund.Location = new System.Drawing.Point(710, 261);
+            this.btnRefund.Name = "btnRefund";
+            this.btnRefund.Size = new System.Drawing.Size(75, 57);
+            this.btnRefund.TabIndex = 8;
+            this.btnRefund.Text = "환불";
+            this.btnRefund.UseVisualStyleBackColor = true;
+            this.btnRefund.Click += new System.EventHandler(this.btnRefund_Click);
             // 
             // btnUserSet
             // 
@@ -159,16 +158,19 @@
             this.btnSetting.TabIndex = 5;
             this.btnSetting.Text = "환경설정";
             this.btnSetting.UseVisualStyleBackColor = true;
+            this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnCntMin);
             this.groupBox1.Controls.Add(this.MethodsOfPayment);
-            this.groupBox1.Controls.Add(this.btnCntMod);
-            this.groupBox1.Controls.Add(this.txtProdCount);
-            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.btnCntPlus);
             this.groupBox1.Controls.Add(this.btnPay);
+            this.groupBox1.Controls.Add(this.btnCntMod);
             this.groupBox1.Controls.Add(this.btnCancle);
+            this.groupBox1.Controls.Add(this.txtProdCount);
             this.groupBox1.Controls.Add(this.btnRegister);
+            this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.txtBarcode);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Location = new System.Drawing.Point(12, 328);
@@ -176,6 +178,16 @@
             this.groupBox1.Size = new System.Drawing.Size(279, 260);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
+            // 
+            // btnCntMin
+            // 
+            this.btnCntMin.Location = new System.Drawing.Point(222, 74);
+            this.btnCntMin.Name = "btnCntMin";
+            this.btnCntMin.Size = new System.Drawing.Size(42, 29);
+            this.btnCntMin.TabIndex = 53;
+            this.btnCntMin.Text = "-";
+            this.btnCntMin.UseVisualStyleBackColor = true;
+            this.btnCntMin.Click += new System.EventHandler(this.btnCntMin_Click);
             // 
             // MethodsOfPayment
             // 
@@ -197,6 +209,7 @@
             this.rbtCard.TabIndex = 1;
             this.rbtCard.Text = "카드";
             this.rbtCard.UseVisualStyleBackColor = true;
+            this.rbtCard.Click += new System.EventHandler(this.rbtCard_Click);
             // 
             // rbtCash
             // 
@@ -209,34 +222,17 @@
             this.rbtCash.TabStop = true;
             this.rbtCash.Text = "현금";
             this.rbtCash.UseVisualStyleBackColor = true;
+            this.rbtCash.Click += new System.EventHandler(this.rbtCash_Click);
             // 
-            // btnCntMod
+            // btnCntPlus
             // 
-            this.btnCntMod.Location = new System.Drawing.Point(186, 78);
-            this.btnCntMod.Name = "btnCntMod";
-            this.btnCntMod.Size = new System.Drawing.Size(75, 29);
-            this.btnCntMod.TabIndex = 35;
-            this.btnCntMod.Text = "수량 정정";
-            this.btnCntMod.UseVisualStyleBackColor = true;
-            this.btnCntMod.Click += new System.EventHandler(this.btnCntMod_Click);
-            // 
-            // txtProdCount
-            // 
-            this.txtProdCount.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txtProdCount.Location = new System.Drawing.Point(88, 78);
-            this.txtProdCount.Name = "txtProdCount";
-            this.txtProdCount.Size = new System.Drawing.Size(89, 29);
-            this.txtProdCount.TabIndex = 34;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label10.Location = new System.Drawing.Point(13, 83);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(49, 19);
-            this.label10.TabIndex = 33;
-            this.label10.Text = "수량";
+            this.btnCntPlus.Location = new System.Drawing.Point(177, 74);
+            this.btnCntPlus.Name = "btnCntPlus";
+            this.btnCntPlus.Size = new System.Drawing.Size(42, 29);
+            this.btnCntPlus.TabIndex = 52;
+            this.btnCntPlus.Text = "+";
+            this.btnCntPlus.UseVisualStyleBackColor = true;
+            this.btnCntPlus.Click += new System.EventHandler(this.btnCntPlus_Click);
             // 
             // btnPay
             // 
@@ -248,6 +244,16 @@
             this.btnPay.UseVisualStyleBackColor = true;
             this.btnPay.Click += new System.EventHandler(this.btnPay_Click);
             // 
+            // btnCntMod
+            // 
+            this.btnCntMod.Location = new System.Drawing.Point(132, 74);
+            this.btnCntMod.Name = "btnCntMod";
+            this.btnCntMod.Size = new System.Drawing.Size(42, 29);
+            this.btnCntMod.TabIndex = 51;
+            this.btnCntMod.Text = "수정";
+            this.btnCntMod.UseVisualStyleBackColor = true;
+            this.btnCntMod.Click += new System.EventHandler(this.btnCntMod_Click);
+            // 
             // btnCancle
             // 
             this.btnCancle.Location = new System.Drawing.Point(102, 182);
@@ -257,6 +263,14 @@
             this.btnCancle.Text = "취소";
             this.btnCancle.UseVisualStyleBackColor = true;
             this.btnCancle.Click += new System.EventHandler(this.btnCancle_Click);
+            // 
+            // txtProdCount
+            // 
+            this.txtProdCount.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.txtProdCount.Location = new System.Drawing.Point(88, 74);
+            this.txtProdCount.Name = "txtProdCount";
+            this.txtProdCount.Size = new System.Drawing.Size(41, 29);
+            this.txtProdCount.TabIndex = 50;
             // 
             // btnRegister
             // 
@@ -268,13 +282,25 @@
             this.btnRegister.UseVisualStyleBackColor = true;
             this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label10.Location = new System.Drawing.Point(14, 80);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(49, 19);
+            this.label10.TabIndex = 49;
+            this.label10.Text = "수량";
+            // 
             // txtBarcode
             // 
             this.txtBarcode.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtBarcode.Location = new System.Drawing.Point(88, 24);
+            this.txtBarcode.MaxLength = 13;
             this.txtBarcode.Name = "txtBarcode";
             this.txtBarcode.Size = new System.Drawing.Size(175, 29);
             this.txtBarcode.TabIndex = 30;
+            this.txtBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBarcode_KeyDown);
             // 
             // label4
             // 
@@ -306,9 +332,11 @@
             // 
             // txtChange
             // 
+            this.txtChange.BackColor = System.Drawing.SystemColors.Window;
             this.txtChange.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtChange.Location = new System.Drawing.Point(113, 206);
             this.txtChange.Name = "txtChange";
+            this.txtChange.ReadOnly = true;
             this.txtChange.Size = new System.Drawing.Size(175, 29);
             this.txtChange.TabIndex = 43;
             this.txtChange.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -321,12 +349,15 @@
             this.txtPay.Size = new System.Drawing.Size(175, 29);
             this.txtPay.TabIndex = 42;
             this.txtPay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtPay.TextChanged += new System.EventHandler(this.txtPay_TextChanged);
             // 
             // txtFinalPrice
             // 
+            this.txtFinalPrice.BackColor = System.Drawing.SystemColors.Window;
             this.txtFinalPrice.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtFinalPrice.Location = new System.Drawing.Point(113, 116);
             this.txtFinalPrice.Name = "txtFinalPrice";
+            this.txtFinalPrice.ReadOnly = true;
             this.txtFinalPrice.Size = new System.Drawing.Size(175, 29);
             this.txtFinalPrice.TabIndex = 41;
             this.txtFinalPrice.Text = "0";
@@ -334,9 +365,11 @@
             // 
             // txtTotalDis
             // 
+            this.txtTotalDis.BackColor = System.Drawing.SystemColors.Window;
             this.txtTotalDis.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtTotalDis.Location = new System.Drawing.Point(113, 71);
             this.txtTotalDis.Name = "txtTotalDis";
+            this.txtTotalDis.ReadOnly = true;
             this.txtTotalDis.Size = new System.Drawing.Size(175, 29);
             this.txtTotalDis.TabIndex = 40;
             this.txtTotalDis.Text = "0";
@@ -384,9 +417,11 @@
             // 
             // txtTotalPrice
             // 
+            this.txtTotalPrice.BackColor = System.Drawing.SystemColors.Window;
             this.txtTotalPrice.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtTotalPrice.Location = new System.Drawing.Point(113, 24);
             this.txtTotalPrice.Name = "txtTotalPrice";
+            this.txtTotalPrice.ReadOnly = true;
             this.txtTotalPrice.Size = new System.Drawing.Size(175, 29);
             this.txtTotalPrice.TabIndex = 34;
             this.txtTotalPrice.Text = "0";
@@ -401,132 +436,6 @@
             this.label5.Size = new System.Drawing.Size(70, 19);
             this.label5.TabIndex = 33;
             this.label5.Text = "소계 : ";
-            // 
-            // btnNum7
-            // 
-            this.btnNum7.Location = new System.Drawing.Point(627, 353);
-            this.btnNum7.Name = "btnNum7";
-            this.btnNum7.Size = new System.Drawing.Size(40, 49);
-            this.btnNum7.TabIndex = 11;
-            this.btnNum7.Text = "7";
-            this.btnNum7.UseVisualStyleBackColor = true;
-            // 
-            // btnNum8
-            // 
-            this.btnNum8.Location = new System.Drawing.Point(667, 353);
-            this.btnNum8.Name = "btnNum8";
-            this.btnNum8.Size = new System.Drawing.Size(40, 49);
-            this.btnNum8.TabIndex = 12;
-            this.btnNum8.Text = "8";
-            this.btnNum8.UseVisualStyleBackColor = true;
-            // 
-            // btnNum9
-            // 
-            this.btnNum9.Location = new System.Drawing.Point(707, 353);
-            this.btnNum9.Name = "btnNum9";
-            this.btnNum9.Size = new System.Drawing.Size(40, 49);
-            this.btnNum9.TabIndex = 13;
-            this.btnNum9.Text = "9";
-            this.btnNum9.UseVisualStyleBackColor = true;
-            // 
-            // btnNumRemove
-            // 
-            this.btnNumRemove.Location = new System.Drawing.Point(747, 353);
-            this.btnNumRemove.Name = "btnNumRemove";
-            this.btnNumRemove.Size = new System.Drawing.Size(40, 49);
-            this.btnNumRemove.TabIndex = 14;
-            this.btnNumRemove.Text = "←";
-            this.btnNumRemove.UseVisualStyleBackColor = true;
-            // 
-            // btnNumOK
-            // 
-            this.btnNumOK.Location = new System.Drawing.Point(747, 408);
-            this.btnNumOK.Name = "btnNumOK";
-            this.btnNumOK.Size = new System.Drawing.Size(40, 159);
-            this.btnNumOK.TabIndex = 18;
-            this.btnNumOK.Text = "확인";
-            this.btnNumOK.UseVisualStyleBackColor = true;
-            // 
-            // btnNum6
-            // 
-            this.btnNum6.Location = new System.Drawing.Point(707, 408);
-            this.btnNum6.Name = "btnNum6";
-            this.btnNum6.Size = new System.Drawing.Size(40, 49);
-            this.btnNum6.TabIndex = 17;
-            this.btnNum6.Text = "6";
-            this.btnNum6.UseVisualStyleBackColor = true;
-            // 
-            // btnNum5
-            // 
-            this.btnNum5.Location = new System.Drawing.Point(667, 408);
-            this.btnNum5.Name = "btnNum5";
-            this.btnNum5.Size = new System.Drawing.Size(40, 49);
-            this.btnNum5.TabIndex = 16;
-            this.btnNum5.Text = "5";
-            this.btnNum5.UseVisualStyleBackColor = true;
-            // 
-            // btnNum4
-            // 
-            this.btnNum4.Location = new System.Drawing.Point(627, 408);
-            this.btnNum4.Name = "btnNum4";
-            this.btnNum4.Size = new System.Drawing.Size(40, 49);
-            this.btnNum4.TabIndex = 15;
-            this.btnNum4.Text = "4";
-            this.btnNum4.UseVisualStyleBackColor = true;
-            // 
-            // btnNum3
-            // 
-            this.btnNum3.Location = new System.Drawing.Point(707, 463);
-            this.btnNum3.Name = "btnNum3";
-            this.btnNum3.Size = new System.Drawing.Size(40, 49);
-            this.btnNum3.TabIndex = 21;
-            this.btnNum3.Text = "3";
-            this.btnNum3.UseVisualStyleBackColor = true;
-            // 
-            // btnNum2
-            // 
-            this.btnNum2.Location = new System.Drawing.Point(667, 463);
-            this.btnNum2.Name = "btnNum2";
-            this.btnNum2.Size = new System.Drawing.Size(40, 49);
-            this.btnNum2.TabIndex = 20;
-            this.btnNum2.Text = "2";
-            this.btnNum2.UseVisualStyleBackColor = true;
-            // 
-            // btnNum1
-            // 
-            this.btnNum1.Location = new System.Drawing.Point(627, 463);
-            this.btnNum1.Name = "btnNum1";
-            this.btnNum1.Size = new System.Drawing.Size(40, 49);
-            this.btnNum1.TabIndex = 19;
-            this.btnNum1.Text = "1";
-            this.btnNum1.UseVisualStyleBackColor = true;
-            // 
-            // numThreeZero
-            // 
-            this.numThreeZero.Location = new System.Drawing.Point(707, 518);
-            this.numThreeZero.Name = "numThreeZero";
-            this.numThreeZero.Size = new System.Drawing.Size(40, 49);
-            this.numThreeZero.TabIndex = 25;
-            this.numThreeZero.Text = "000";
-            this.numThreeZero.UseVisualStyleBackColor = true;
-            // 
-            // numTwoZero
-            // 
-            this.numTwoZero.Location = new System.Drawing.Point(667, 518);
-            this.numTwoZero.Name = "numTwoZero";
-            this.numTwoZero.Size = new System.Drawing.Size(40, 49);
-            this.numTwoZero.TabIndex = 24;
-            this.numTwoZero.Text = "00";
-            this.numTwoZero.UseVisualStyleBackColor = true;
-            // 
-            // numZero
-            // 
-            this.numZero.Location = new System.Drawing.Point(627, 518);
-            this.numZero.Name = "numZero";
-            this.numZero.Size = new System.Drawing.Size(40, 49);
-            this.numZero.TabIndex = 23;
-            this.numZero.Text = "0";
-            this.numZero.UseVisualStyleBackColor = true;
             // 
             // lbl_time
             // 
@@ -550,9 +459,14 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 62);
+            this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(603, 256);
             this.dataGridView1.TabIndex = 0;
@@ -572,31 +486,116 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // btn50000
+            // 
+            this.btn50000.Location = new System.Drawing.Point(627, 345);
+            this.btn50000.Name = "btn50000";
+            this.btn50000.Size = new System.Drawing.Size(75, 39);
+            this.btn50000.TabIndex = 29;
+            this.btn50000.Text = "50000";
+            this.btn50000.UseVisualStyleBackColor = true;
+            this.btn50000.Click += new System.EventHandler(this.paySet);
+            // 
+            // btn500
+            // 
+            this.btn500.Location = new System.Drawing.Point(710, 345);
+            this.btn500.Name = "btn500";
+            this.btn500.Size = new System.Drawing.Size(75, 39);
+            this.btn500.TabIndex = 30;
+            this.btn500.Text = "500";
+            this.btn500.UseVisualStyleBackColor = true;
+            this.btn500.Click += new System.EventHandler(this.paySet);
+            // 
+            // btn100
+            // 
+            this.btn100.Location = new System.Drawing.Point(710, 390);
+            this.btn100.Name = "btn100";
+            this.btn100.Size = new System.Drawing.Size(75, 39);
+            this.btn100.TabIndex = 32;
+            this.btn100.Text = "100";
+            this.btn100.UseVisualStyleBackColor = true;
+            this.btn100.Click += new System.EventHandler(this.paySet);
+            // 
+            // btn10000
+            // 
+            this.btn10000.Location = new System.Drawing.Point(627, 390);
+            this.btn10000.Name = "btn10000";
+            this.btn10000.Size = new System.Drawing.Size(75, 39);
+            this.btn10000.TabIndex = 31;
+            this.btn10000.Text = "10000";
+            this.btn10000.UseVisualStyleBackColor = true;
+            this.btn10000.Click += new System.EventHandler(this.paySet);
+            // 
+            // btn50
+            // 
+            this.btn50.Location = new System.Drawing.Point(710, 435);
+            this.btn50.Name = "btn50";
+            this.btn50.Size = new System.Drawing.Size(75, 39);
+            this.btn50.TabIndex = 34;
+            this.btn50.Text = "50";
+            this.btn50.UseVisualStyleBackColor = true;
+            this.btn50.Click += new System.EventHandler(this.paySet);
+            // 
+            // btn5000
+            // 
+            this.btn5000.Location = new System.Drawing.Point(627, 435);
+            this.btn5000.Name = "btn5000";
+            this.btn5000.Size = new System.Drawing.Size(75, 39);
+            this.btn5000.TabIndex = 33;
+            this.btn5000.Text = "5000";
+            this.btn5000.UseVisualStyleBackColor = true;
+            this.btn5000.Click += new System.EventHandler(this.paySet);
+            // 
+            // btn10
+            // 
+            this.btn10.Location = new System.Drawing.Point(710, 482);
+            this.btn10.Name = "btn10";
+            this.btn10.Size = new System.Drawing.Size(75, 39);
+            this.btn10.TabIndex = 36;
+            this.btn10.Text = "10";
+            this.btn10.UseVisualStyleBackColor = true;
+            this.btn10.Click += new System.EventHandler(this.paySet);
+            // 
+            // btn1000
+            // 
+            this.btn1000.Location = new System.Drawing.Point(627, 482);
+            this.btn1000.Name = "btn1000";
+            this.btn1000.Size = new System.Drawing.Size(75, 39);
+            this.btn1000.TabIndex = 35;
+            this.btn1000.Text = "1000";
+            this.btn1000.UseVisualStyleBackColor = true;
+            this.btn1000.Click += new System.EventHandler(this.paySet);
+            // 
+            // btnPayReset
+            // 
+            this.btnPayReset.Location = new System.Drawing.Point(627, 531);
+            this.btnPayReset.Name = "btnPayReset";
+            this.btnPayReset.Size = new System.Drawing.Size(158, 39);
+            this.btnPayReset.TabIndex = 37;
+            this.btnPayReset.Text = "초기화";
+            this.btnPayReset.UseVisualStyleBackColor = true;
+            this.btnPayReset.Click += new System.EventHandler(this.btnPayReset_Click);
+            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.btnPayReset);
+            this.Controls.Add(this.btn10);
+            this.Controls.Add(this.btn1000);
+            this.Controls.Add(this.btn50);
+            this.Controls.Add(this.btn5000);
+            this.Controls.Add(this.btn100);
+            this.Controls.Add(this.btn10000);
+            this.Controls.Add(this.btn500);
+            this.Controls.Add(this.btn50000);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.lbl_user);
             this.Controls.Add(this.lbl_time);
-            this.Controls.Add(this.numThreeZero);
-            this.Controls.Add(this.numTwoZero);
-            this.Controls.Add(this.numZero);
-            this.Controls.Add(this.btnNum3);
-            this.Controls.Add(this.btnNum2);
-            this.Controls.Add(this.btnNum1);
-            this.Controls.Add(this.btnNumOK);
-            this.Controls.Add(this.btnNum6);
-            this.Controls.Add(this.btnNum5);
-            this.Controls.Add(this.btnNum4);
-            this.Controls.Add(this.btnNumRemove);
-            this.Controls.Add(this.btnNum9);
-            this.Controls.Add(this.btnNum8);
-            this.Controls.Add(this.btnNum7);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.btnRefund);
             this.Controls.Add(this.btnUserSet);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.btnSetting);
@@ -626,26 +625,12 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnCalc;
         private System.Windows.Forms.Button btnPrint;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnRefund;
         private System.Windows.Forms.Button btnUserSet;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button btnSetting;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button btnNum7;
-        private System.Windows.Forms.Button btnNum8;
-        private System.Windows.Forms.Button btnNum9;
-        private System.Windows.Forms.Button btnNumRemove;
-        private System.Windows.Forms.Button btnNumOK;
-        private System.Windows.Forms.Button btnNum6;
-        private System.Windows.Forms.Button btnNum5;
-        private System.Windows.Forms.Button btnNum4;
-        private System.Windows.Forms.Button btnNum3;
-        private System.Windows.Forms.Button btnNum2;
-        private System.Windows.Forms.Button btnNum1;
-        private System.Windows.Forms.Button numThreeZero;
-        private System.Windows.Forms.Button numTwoZero;
-        private System.Windows.Forms.Button numZero;
         private System.Windows.Forms.Button btnPay;
         private System.Windows.Forms.Button btnCancle;
         private System.Windows.Forms.Button btnRegister;
@@ -664,14 +649,25 @@
         private System.Windows.Forms.TextBox txtTotalPrice;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.TextBox txtProdCount;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button btnCntMod;
         private System.Windows.Forms.GroupBox MethodsOfPayment;
         private System.Windows.Forms.RadioButton rbtCard;
         private System.Windows.Forms.RadioButton rbtCash;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnCntMin;
+        private System.Windows.Forms.Button btnCntPlus;
+        private System.Windows.Forms.Button btnCntMod;
+        private System.Windows.Forms.TextBox txtProdCount;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btn50000;
+        private System.Windows.Forms.Button btn500;
+        private System.Windows.Forms.Button btn100;
+        private System.Windows.Forms.Button btn10000;
+        private System.Windows.Forms.Button btn50;
+        private System.Windows.Forms.Button btn5000;
+        private System.Windows.Forms.Button btn10;
+        private System.Windows.Forms.Button btn1000;
+        private System.Windows.Forms.Button btnPayReset;
     }
 }
 

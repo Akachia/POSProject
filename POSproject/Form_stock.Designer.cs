@@ -1,6 +1,6 @@
 ﻿namespace POSproject_KSM
 {
-    partial class Form_stock
+    partial class POS_Stock
     {
         /// <summary>
         /// 필수 디자이너 변수입니다.
@@ -40,13 +40,13 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Stock_exit = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_Order = new System.Windows.Forms.Button();
             this.btn_StUpdate = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tb_StCate = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lbl_User = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -61,6 +61,9 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btn_LstOrd = new System.Windows.Forms.Button();
             this.btn_NewStock = new System.Windows.Forms.Button();
+            this.btn_InStock = new System.Windows.Forms.Button();
+            this.btn_DIsposal = new System.Windows.Forms.Button();
+            this.btn_UpStock = new System.Windows.Forms.Button();
             label4 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
@@ -157,15 +160,15 @@
             this.Stock_exit.UseVisualStyleBackColor = true;
             this.Stock_exit.Click += new System.EventHandler(this.Stock_exit_Click);
             // 
-            // button1
+            // btn_Order
             // 
-            this.button1.Location = new System.Drawing.Point(722, 445);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 75);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "발주";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btn_Order.Location = new System.Drawing.Point(722, 446);
+            this.btn_Order.Name = "btn_Order";
+            this.btn_Order.Size = new System.Drawing.Size(75, 75);
+            this.btn_Order.TabIndex = 1;
+            this.btn_Order.Text = "발주";
+            this.btn_Order.UseVisualStyleBackColor = true;
+            this.btn_Order.Click += new System.EventHandler(this.btn_OrderClick);
             // 
             // btn_StUpdate
             // 
@@ -228,7 +231,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.lbl_User);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -237,25 +240,25 @@
             this.groupBox1.Size = new System.Drawing.Size(800, 63);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // label3
+            // lbl_User
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(480, 30);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 12);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "label3";
+            this.lbl_User.AutoSize = true;
+            this.lbl_User.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lbl_User.Location = new System.Drawing.Point(544, 22);
+            this.lbl_User.Name = "lbl_User";
+            this.lbl_User.Size = new System.Drawing.Size(0, 21);
+            this.lbl_User.TabIndex = 2;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(231, 30);
+            this.label2.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label2.Location = new System.Drawing.Point(402, 22);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 12);
+            this.label2.Size = new System.Drawing.Size(136, 21);
             this.label2.TabIndex = 1;
-            this.label2.Text = "label2";
+            this.label2.Text = "현재 접속자 :";
             // 
             // label1
             // 
@@ -336,6 +339,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox1.ErrorImage = global::POSproject.Properties.Resources.noImage;
             this.pictureBox1.Location = new System.Drawing.Point(461, 66);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(133, 102);
@@ -350,7 +354,7 @@
             // 
             // btn_LstOrd
             // 
-            this.btn_LstOrd.Location = new System.Drawing.Point(722, 368);
+            this.btn_LstOrd.Location = new System.Drawing.Point(722, 370);
             this.btn_LstOrd.Name = "btn_LstOrd";
             this.btn_LstOrd.Size = new System.Drawing.Size(75, 75);
             this.btn_LstOrd.TabIndex = 23;
@@ -360,21 +364,53 @@
             // 
             // btn_NewStock
             // 
-            this.btn_NewStock.Location = new System.Drawing.Point(722, 291);
+            this.btn_NewStock.Location = new System.Drawing.Point(722, 294);
             this.btn_NewStock.Name = "btn_NewStock";
             this.btn_NewStock.Size = new System.Drawing.Size(75, 75);
             this.btn_NewStock.TabIndex = 24;
             this.btn_NewStock.Text = "상품 추가";
             this.btn_NewStock.UseVisualStyleBackColor = true;
-            this.btn_NewStock.Click += new System.EventHandler(this.button2_Click);
+            this.btn_NewStock.Click += new System.EventHandler(this.btn_NewStock_Click);
             // 
-            // Form_stock
+            // btn_InStock
+            // 
+            this.btn_InStock.Location = new System.Drawing.Point(722, 218);
+            this.btn_InStock.Name = "btn_InStock";
+            this.btn_InStock.Size = new System.Drawing.Size(75, 75);
+            this.btn_InStock.TabIndex = 25;
+            this.btn_InStock.Text = "입고";
+            this.btn_InStock.UseVisualStyleBackColor = true;
+            this.btn_InStock.Click += new System.EventHandler(this.btn_InStock_Click);
+            // 
+            // btn_DIsposal
+            // 
+            this.btn_DIsposal.Location = new System.Drawing.Point(722, 142);
+            this.btn_DIsposal.Name = "btn_DIsposal";
+            this.btn_DIsposal.Size = new System.Drawing.Size(75, 75);
+            this.btn_DIsposal.TabIndex = 26;
+            this.btn_DIsposal.Text = "폐기";
+            this.btn_DIsposal.UseVisualStyleBackColor = true;
+            this.btn_DIsposal.Click += new System.EventHandler(this.btn_DIsposal_Click);
+            // 
+            // btn_UpStock
+            // 
+            this.btn_UpStock.Location = new System.Drawing.Point(722, 66);
+            this.btn_UpStock.Name = "btn_UpStock";
+            this.btn_UpStock.Size = new System.Drawing.Size(75, 75);
+            this.btn_UpStock.TabIndex = 27;
+            this.btn_UpStock.Text = "상품 업데이트";
+            this.btn_UpStock.UseVisualStyleBackColor = true;
+            // 
+            // POS_Stock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Stock_exit;
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.ControlBox = false;
+            this.Controls.Add(this.btn_UpStock);
+            this.Controls.Add(this.btn_DIsposal);
+            this.Controls.Add(this.btn_InStock);
             this.Controls.Add(this.btn_NewStock);
             this.Controls.Add(this.btn_LstOrd);
             this.Controls.Add(this.pictureBox1);
@@ -398,15 +434,15 @@
             this.Controls.Add(label4);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btn_StUpdate);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btn_Order);
             this.Controls.Add(this.Stock_exit);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Form_stock";
+            this.Name = "POS_Stock";
             this.ShowIcon = false;
             this.Text = "Stock";
-            this.TopMost = true;
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -419,9 +455,8 @@
         #endregion
 
         private System.Windows.Forms.Button Stock_exit;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_Order;
         private System.Windows.Forms.Button btn_StUpdate;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TextBox tb_StCate;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label9;
@@ -434,12 +469,16 @@
         private System.Windows.Forms.TextBox tb_TtlSell;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Timer timer1;
-        internal System.Windows.Forms.Label label3;
+        internal System.Windows.Forms.Label lbl_User;
         internal System.Windows.Forms.Label label2;
         internal System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_LstOrd;
         private System.Windows.Forms.Button btn_NewStock;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
+        private System.Windows.Forms.Button btn_InStock;
+        internal System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button btn_DIsposal;
+        private System.Windows.Forms.Button btn_UpStock;
     }
 }
 

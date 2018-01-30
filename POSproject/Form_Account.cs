@@ -19,6 +19,7 @@ namespace TF
         List<string[]> list = new List<string[]>();
         List<string[]> chartList = new List<string[]>();
         DateTime time1;
+        TimeSpan time = new TimeSpan(1, 0, 0, 0);
         string thisYear = "";
 
         public Form_Account()
@@ -149,14 +150,11 @@ namespace TF
                     }
                 }
 
-                //foreach (string[] ar in list)
-                //{
-                //    MessageBox.Show(ar[0] + ", " + ar[1]);
-                //}
-
                 foreach (DataRow row in table1.Rows)
                 {
-                    if (row.ItemArray[0].ToString() == lblDate.Text)
+                    string[] ar = row.ItemArray[0].ToString().Split(' ');
+
+                    if (ar[0] == lblDate.Text)
                     {
                         dataGridView1.Rows.Add(row.ItemArray[1], row.ItemArray[3], row.ItemArray[2]);
                     }
@@ -232,7 +230,6 @@ namespace TF
                 dataGridView1.Rows.Clear();
 
                 DataTable table1 = ds.Tables[0];
-                TimeSpan time = new TimeSpan(1, 0, 0, 0);
                 time1 = time1 - time;
                 lblDate.Text = time1.ToShortDateString();
 
@@ -270,7 +267,6 @@ namespace TF
                 dataGridView1.Rows.Clear();
 
                 DataTable table1 = ds.Tables[0];
-                TimeSpan time = new TimeSpan(1, 0, 0, 0);
                 time1 = time1 + time;
                 lblDate.Text = time1.ToShortDateString();
 
@@ -280,8 +276,9 @@ namespace TF
                 foreach (DataRow row in table1.Rows)
                 {
                     string[] ar = row.ItemArray[0].ToString().Split(' ');
+                    string tempDate = (DateTime.Now + time).ToShortDateString();
 
-                    if (ar[0] == lblDate.Text)
+                    if (lblDate.Text == ar[0])
                     {
                         if (row.ItemArray[4].ToString() == "False")
                         {
@@ -292,6 +289,23 @@ namespace TF
                             cardD += int.Parse(row.ItemArray[3].ToString());
                         }
                         dataGridView1.Rows.Add(row.ItemArray[1], row.ItemArray[3], row.ItemArray[2]);
+                    }
+                    else if (lblDate.Text == tempDate)
+                    {
+                        MessageBox.Show(time1.ToShortDateString() + " 이후 매출 정보가 없습니다");
+                        time1 -= time;
+                        lblDate.Text = time1.ToShortDateString();
+
+                        foreach (DataRow row2 in table1.Rows)
+                        {
+                            string[] ar2 = row2.ItemArray[0].ToString().Split(' ');
+
+                            if (ar2[0] == lblDate.Text)
+                            {
+                                dataGridView1.Rows.Add(row2.ItemArray[1], row2.ItemArray[3], row2.ItemArray[2]);
+                            }
+                        }
+                        break;
                     }
 
                     txtCardD.Text = cardD.ToString();
@@ -322,43 +336,114 @@ namespace TF
 
         private void btnPrevYear_Click_1(object sender, EventArgs e)
         {
-            chart.Series[0].Points.Clear();
-            chart.Series[1].Points.Clear();
-            thisYear = (int.Parse(thisYear) - 1).ToString();
-
-            foreach (string[] arr in chartList)
+            try
             {
-                string[] temp = arr[0].Split(' ');
+                chart.Series[0].Points.Clear();
+                chart.Series[1].Points.Clear();
+                thisYear = (int.Parse(thisYear) - 1).ToString();
 
-                if (temp[0] == thisYear)
+                foreach (string[] arr in chartList)
                 {
-                    chart.Series[0].Points.AddXY(arr[0], int.Parse(arr[1]));
-                    chart.Series[1].Points.AddXY(arr[0], int.Parse(arr[2]));
+                    string[] temp = arr[0].Split(' ');
+
+                    if (thisYear == temp[0])
+                    {
+                        chart.Series[0].Points.AddXY(arr[0], int.Parse(arr[1]));
+                        chart.Series[1].Points.AddXY(arr[0], int.Parse(arr[2]));
+                    }
+                    else if (thisYear == "2016")
+                    {
+                        MessageBox.Show("2016년도 이전 매출 자료가 없습니다");
+                        foreach (string[] arr2 in chartList)
+                        {
+                            string[] temp2 = arr2[0].Split(' ');
+
+                            if (temp2[0] == "2017")
+                            {
+                                chart.Series[0].Points.AddXY(arr2[0], int.Parse(arr2[1]));
+                                chart.Series[1].Points.AddXY(arr2[0], int.Parse(arr2[2]));
+                            }
+                        }
+                        break;
+                    }
+                    else if (thisYear == "2015")
+                    {
+                        MessageBox.Show("2016년도 이전 매출 자료가 없습니다");
+                        thisYear = "2016";
+                        foreach (string[] arr2 in chartList)
+                        {
+                            string[] temp2 = arr2[0].Split(' ');
+
+                            if (temp2[0] == "2017")
+                            {
+                                chart.Series[0].Points.AddXY(arr2[0], int.Parse(arr2[1]));
+                                chart.Series[1].Points.AddXY(arr2[0], int.Parse(arr2[2]));
+                            }
+                        }
+                        break;
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("매출 차트 보기를 먼저 눌러주세요");
             }
         }
 
         private void btnNextYear_Click_1(object sender, EventArgs e)
         {
-            chart.Series[0].Points.Clear();
-            chart.Series[1].Points.Clear();
-            thisYear = (int.Parse(thisYear) + 1).ToString();
-
-            foreach (string[] arr in chartList)
+            try
             {
-                string[] temp = arr[0].Split(' ');
+                chart.Series[0].Points.Clear();
+                chart.Series[1].Points.Clear();
+                thisYear = (int.Parse(thisYear) + 1).ToString();
 
-                if (temp[0] == thisYear)
+                foreach (string[] arr in chartList)
                 {
-                    chart.Series[0].Points.AddXY(arr[0], int.Parse(arr[1]));
-                    chart.Series[1].Points.AddXY(arr[0], int.Parse(arr[2]));
+                    string[] temp = arr[0].Split(' ');
+
+                    if (thisYear == temp[0])
+                    {
+                        chart.Series[0].Points.AddXY(arr[0], int.Parse(arr[1]));
+                        chart.Series[1].Points.AddXY(arr[0], int.Parse(arr[2]));
+                    }
+                    else if (thisYear == (DateTime.Now.Year + 1).ToString())
+                    {
+                        MessageBox.Show(thisYear + "년도 이후 매출 자료가 없습니다");
+                        foreach (string[] arr2 in chartList)
+                        {
+                            string[] temp2 = arr2[0].Split(' ');
+
+                            if (temp2[0] == DateTime.Now.Year.ToString())
+                            {
+                                chart.Series[0].Points.AddXY(arr2[0], int.Parse(arr2[1]));
+                                chart.Series[1].Points.AddXY(arr2[0], int.Parse(arr2[2]));
+                            }
+                        }
+                        break;
+                    }
+                    else if (thisYear == (DateTime.Now.Year + 2).ToString())
+                    {
+                        MessageBox.Show((int.Parse(thisYear) - 1).ToString() + "년도 이후 매출 자료가 없습니다");
+                        thisYear = (DateTime.Now.Year + 1).ToString();
+                        foreach (string[] arr2 in chartList)
+                        {
+                            string[] temp2 = arr2[0].Split(' ');
+
+                            if (temp2[0] == DateTime.Now.Year.ToString())
+                            {
+                                chart.Series[0].Points.AddXY(arr2[0], int.Parse(arr2[1]));
+                                chart.Series[1].Points.AddXY(arr2[0], int.Parse(arr2[2]));
+                            }
+                        }
+                        break;
+                    }
                 }
             }
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            lblTime.Text = DateTime.Now.ToString();
+            catch (Exception)
+            {
+                MessageBox.Show("매출 차트 보기를 먼저 눌러주세요");
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -374,6 +459,11 @@ namespace TF
         private void button5_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void timer1_Tick_1(object sender, EventArgs e)
+        {
+            lblTime.Text = DateTime.Now.ToString();
         }
     }
 }
