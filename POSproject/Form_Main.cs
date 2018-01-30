@@ -431,6 +431,7 @@ namespace formSales
 
         private void button2_Click(object sender, EventArgs e)
         {
+            FL.Close();
             this.Dispose();
         }
 

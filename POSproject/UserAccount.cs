@@ -113,7 +113,7 @@ namespace POSproject
         private void button1_Click(object sender, EventArgs e)
         {
             FM.Visible = true;
-            this.Close();
+            this.Dispose();
         }
 
         private void timer1_Tick(object sender, EventArgs e)

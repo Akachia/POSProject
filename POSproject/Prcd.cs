@@ -148,7 +148,7 @@ namespace POSproject
                         infoTable.Add("UserName", sdr["UserName"].ToString());
                         infoTable.Add("UserPhone", sdr["UserPhone"].ToString());
                         infoTable.Add("UserPic", sdr["UserPic"]);
-                     
+
                     }
 
 
@@ -231,7 +231,7 @@ namespace POSproject
             return ds;
 
         }
-        static public DataSet UserManagementLoad(string id)
+        static public DataSet UserManagementLoad()
         {
             DataSet ds = new DataSet();
 
@@ -239,12 +239,12 @@ namespace POSproject
             {
 
                 con.Open();
-                using (var cmd = new SqlCommand("SelectUserInfo", con))
+                using (var cmd = new SqlCommand("SelectForManagement", con))
                 {
 
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@userid", id);
-                   
+
+
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
 
 
@@ -286,7 +286,7 @@ namespace POSproject
         }
 
 
-        static public bool UserModify(string id,string pwd,string phone,byte[] img)
+        static public bool UserModify(string id, string pwd, string phone, byte[] img)
         {
             using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
@@ -349,6 +349,141 @@ namespace POSproject
                     }
                 }
             }
+        }
+        static public bool UserDelete(string id)
+        {
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                using (var cmd = new SqlCommand("DeleteUser", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@userId", id);
+                    con.Open();
+
+                    int i = cmd.ExecuteNonQuery();
+                    //select문을 제외한 sql쿼리문은 ExecuteNonQuery()를 이용하여 실행
+                    if (i == 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+
+
+                }
+            }
+        }
+
+        static public bool UserManagement(string id, string pwd, string name, int pay, string authority, string phone, byte[] img)
+        {
+
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                if (CheckID(id))
+                {
+                    //con.Open();
+                    if (pwd != "")
+                    {
+                        using (var cmd = new SqlCommand("userManagement", con))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+
+                            cmd.Parameters.AddWithValue("@userName", name);
+                            cmd.Parameters.AddWithValue("@userAuthority", authority);
+                            cmd.Parameters.AddWithValue("@userPay", pay);
+                            cmd.Parameters.AddWithValue("@userId", id);
+                            cmd.Parameters.AddWithValue("@userPwd", pwd);
+                            cmd.Parameters.AddWithValue("@userPhone", phone);
+                            cmd.Parameters.AddWithValue("@userPic", img);
+
+                            //
+                            con.Open();
+
+                            int i = cmd.ExecuteNonQuery();
+                            //select문을 제외한 sql쿼리문은 ExecuteNonQuery()를 이용하여 실행
+                            if (i == 1)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+
+
+                        }
+                    }
+                    else
+                    {
+                        using (var cmd = new SqlCommand("userManagementNopwd", con))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+
+
+                            cmd.Parameters.AddWithValue("@userName", name);
+                            cmd.Parameters.AddWithValue("@userAuthority", authority);
+                            cmd.Parameters.AddWithValue("@userPay", pay);
+                            cmd.Parameters.AddWithValue("@userId", id);
+                            cmd.Parameters.AddWithValue("@userPhone", phone);
+                            cmd.Parameters.AddWithValue("@userPic", img);
+
+                            //
+                            con.Open();
+
+                            int i = cmd.ExecuteNonQuery();
+                            //select문을 제외한 sql쿼리문은 ExecuteNonQuery()를 이용하여 실행
+                            if (i == 1)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+
+
+                        }
+                    }
+                }
+                else
+                {
+                    using (var cmd = new SqlCommand("UserAdd", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@userName", name);
+                        cmd.Parameters.AddWithValue("@authority", authority);
+                        cmd.Parameters.AddWithValue("@userPay", pay);
+                        cmd.Parameters.AddWithValue("@userId", id);
+                        cmd.Parameters.AddWithValue("@userPwd", pwd);
+                        cmd.Parameters.AddWithValue("@userPhone", phone);
+                        cmd.Parameters.AddWithValue("@userPic", img);
+
+                        //
+                        con.Open();
+
+                        int i = cmd.ExecuteNonQuery();
+                        //select문을 제외한 sql쿼리문은 ExecuteNonQuery()를 이용하여 실행
+                        if (i == 1)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+
+
+                    }
+                }
+            }
+
+
+
         }
 
     }

@@ -23,7 +23,7 @@ namespace POSproject
             InitializeComponent();
         }
         public Form_UserModify(string user)
-        {
+        { 
 
 
             this.user = user;
