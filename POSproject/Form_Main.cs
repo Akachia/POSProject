@@ -42,7 +42,6 @@ namespace formSales
         int totalDis = 0; // 총 할인 금액
         int finalPrice = 0; // 총 계산금액
         int checkProdno = 0;
-        int prodCount = 0;
 
 
         private void Form1_Load(object sender, EventArgs e)
@@ -69,43 +68,51 @@ namespace formSales
                 using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
                 {
                     con.Open();
+
                     using (var cmd = new SqlCommand("SelectStock2", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@SProductBarcode", txtBarcode.Text);
 
-                        checkProdno = (int)cmd.ExecuteScalar();
-                    }
-
-                    using (var cmd = new SqlCommand("SelectSalesStock", con))
-                    {
-                        prodCount = 0;
-
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@barcode", txtBarcode.Text);
-                        cmd.Parameters.AddWithValue("@count", 1); // 최초 상품등록시 수량은 1개
-
                         SqlDataReader sdr = cmd.ExecuteReader(); // 상품 존재여부 확인
                         if (!sdr.HasRows)
                         {
-                            MessageBox.Show("상품이 존재하지 않습니다.");
+                            MessageBox.Show("등록되지 않은 상품입니다.");
                             txtBarcode.Text = "";
                             con.Close();
                             return;
                         }
                         sdr.Close();
+                        checkProdno = (int)cmd.ExecuteScalar(); // 상품 번호 인
+                        con.Close();
+                    }
 
-                        prodCount = (int)cmd.ExecuteScalar(); // 상품 재고수량 확인
-                        if (prodCount <= 0)
+                    con.Open();
+                    using (var cmd = new SqlCommand("CheckProdQuanProdNo", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@prodNo", checkProdno);
+
+                        int ProdCount = (int)cmd.ExecuteScalar();
+
+                        if (ProdCount == 0)
                         {
-                            MessageBox.Show("상품 수량이 부족하여 판매할 수 없습니다.");
+                            MessageBox.Show("재고가 부족합니다. 잔여 수량 : " + ProdCount);
                             txtBarcode.Text = "";
                             con.Close();
                             return;
                         }
+                        con.Close();
+                    }
+
+                    con.Open();
+                    using (var cmd = new SqlCommand("SelectSalesStock", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@barcode", txtBarcode.Text);
+                        cmd.Parameters.AddWithValue("@count", 1); // 최초 상품등록시 수량은 1개
 
                         checkItem = new string[2];
-
                         for (int i = 0; i < dataGridView1.Rows.Count; i++)
                         {
                             if ((int)dataGridView1.Rows[i].Cells[0].Value == checkProdno)
@@ -114,7 +121,6 @@ namespace formSales
 
                                 if (checkItem[0].ToString() == "1")
                                 {
-                                    dataGridView1.Rows[i].Cells[2].Value = (int)dataGridView1.Rows[i].Cells[2].Value + 1;
                                     txtProdCount.Text = "";
                                     Reset();
                                     priceCalc(i);
@@ -124,11 +130,11 @@ namespace formSales
                                 {
                                     MessageBox.Show("재고가 부족합니다. 잔여 수량 : " + checkItem[1].ToString());
                                     txtBarcode.Text = "";
+                                    con.Close();
                                     return;
                                 }
                             }
                         }
-
                         adapter.SelectCommand = cmd;
                         adapter.Fill(ds);
                     }
@@ -236,8 +242,9 @@ namespace formSales
                     cmd.Parameters.AddWithValue("@prodNo", prodNo);
 
                     int ProdCount = (int)cmd.ExecuteScalar();
+                    //MessageBox.Show(ProdCount.ToString());
 
-                    if (ProdCount < rowCount + 1) // 재고량 < 증가량 => 판매불가
+                    if (ProdCount < rowCount + 1) // 재고량 < 증가량 or 재고량 = 0 >>> 판매불가
                     {
                         con.Close();
                         reCheckItem[0] = "0";
@@ -248,8 +255,8 @@ namespace formSales
                         reCheckItem[0] = "1";
                     }
                     reCheckItem[1] = ProdCount.ToString();
-                    return reCheckItem;
                 }
+                return reCheckItem;
             }
         }
 
@@ -429,6 +436,7 @@ namespace formSales
         private void button2_Click(object sender, EventArgs e)
         {
             f1.Close();
+            this.Dispose();
         }
 
         private void button1_Click(object sender, EventArgs e)
