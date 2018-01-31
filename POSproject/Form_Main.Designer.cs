@@ -295,7 +295,7 @@
             // 
             this.txtBarcode.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtBarcode.Location = new System.Drawing.Point(88, 24);
-            this.txtBarcode.MaxLength = 13;
+            this.txtBarcode.MaxLength = 20;
             this.txtBarcode.Name = "txtBarcode";
             this.txtBarcode.Size = new System.Drawing.Size(175, 29);
             this.txtBarcode.TabIndex = 30;

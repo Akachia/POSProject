@@ -32,7 +32,7 @@ namespace formSales
             lbl_user.Text = id + "님 환영합니다. ";
             lbl_time.Text = DateTime.Now.ToLongTimeString();
         }
-        
+
         DataSet ds = new DataSet("SalesList");
         SqlDataAdapter adapter = new SqlDataAdapter();
         ArrayList ProdNoList = new ArrayList(); // 그리드 뷰에 있는 상품의 상품번호 저장할 배열
@@ -42,6 +42,7 @@ namespace formSales
         int totalDis = 0; // 총 할인 금액
         int finalPrice = 0; // 총 계산금액
         int checkProdno = 0;
+        bool checkSellby = true;
 
 
         private void Form1_Load(object sender, EventArgs e)
@@ -63,137 +64,181 @@ namespace formSales
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            if (txtBarcode.Text.Length != 0)
+            try
             {
-                using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+                int todayMonth = int.Parse(DateTime.Now.ToString("MM")); // 오늘 월
+                int todayDate = int.Parse(DateTime.Now.ToString("dd")); // 오늘 일
+                int todayHour = int.Parse(DateTime.Now.ToString("hh")); // 오늘 시
+                int sellByDay = 0; // 유통기일
+                int sellByDate = 0; // 만료 일
+                int sellByHour = 0; // 만료 시
+                string sellby = "";
+
+                if (txtBarcode.Text.Length != 0)
                 {
-                    con.Open();
 
-                    using (var cmd = new SqlCommand("SelectStock2", con))
+                    // 바코드 + 유통기한 일 경우 유통기한 5자리 때놓고 바코드만 재입력시키기
+                    if (txtBarcode.Text.Length > 13)
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@SProductBarcode", txtBarcode.Text);
 
-                        SqlDataReader sdr = cmd.ExecuteReader(); // 상품 존재여부 확인
-                        if (!sdr.HasRows)
-                        {
-                            MessageBox.Show("등록되지 않은 상품입니다.");
-                            txtBarcode.Text = "";
-                            con.Close();
-                            return;
-                        }
-                        sdr.Close();
-                        checkProdno = (int)cmd.ExecuteScalar(); // 상품 번호 인
-                        con.Close();
+                        sellByDay = int.Parse(txtBarcode.Text.Substring(13, 1)); // 유통기일
+                        sellByDate = int.Parse(txtBarcode.Text.Substring(14, 2)); // 만료 일
+                        sellByHour = int.Parse(txtBarcode.Text.Substring(16, 2)); // 만료 시
+                        checkSellby = false;
+
+                        //MessageBox.Show("todayMonth : " + todayMonth + ", date : " + todayDate + ", hour : " + todayHour);
+                        //MessageBox.Show("day : " + sellByDay + ", date : " + sellByDate + ", hour : " + sellByHour);
+                        sellby = txtBarcode.Text.Substring(13, 5);
+                        txtBarcode.Text = txtBarcode.Text.Substring(0, 13);
                     }
 
-                    con.Open();
-                    using (var cmd = new SqlCommand("CheckProdQuanProdNo", con))
+                    using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@prodNo", checkProdno);
+                        con.Open();
 
-                        int ProdCount = (int)cmd.ExecuteScalar();
-
-                        if (ProdCount == 0)
+                        using (var cmd = new SqlCommand("SelectStock2", con))
                         {
-                            MessageBox.Show("재고가 부족합니다. 잔여 수량 : " + ProdCount);
-                            txtBarcode.Text = "";
-                            con.Close();
-                            return;
-                        }
-                        con.Close();
-                    }
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@SProductBarcode", txtBarcode.Text);
 
-                    con.Open();
-                    using (var cmd = new SqlCommand("SelectSalesStock", con))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@barcode", txtBarcode.Text);
-                        cmd.Parameters.AddWithValue("@count", 1); // 최초 상품등록시 수량은 1개
-
-                        checkItem = new string[2];
-                        for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                        {
-                            if ((int)dataGridView1.Rows[i].Cells[0].Value == checkProdno)
+                            SqlDataReader sdr = cmd.ExecuteReader(); // 상품 존재여부 확인
+                            if (!sdr.HasRows)
                             {
-                                checkItem = CheckItemCount(checkProdno, (int)dataGridView1.Rows[i].Cells[2].Value);
+                                MessageBox.Show("등록되지 않은 상품입니다.");
+                                txtBarcode.Text = "";
+                                con.Close();
+                                return;
+                            }
+                            sdr.Close();
+                            checkProdno = (int)cmd.ExecuteScalar(); // 상품 번호
+                            con.Close();
+                        }
 
-                                if (checkItem[0].ToString() == "1")
-                                {
-                                    txtProdCount.Text = "";
-                                    Reset();
-                                    priceCalc(i);
-                                    Total();
-                                }
-                                else
-                                {
-                                    MessageBox.Show("재고가 부족합니다. 잔여 수량 : " + checkItem[1].ToString());
-                                    txtBarcode.Text = "";
-                                    con.Close();
-                                    return;
-                                }
+                        if (!checkSellby)
+                        {
+                            if (!IsValidBarcode(txtBarcode.Text + sellby))
+                            {
+                                MessageBox.Show("판매 불가능한 상품입니다. 자동으로 폐기처리 됩니다.");
+                                txtBarcode.Text = "";
+                                DisposalItem(checkProdno);
+                                return;
                             }
                         }
-                        adapter.SelectCommand = cmd;
-                        adapter.Fill(ds);
-                    }
-                }
-                this.dataGridView1.DataSource = ds.Tables[0];
 
-                int rowCount = dataGridView1.Rows.Count-1; // 여기서 항상 값이 초기화됨
-                
-                bool check = false; // for문 빠져나오기위해 만듬
-                //
-                //
-                ProdNoList.Clear(); // 배열 비우기
-
-                // 등록된 상품이 중복되는지 확인하는 부분
-                if (rowCount > 0) // 1개의 상품이라도 등록되있어야 실행 -> 리스트 상 2번째 상품부터 적용
-                {
-                    //MessageBox.Show(dataGridView1.Rows[rowCount].Cells[0].Value.ToString());
-                    for (int i = 0; i < rowCount; i++)
-                    {
-                        ProdNoList.Add(dataGridView1.Rows[i].Cells[0].Value.ToString()); // 목록에 올라와있는 상품 번호 배열에 저장
-                        //MessageBox.Show(rowCount.ToString());
-                        for (int j = 0; j < ProdNoList.Count; j++)
+                        con.Open();
+                        using (var cmd = new SqlCommand("CheckProdQuanProdNo", con))
                         {
-                            if (int.Parse(dataGridView1.Rows[rowCount].Cells[0].Value.ToString()) == int.Parse(ProdNoList[j].ToString())) // 배열안의 값과 같은게 있다면...
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@prodNo", checkProdno);
+
+                            int ProdCount = (int)cmd.ExecuteScalar();
+
+                            if (ProdCount == 0)
                             {
-                                //MessageBox.Show("Test");
-                                dataGridView1.Rows.Remove(dataGridView1.Rows[rowCount]); // 마지막 행을 지운다.
-                                dataGridView1.Rows[j].Cells[2].Value = (int.Parse(dataGridView1.Rows[j].Cells[2].Value.ToString()) + 1); // 물품 수량 증가
+                                MessageBox.Show("재고가 부족합니다. 잔여 수량 : " + ProdCount);
+                                txtBarcode.Text = "";
+                                con.Close();
+                                return;
+                            }
+                            con.Close();
+                        }
+                        con.Open();
 
-                                // 총액 계산식
-                                priceCalc(j);
+                        using (var cmd = new SqlCommand("SelectSalesStock", con))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@barcode", txtBarcode.Text);
+                            cmd.Parameters.AddWithValue("@count", 1); // 최초 상품등록시 수량은 1개
 
-                                check = true;
+                            checkItem = new string[2];
+                            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                            {
+                                if ((int)dataGridView1.Rows[i].Cells[0].Value == checkProdno)
+                                {
+                                    checkItem = CheckItemCount(checkProdno, (int)dataGridView1.Rows[i].Cells[2].Value);
+
+                                    if (checkItem[0].ToString() == "1")
+                                    {
+                                        txtProdCount.Text = "";
+                                        Reset();
+                                        priceCalc(i);
+                                        Total();
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("재고가 부족합니다. 잔여 수량 : " + checkItem[1].ToString());
+                                        txtBarcode.Text = "";
+                                        con.Close();
+                                        return;
+                                    }
+                                }
+                            }
+                            adapter.SelectCommand = cmd;
+                            adapter.Fill(ds);
+                        }
+                    }
+                    this.dataGridView1.DataSource = ds.Tables[0];
+
+                    int rowCount = dataGridView1.Rows.Count - 1; // 여기서 항상 값이 초기화됨
+
+                    bool check = false; // for문 빠져나오기위해 만듬
+                                        //
+                                        //
+                    ProdNoList.Clear(); // 배열 비우기
+
+                    // 등록된 상품이 중복되는지 확인하는 부분
+                    if (rowCount > 0) // 1개의 상품이라도 등록되있어야 실행 -> 리스트 상 2번째 상품부터 적용
+                    {
+                        //MessageBox.Show(dataGridView1.Rows[rowCount].Cells[0].Value.ToString());
+                        for (int i = 0; i < rowCount; i++)
+                        {
+                            ProdNoList.Add(dataGridView1.Rows[i].Cells[0].Value.ToString()); // 목록에 올라와있는 상품 번호 배열에 저장
+                                                                                             //MessageBox.Show(rowCount.ToString());
+                            for (int j = 0; j < ProdNoList.Count; j++)
+                            {
+                                if (int.Parse(dataGridView1.Rows[rowCount].Cells[0].Value.ToString()) == int.Parse(ProdNoList[j].ToString())) // 배열안의 값과 같은게 있다면...
+                                {
+                                    //MessageBox.Show("Test");
+                                    dataGridView1.Rows.Remove(dataGridView1.Rows[rowCount]); // 마지막 행을 지운다.
+                                    dataGridView1.Rows[j].Cells[2].Value = (int.Parse(dataGridView1.Rows[j].Cells[2].Value.ToString()) + 1); // 물품 수량 증가
+
+                                    // 총액 계산식
+                                    priceCalc(j);
+
+                                    check = true;
+                                    break;
+                                }
+                            }
+                            if (check)
+                            {
+                                check = false;
                                 break;
                             }
                         }
-                        if (check)
-                        {
-                            check = false;
-                            break;
-                        }
                     }
+                    // 총 계산 금액 정산할 부분
+                    Total();
                 }
-                // 총 계산 금액 정산할 부분
-                Total();
-            }
-            else
-            {
-                MessageBox.Show("바코드가 등록되지 않았습니다");
-            }
+                else
+                {
+                    MessageBox.Show("바코드가 등록되지 않았습니다");
+                }
 
-            // 상품등록이 발생했을때(지금 위치) 합계, 할인된 금액, 총액 계산해서 텍스트박스에 삽입 메서드로 만들것(취소에서도 사용해야함)
+                // 상품등록이 발생했을때(지금 위치) 합계, 할인된 금액, 총액 계산해서 텍스트박스에 삽입 메서드로 만들것(취소에서도 사용해야함)
 
-            // 헤더로 인한 정렬 금지
-            for (int i = 0; i < dataGridView1.Columns.Count; i++)
-            {
-                dataGridView1.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                // 헤더로 인한 정렬 금지
+                for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                {
+                    dataGridView1.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
+                txtBarcode.Focus();
             }
-            txtBarcode.Focus();
+            catch (Exception)
+            {
+                MessageBox.Show("잘못된 입력입니다.");
+                txtBarcode.Text = "";
+                return;
+            }
         }
 
         private void priceCalc(int j)
@@ -422,10 +467,10 @@ namespace formSales
 
 
             lbl_user.Left = lbl_user.Left - 3;
-            
+
             if (lbl_user.Right < 0)
 
-                lbl_user.Left = this.Width-lbl_time.Left;
+                lbl_user.Left = this.Width - lbl_time.Left;
         }
 
         private void btnUserSet_Click(object sender, EventArgs e)
@@ -495,7 +540,6 @@ namespace formSales
             string userId = user;
             int sellCount = 0;
             int checkCashOrCard = 0;
-            cardNum = "";
             //MessageBox.Show(sellNo.ToString());
 
             if (rbtCard.Checked)
@@ -536,7 +580,7 @@ namespace formSales
                         cmd.Parameters.AddWithValue("@userID", userId);
                         cmd.Parameters.AddWithValue("@sellCount", sellCount);
                         cmd.Parameters.AddWithValue("@cardWhether", checkCashOrCard); // 카드 사용 여부
-                        cmd.Parameters.AddWithValue("@cardNumber", cardNum);
+                        cmd.Parameters.AddWithValue("@cardNumber", getCardNum());
 
                         cmd.ExecuteReader();
                     }
@@ -563,6 +607,7 @@ namespace formSales
             }
             MessageBox.Show("결제가 완료되었습니다.");
             cardNum = ""; // 카드번호 초기화 필수
+            rbtCash.Checked = true;
             txtTotalPrice.Text = "0";
             txtTotalDis.Text = "0";
             txtFinalPrice.Text = "0";
@@ -618,12 +663,14 @@ namespace formSales
 
         public void getCardNum(string num)
         {
-            this.cardNum = num;
+            cardNum = "";
+            this.cardNum += num;
             //MessageBox.Show(cardNum);
             //성공적으로 카드번호를 가져왔다면...
             if (cardNum.Trim().Length == 19)
             {
                 txtPay.Text = txtFinalPrice.Text;
+                MessageBox.Show(cardNum);
                 //MessageBox.Show("카드번호 정상적으로 가져옴");
             }
             else
@@ -638,6 +685,89 @@ namespace formSales
             rbtCash.Checked = true;
             txtPay.Text = "";
             cardNum = "";
+        }
+
+        /// <summary>
+        /// 폐기 테이블에 정보를 올리고 
+        /// 재고테이블에 -1을 한다.
+        /// </summary>
+        private void DisposalItem(int prodNo)
+        {
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("InsertDisposal", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    //MessageBox.Show(ProductNO);
+                    cmd.Parameters.AddWithValue("@IProductNo", prodNo);
+                    cmd.Parameters.AddWithValue("@IDisposalCount", 1);
+
+                    int i = cmd.ExecuteNonQuery();//insert문 1=저장 0=저장 안됨
+
+                    if (i == 0)
+                    {
+                        MessageBox.Show("저장 안됨");
+                        con.Close();
+                        return;
+                    }
+                }
+
+                using (SqlCommand cmd = new SqlCommand("UpdateStock2", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@UProductNo", prodNo);
+                    cmd.Parameters.AddWithValue("@UProductQuantity", -1);
+
+                    int i = cmd.ExecuteNonQuery();//insert문 1=저장 0=저장 안됨
+
+                    if (i == 1)
+                    {
+                        MessageBox.Show("저장");
+                        con.Close();
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("저장 안됨2");
+                        con.Close();
+                        return;
+                    }
+                }
+            }
+        }
+
+        private bool IsValidBarcode(string expire)
+        {
+            char[] shf = expire.ToCharArray();
+
+            string shf_Day = shf[14].ToString() + shf[15].ToString();
+            string shf_Hour = shf[16].ToString() + shf[17].ToString();
+
+            DateTime date = DateTime.Now;
+            DateTime shf_time;
+            if (int.Parse(shf_Day) - int.Parse(shf[13].ToString()) < 0)
+            {
+                shf_time = new DateTime(
+                date.Year, date.Month + 1, int.Parse(shf_Day),
+                int.Parse(shf_Hour), date.Minute, date.Second);
+            }
+            else
+            {
+                shf_time = new DateTime(
+                date.Year, date.Month, int.Parse(shf_Day),
+                int.Parse(shf_Hour), date.Minute, date.Second);
+            }
+
+            if (date > shf_time)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
