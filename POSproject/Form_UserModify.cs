@@ -23,7 +23,7 @@ namespace POSproject
             InitializeComponent();
         }
         public Form_UserModify(string user)
-        {
+        { 
 
 
             this.user = user;
@@ -70,6 +70,10 @@ namespace POSproject
                 }
 
 
+            }
+            else
+            {
+                txt_chkPwd.Text = "";
             }
         }
 
@@ -124,6 +128,16 @@ namespace POSproject
             }
         }
 
-       
+        private void txt_Pwd_Leave(object sender, EventArgs e)
+        {
+            if(txt_Pwd.Text.Length>=1)
+            {
+                if(txt_Pwd.Text.Length<4)
+                {
+                    MessageBox.Show("비밀번호는 4자리 이상입니다.","경고",MessageBoxButtons.OK);
+                    txt_Pwd.Text = "";
+                }
+            }
+        }
     }
 }

@@ -25,6 +25,8 @@ namespace POSproject_KSM
         string valid_discount = null;
         string valid_Quantiy = null;
         string[] autoCom = null;
+        private string valid_Search;
+
         public POS_Stock()
         {
             InitializeComponent();
@@ -69,6 +71,11 @@ namespace POSproject_KSM
             data.Columns.Add(column);
 
             column = new DataColumn();
+            column.DataType = System.Type.GetType("System.String");
+            column.ColumnName = "productCategory";
+            data.Columns.Add(column);
+
+            column = new DataColumn();
             column.DataType = System.Type.GetType("System.Int32");
             column.ColumnName = "productPrice";
             data.Columns.Add(column);
@@ -96,6 +103,7 @@ namespace POSproject_KSM
 
                     myRow["productNo"] = dataGridView1.Rows[i].Cells[1].Value;
                     myRow["productName"] = dataGridView1.Rows[i].Cells[3].Value;
+                    myRow["productCategory"] = dataGridView1.Rows[i].Cells[7].Value;
                     myRow["productPrice"] = dataGridView1.Rows[i].Cells[4].Value;
                     myRow["productPrimePrice"] = dataGridView1.Rows[i].Cells[5].Value;
                     myRow["productQuantity"] = dataGridView1.Rows[i].Cells[6].Value;
@@ -140,6 +148,8 @@ namespace POSproject_KSM
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
+
+
             this.tb_Search.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             this.tb_Search.AutoCompleteSource = AutoCompleteSource.CustomSource;
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -161,6 +171,10 @@ namespace POSproject_KSM
             dataGridView1.Columns[7].HeaderText = "종류";
             dataGridView1.Columns[9].HeaderText = "누적 판매량";
             dataGridView1.Columns[10].HeaderText = "상품 이미지";
+            for (int i = 1; i < dataGridView1.ColumnCount; i++)
+            {
+                dataGridView1.Columns[i].ReadOnly = true;
+            }
             dataGridView1.Select();
         }
 
@@ -193,6 +207,8 @@ namespace POSproject_KSM
         /// <param name="e"></param>
         private void Stock_exit_Click(object sender, EventArgs e)
         {
+            this.timer1.Stop();
+            this.Dispose();
             this.Close();
         }
         /// <summary>
@@ -322,7 +338,7 @@ namespace POSproject_KSM
 
         private void btn_LstOrd_Click(object sender, EventArgs e)
         {
-            new OrderDetail().ShowDialog();
+            new OrderDetail(id).ShowDialog();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -352,9 +368,9 @@ namespace POSproject_KSM
 
         private void tb_ShelfLIfe_TextChanged(object sender, EventArgs e)
         {
-            string sPattern = "^[0-9]{1}$|^[1-4]{1}[0-9]{1}$|^50$|^\\t";
+            string sPattern = "^[0-9]{0,1}$|^[1-4]{0,1}[0-9]{0,1}$|^50$";
 
-            if (tb_ShelfLIfe.Text != "0" || tb_ShelfLIfe.Text != null)
+            if (tb_ShelfLIfe.Text != "0")
             {
                 if (System.Text.RegularExpressions.Regex.IsMatch(tb_ShelfLIfe.Text, sPattern))
                 {
@@ -363,6 +379,7 @@ namespace POSproject_KSM
                 else
                 {
                     tb_ShelfLIfe.Text = valid_discount;
+                    tb_ShelfLIfe.Select(tb_ShelfLIfe.Text.Length, tb_ShelfLIfe.Text.Length);
                     MessageBox.Show("0~ 50의 숫자만 입력해주세요");
                 }
             }
@@ -371,7 +388,18 @@ namespace POSproject_KSM
 
         private void tb_Search_TextChanged(object sender, EventArgs e)
         {
+            string sPattern = "^[ㄱ-ㅎ가-힣0-9a-zA-Z()]*$";
 
+            if (System.Text.RegularExpressions.Regex.IsMatch(tb_Search.Text, sPattern))
+            {
+                valid_Search = tb_Search.Text;
+            }
+            else
+            {
+                tb_Search.Text = valid_Search;
+                tb_Search.Select(tb_Search.Text.Length, tb_Search.Text.Length);
+                MessageBox.Show("괄호를 제외한 특수문자는 입력할 수 없습니다.");
+            }
         }
 
         private void btn_search_Click(object sender, EventArgs e)
@@ -399,6 +427,7 @@ namespace POSproject_KSM
             else
             {
                 tb_StQunt.Text = valid_Quantiy;
+                tb_StQunt.Select(tb_StQunt.Text.Length, tb_StQunt.Text.Length);
                 MessageBox.Show("5자리 이하 숫자만 입력해주세요");
             }
         }

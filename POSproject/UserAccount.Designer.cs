@@ -46,6 +46,7 @@
             this.btn_CheckOut = new System.Windows.Forms.Button();
             this.btn_InfoModify = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnMail = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_User)).BeginInit();
             this.SuspendLayout();
@@ -177,7 +178,7 @@
             // 
             // btn_mgr
             // 
-            this.btn_mgr.Location = new System.Drawing.Point(611, 108);
+            this.btn_mgr.Location = new System.Drawing.Point(530, 12);
             this.btn_mgr.Name = "btn_mgr";
             this.btn_mgr.Size = new System.Drawing.Size(75, 82);
             this.btn_mgr.TabIndex = 5;
@@ -217,12 +218,23 @@
             this.textBox1.Size = new System.Drawing.Size(239, 249);
             this.textBox1.TabIndex = 8;
             // 
+            // btnMail
+            // 
+            this.btnMail.Location = new System.Drawing.Point(611, 109);
+            this.btnMail.Name = "btnMail";
+            this.btnMail.Size = new System.Drawing.Size(75, 82);
+            this.btnMail.TabIndex = 9;
+            this.btnMail.Text = "사장에게 메일발송";
+            this.btnMail.UseVisualStyleBackColor = true;
+            this.btnMail.Click += new System.EventHandler(this.btnMail_Click);
+            // 
             // UserAccount
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this.btnMail);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.btn_InfoModify);
             this.Controls.Add(this.btn_CheckOut);
@@ -262,5 +274,6 @@
         private System.Windows.Forms.Button btn_CheckOut;
         private System.Windows.Forms.Button btn_InfoModify;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button btnMail;
     }
 }

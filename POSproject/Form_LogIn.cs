@@ -40,7 +40,7 @@ namespace POSproject
             }
             else
             {
-                MessageBox.Show("실패!");
+                txtPwd.Text = "";
             }
         }
     }

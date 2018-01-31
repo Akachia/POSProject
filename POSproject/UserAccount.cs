@@ -113,7 +113,7 @@ namespace POSproject
         private void button1_Click(object sender, EventArgs e)
         {
             FM.Visible = true;
-            this.Close();
+            this.Dispose();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -128,7 +128,7 @@ namespace POSproject
         {
             
             Prcd.EndWork(user,DateTime.Now);
-            
+            new Form_LogIn().Show();
             this.Close();
         }
 
@@ -140,6 +140,11 @@ namespace POSproject
         private void btn_InfoModify_Click(object sender, EventArgs e)
         {
             new Form_UserModify(user).Show();
+        }
+
+        private void btnMail_Click(object sender, EventArgs e)
+        {
+            new Form_mail(user).Show();
         }
     }
 }

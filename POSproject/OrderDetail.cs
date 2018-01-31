@@ -13,14 +13,20 @@ namespace POSproject_KSM
 {
     public partial class OrderDetail : Form
     {
+        Timer timer;
         int switchOrderView = 0;
-        DataSet ds = null;
+        DataSet ds1 = null;
         DataSet ds2 = null;
         DataGridViewTextBoxColumn textBoxCell = null;
         SqlDataAdapter dataAdapter = null;
         public OrderDetail()
         {
             InitializeComponent();
+        }
+
+        public OrderDetail(string id) : this()
+        {
+            lbl_User.Text = id;
         }
 
         private SqlDataAdapter GetSqlDataAdapter()
@@ -35,12 +41,37 @@ namespace POSproject_KSM
             }
         }
 
+        private DataSet GetDataSet(DataSet ds)
+        {
+            if (ds == null)
+            {
+                return new DataSet();
+            }
+            else
+            {
+                ds.Clear();
+                return ds;
+            }
+        }
+
         private void OrderDetail_Load(object sender, EventArgs e)
         {
+
+            label1.Text = DateTime.Now.ToLongTimeString();
+            timer = new Timer();
+            timer.Tick += Timer1_Tick1;
+            timer.Start();
+
             dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             //dataGridView2.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             OrderedStock();
         }
+
+        private void Timer1_Tick1(object sender, EventArgs e)
+        {
+            label1.Text = DateTime.Now.ToLongTimeString();
+        }
+
         /// <summary>
         /// 전체 주문을 보여준다.
         /// </summary>
@@ -49,7 +80,7 @@ namespace POSproject_KSM
             switchOrderView = 0;
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
-                ds = new DataSet();
+                ds1 = GetDataSet(ds1);
 
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand("SelectOrders", con))
@@ -58,9 +89,9 @@ namespace POSproject_KSM
                     SqlDataAdapter dataAdapter = GetSqlDataAdapter();
                     dataAdapter.SelectCommand = cmd;
 
-                    dataAdapter.Fill(ds);
+                    dataAdapter.Fill(ds1);
 
-                    dataGridView1.DataSource = ds.Tables[0];
+                    dataGridView1.DataSource = ds1.Tables[0];
                     dataGridView1.Columns[4].ReadOnly = true;
                 }
                 con.Close();
@@ -73,7 +104,7 @@ namespace POSproject_KSM
         private void DetailOrderedStock(int orderNO)
         {
             switchOrderView = 1;
-            ds2 = new DataSet();
+            ds2 = GetDataSet(ds2);
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("SelectDetailOrder", con))
@@ -93,6 +124,8 @@ namespace POSproject_KSM
 
         private void btn_Exit_Click(object sender, EventArgs e)
         {
+            this.timer.Stop();
+            this.Dispose();
             this.Close();
         }
         /// <summary>
@@ -133,7 +166,7 @@ namespace POSproject_KSM
         private void btn_ReOrder_Click(object sender, EventArgs e)
         {
             dataGridView1_CellDoubleClick(null, null);
-            order_From order_ = new order_From(ds2);
+            order_From order_ = new order_From(ds2, lbl_User.Text);
             order_.Owner = this;
             order_.Show();
             //this.Close();
@@ -175,7 +208,26 @@ namespace POSproject_KSM
 
         private void btn_Prod_Click(object sender, EventArgs e)
         {
+            switchOrderView = 0;
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                ds1 = GetDataSet(ds1);
 
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("SelectDetailOrderTerm", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SDate1", dateStart.Value);
+                    cmd.Parameters.AddWithValue("@SDate2", dateEnd.Value);
+                    SqlDataAdapter dataAdapter = GetSqlDataAdapter();
+                    dataAdapter.SelectCommand = cmd;
+
+                    dataAdapter.Fill(ds1);
+
+                    dataGridView1.DataSource = ds1.Tables[0];
+                }
+                con.Close();
+            }
         }
     }
 }

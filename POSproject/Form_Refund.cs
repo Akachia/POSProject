@@ -28,7 +28,11 @@ namespace POSproject
         {
             dataGridView1.AllowUserToAddRows = false;
             dataGridView2.AllowUserToAddRows = false;
+            HeaderSet();
+        }
 
+        public void HeaderSet()
+        {
             for (int i = 0; i < dataGridView1.Columns.Count; i++)
             {
                 dataGridView1.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -60,6 +64,7 @@ namespace POSproject
                 }
                 con.Open();
                 SelectRefund();
+                HeaderSet();
             }
         }
 
@@ -80,7 +85,7 @@ namespace POSproject
             }
         }
 
-        private void CheckRefund(int prodNo)
+        private int CheckRefund(int prodNo)
         {
             using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
@@ -90,33 +95,99 @@ namespace POSproject
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@sellNo", long.Parse(txtSellNo.Text));
                     cmd.Parameters.AddWithValue("@prodNo", prodNo);
-
                     checkTakeBack = (int)cmd.ExecuteScalar();
+                    return checkTakeBack;
                 }
             }
         }
-
-        private void ModRefund(int prodNo, int Count) // 이미 존재하는 동일한 거래번호-상품에 대한 환불 내용 수정
-        {
-            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
-            {
-                con.Open();
-                using (var cmd = new SqlCommand("ModTakeBack", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@sellNo", long.Parse(txtSellNo.Text));
-                    cmd.Parameters.AddWithValue("@prodNo", prodNo);
-                    cmd.Parameters.AddWithValue("@reCount", Count);
-                    cmd.ExecuteReader();
-                }
-            }
-        }
-
+        
         private void txtTotalPrice_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 btnSearch_Click(null, null);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="prodNo">상품번호</param>
+        /// <param name="reCount">환불하고자 하는 수량</param>
+        private void ModRefund(int prodNo, int reCount) // 이미 존재하는 동일한 거래번호-상품에 대한 환불 내용 수정
+        {
+            int sellC = 0;
+            bool modType = false;
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand("SellCountFromSales", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@sellNo", long.Parse(txtSellNo.Text));
+                    cmd.Parameters.AddWithValue("@prodNo", prodNo);
+
+                    sellC = (int)cmd.ExecuteScalar(); // 상품 잔여 수량
+                    if (sellC == reCount)
+                    {
+                        modType = true;
+                    }
+                }
+                if (modType) // true = allmod
+                {
+                    using (var cmd = new SqlCommand("UpdateSalesModRefund", con)) // 판매테이블에서 해당 거래번호의 상품번호의 수량, 판매금액 수정
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@sellNo", long.Parse(txtSellNo.Text));
+                        cmd.Parameters.AddWithValue("@prodNo", prodNo);
+                        cmd.ExecuteReader();
+
+                        con.Close();
+                    }
+                }
+                else
+                {
+                    using (var cmd = new SqlCommand("UpdateSalesRefund", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@sellNo", long.Parse(txtSellNo.Text));
+                        cmd.Parameters.AddWithValue("@prodNo", prodNo);
+                        cmd.Parameters.AddWithValue("@Count", sellC);
+                        cmd.Parameters.AddWithValue("@reCount", reCount);
+                        cmd.ExecuteReader();
+
+                        con.Close();
+                    }
+                }
+                con.Open();
+                using (var cmd = new SqlCommand("ProdCntUp", con)) // 상품 수량 증가
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ProductNo", prodNo);
+                    cmd.Parameters.AddWithValue("@ProductCount", reCount);
+                    cmd.ExecuteReader();
+
+                    con.Close();
+                }
+                con.Open();
+                using (var cmd = new SqlCommand("ProdSalesVolDown", con)) // 누적 판매 감소
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ProductNo", prodNo);
+                    cmd.Parameters.AddWithValue("@ProductCount", reCount);
+                    cmd.ExecuteReader();
+
+                    con.Close();
+                }
+                con.Open();
+                using (var cmd = new SqlCommand("ModTakeBack", con)) // 기존 존재하는 상품번호-거래번호에서 수량 업데이트
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@sellNo", long.Parse(txtSellNo.Text));
+                    cmd.Parameters.AddWithValue("@prodNo", prodNo);
+                    cmd.Parameters.AddWithValue("@reCount", reCount);
+                    cmd.ExecuteReader();
+                }
             }
         }
 
@@ -137,21 +208,10 @@ namespace POSproject
                     con.Close();
                 }
                 con.Open();
-                using (var cmd = new SqlCommand("InsertRefund", con)) // 환불테이블에 저장
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@sellNo", long.Parse(txtSellNo.Text));
-                    cmd.Parameters.AddWithValue("@prodNo", (int)dataGridView1.CurrentRow.Cells[0].Value);
-                    cmd.Parameters.AddWithValue("@reCount", reCount);
-                    cmd.ExecuteReader();
-
-                    con.Close();
-                }
-                con.Open();
                 using (var cmd = new SqlCommand("ProdCntUp", con)) // 상품 수량 증가
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@ProductNo", (int)dataGridView1.CurrentRow.Cells[0].Value);
+                    cmd.Parameters.AddWithValue("@ProductNo", prodNo);
                     cmd.Parameters.AddWithValue("@ProductCount", reCount);
                     cmd.ExecuteReader();
 
@@ -161,8 +221,19 @@ namespace POSproject
                 using (var cmd = new SqlCommand("ProdSalesVolDown", con)) // 누적 판매 감소
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@ProductNo", (int)dataGridView1.CurrentRow.Cells[0].Value);
+                    cmd.Parameters.AddWithValue("@ProductNo", prodNo);
                     cmd.Parameters.AddWithValue("@ProductCount", reCount);
+                    cmd.ExecuteReader();
+
+                    con.Close();
+                }
+                con.Open();
+                using (var cmd = new SqlCommand("InsertRefund", con)) // 환불테이블에 저장
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@sellNo", long.Parse(txtSellNo.Text));
+                    cmd.Parameters.AddWithValue("@prodNo", prodNo);
+                    cmd.Parameters.AddWithValue("@reCount", reCount);
                     cmd.ExecuteReader();
 
                     con.Close();
@@ -172,7 +243,6 @@ namespace POSproject
 
         private void btnRecount_Click(object sender, EventArgs e) // 선택상품 일부 환불
         {
-            checkTakeBack = 0;
             try
             {
                 int Count = (int)dataGridView1.CurrentRow.Cells[2].Value; // 기존 수량 보존
@@ -185,10 +255,8 @@ namespace POSproject
                     txtReCount.Text = "";
                     return;
                 }
-
-                CheckRefund((int)dataGridView1.CurrentRow.Cells[0].Value);
-
-                if (checkTakeBack == 0) // 이전에 환불된 동일한 상품이 없다면
+                
+                if (CheckRefund((int)dataGridView1.CurrentRow.Cells[0].Value) == 0) // 이전에 환불된 동일한 상품이 없다면
                 {
                     Refund((int)dataGridView1.CurrentRow.Cells[0].Value, Count, reCount);
                 }
@@ -206,6 +274,7 @@ namespace POSproject
                 ds2.Clear();
                 dataGridView2.DataSource = null;
                 SelectRefund(); // 환불기록 새로고침
+                HeaderSet();
 
                 // 동일 거래번호로 이전에 환불한 기록 그리드뷰 만들어서 출력하기
             }
@@ -221,10 +290,8 @@ namespace POSproject
             try
             {
                 int Count = (int)dataGridView1.CurrentRow.Cells[2].Value; // 기존 수량, 반품할 수량
-
-                CheckRefund((int)dataGridView1.CurrentRow.Cells[0].Value);
-
-                if (checkTakeBack == 0)
+                
+                if (CheckRefund((int)dataGridView1.CurrentRow.Cells[0].Value) == 0)
                 {
                     Refund((int)dataGridView1.CurrentRow.Cells[0].Value, Count, Count); 
                 }
@@ -243,11 +310,13 @@ namespace POSproject
                 ds2.Clear();
                 dataGridView2.DataSource = null;
                 SelectRefund();
+                HeaderSet();
 
                 // 동일 거래번호로 이전에 환불한 기록 그리드뷰 만들어서 출력하기
             }
-            catch (Exception)
+            catch (Exception g)
             {
+                MessageBox.Show(g.Message);
                 MessageBox.Show("오류발생 - 환불되지 않음.");
                 return;
             }
@@ -257,25 +326,26 @@ namespace POSproject
         {
             try
             {
-                int rows = dataGridView1.Rows.Count;
                 //MessageBox.Show(rows.ToString());
-                for (int i = 0; i < rows; i++)
+                for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    checkTakeBack = 0;
                     int prodNo = (int)dataGridView1.Rows[i].Cells[0].Value;
                     int count = (int)dataGridView1.Rows[i].Cells[2].Value;
-                    dataGridView1.Rows[i].Cells[2].Value = 0;
+                    MessageBox.Show("환불시키는 상품번호 = " + prodNo);
+                    MessageBox.Show("해당 상품의 환불갯수 = " + count);
 
-                    CheckRefund(prodNo);
-
-                    if (checkTakeBack == 0)
+                    if (CheckRefund(prodNo) == 0)
                     {
+                        MessageBox.Show("Refund()");
                         Refund(prodNo, count, count); 
                     }
                     else
                     {
+                        MessageBox.Show("ModRefund()");
                         ModRefund(prodNo, count);
                     }
+
+                    dataGridView1.Rows[i].Cells[2].Value = 0;
                 }
                 MessageBox.Show("모든 상품이 환불 처리 되었습니다.");
 
@@ -284,9 +354,11 @@ namespace POSproject
                 ds2.Clear();
                 dataGridView2.DataSource = null;
                 SelectRefund();
+                HeaderSet();
             }
-            catch (Exception)
+            catch (Exception g)
             {
+                MessageBox.Show(g.ToString());
                 MessageBox.Show("오류발생 - 환불되지 않음.");
                 return;
             }

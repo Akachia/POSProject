@@ -117,7 +117,7 @@
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(75, 57);
             this.btnPrint.TabIndex = 4;
-            this.btnPrint.Text = "영수증출력";
+            this.btnPrint.Text = "거래내역";
             this.btnPrint.UseVisualStyleBackColor = true;
             this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
@@ -158,6 +158,7 @@
             this.btnSetting.TabIndex = 5;
             this.btnSetting.Text = "환경설정";
             this.btnSetting.UseVisualStyleBackColor = true;
+            this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
             // 
             // groupBox1
             // 
@@ -295,7 +296,7 @@
             // 
             this.txtBarcode.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtBarcode.Location = new System.Drawing.Point(88, 24);
-            this.txtBarcode.MaxLength = 13;
+            this.txtBarcode.MaxLength = 18;
             this.txtBarcode.Name = "txtBarcode";
             this.txtBarcode.Size = new System.Drawing.Size(175, 29);
             this.txtBarcode.TabIndex = 30;

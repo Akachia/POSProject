@@ -31,16 +31,17 @@
             System.Windows.Forms.Label label3;
             System.Windows.Forms.Label label5;
             System.Windows.Forms.Label label2;
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.Label label10;
             System.Windows.Forms.Label label8;
             System.Windows.Forms.Label label13;
             System.Windows.Forms.Label label14;
             System.Windows.Forms.Label label15;
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.Label label1;
             this.btn_Exit = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lbl_User = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lbl_Timer = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.startDate = new System.Windows.Forms.DateTimePicker();
             this.endDate = new System.Windows.Forms.DateTimePicker();
@@ -58,6 +59,7 @@
             this.btn_StUpdate = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btn_search = new System.Windows.Forms.Button();
+            this.tb_Expire = new System.Windows.Forms.TextBox();
             label3 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -66,6 +68,7 @@
             label13 = new System.Windows.Forms.Label();
             label14 = new System.Windows.Forms.Label();
             label15 = new System.Windows.Forms.Label();
+            label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -91,6 +94,61 @@
             label5.Text = "폐기 금액 :";
             label5.Visible = false;
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            label2.Location = new System.Drawing.Point(405, 22);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(136, 21);
+            label2.TabIndex = 3;
+            label2.Text = "현재 접속자 :";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new System.Drawing.Point(16, 21);
+            label10.Name = "label10";
+            label10.Size = new System.Drawing.Size(77, 12);
+            label10.TabIndex = 61;
+            label10.Text = "제품 바코드 :";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new System.Drawing.Point(489, 57);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(69, 12);
+            label8.TabIndex = 58;
+            label8.Text = "제품 원가 : ";
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new System.Drawing.Point(336, 57);
+            label13.Name = "label13";
+            label13.Size = new System.Drawing.Size(65, 12);
+            label13.TabIndex = 56;
+            label13.Text = "제품 수량 :";
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new System.Drawing.Point(336, 21);
+            label14.Name = "label14";
+            label14.Size = new System.Drawing.Size(65, 12);
+            label14.TabIndex = 55;
+            label14.Text = "상품 이름 :";
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Location = new System.Drawing.Point(336, 94);
+            label15.Name = "label15";
+            label15.Size = new System.Drawing.Size(65, 12);
+            label15.TabIndex = 54;
+            label15.Text = "상품 종류 :";
+            // 
             // btn_Exit
             // 
             this.btn_Exit.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -106,7 +164,7 @@
             // 
             this.groupBox1.Controls.Add(this.lbl_User);
             this.groupBox1.Controls.Add(label2);
-            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.lbl_Timer);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
@@ -123,25 +181,15 @@
             this.lbl_User.Size = new System.Drawing.Size(0, 21);
             this.lbl_User.TabIndex = 4;
             // 
-            // label2
+            // lbl_Timer
             // 
-            label2.AutoSize = true;
-            label2.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            label2.Location = new System.Drawing.Point(405, 22);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(136, 21);
-            label2.TabIndex = 3;
-            label2.Text = "현재 접속자 :";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.Location = new System.Drawing.Point(14, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 21);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
+            this.lbl_Timer.AutoSize = true;
+            this.lbl_Timer.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lbl_Timer.Location = new System.Drawing.Point(14, 22);
+            this.lbl_Timer.Name = "lbl_Timer";
+            this.lbl_Timer.Size = new System.Drawing.Size(58, 21);
+            this.lbl_Timer.TabIndex = 0;
+            this.lbl_Timer.Text = "label1";
             // 
             // dataGridView1
             // 
@@ -224,7 +272,7 @@
             // 
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pictureBox1.ErrorImage = global::POSproject.Properties.Resources.noImage;
-            this.pictureBox1.Location = new System.Drawing.Point(414, 15);
+            this.pictureBox1.Location = new System.Drawing.Point(655, 15);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(133, 102);
             this.pictureBox1.TabIndex = 71;
@@ -232,7 +280,7 @@
             // 
             // tb_StBar
             // 
-            this.tb_StBar.Location = new System.Drawing.Point(95, 23);
+            this.tb_StBar.Location = new System.Drawing.Point(99, 18);
             this.tb_StBar.Name = "tb_StBar";
             this.tb_StBar.Size = new System.Drawing.Size(181, 21);
             this.tb_StBar.TabIndex = 68;
@@ -241,15 +289,15 @@
             // tb_StPrice
             // 
             this.tb_StPrice.Enabled = false;
-            this.tb_StPrice.Location = new System.Drawing.Point(99, 91);
+            this.tb_StPrice.Location = new System.Drawing.Point(564, 52);
             this.tb_StPrice.Name = "tb_StPrice";
-            this.tb_StPrice.Size = new System.Drawing.Size(147, 21);
+            this.tb_StPrice.Size = new System.Drawing.Size(66, 21);
             this.tb_StPrice.TabIndex = 66;
             // 
             // tb_StQunt
             // 
             this.tb_StQunt.Enabled = false;
-            this.tb_StQunt.Location = new System.Drawing.Point(338, 91);
+            this.tb_StQunt.Location = new System.Drawing.Point(417, 52);
             this.tb_StQunt.Name = "tb_StQunt";
             this.tb_StQunt.Size = new System.Drawing.Size(66, 21);
             this.tb_StQunt.TabIndex = 65;
@@ -257,19 +305,10 @@
             // tb_StName
             // 
             this.tb_StName.Enabled = false;
-            this.tb_StName.Location = new System.Drawing.Point(99, 57);
+            this.tb_StName.Location = new System.Drawing.Point(417, 18);
             this.tb_StName.Name = "tb_StName";
-            this.tb_StName.Size = new System.Drawing.Size(147, 21);
+            this.tb_StName.Size = new System.Drawing.Size(213, 21);
             this.tb_StName.TabIndex = 63;
-            // 
-            // label10
-            // 
-            label10.AutoSize = true;
-            label10.Location = new System.Drawing.Point(12, 26);
-            label10.Name = "label10";
-            label10.Size = new System.Drawing.Size(77, 12);
-            label10.TabIndex = 61;
-            label10.Text = "제품 바코드 :";
             // 
             // label9
             // 
@@ -280,55 +319,19 @@
             this.label9.Size = new System.Drawing.Size(0, 12);
             this.label9.TabIndex = 60;
             // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new System.Drawing.Point(12, 94);
-            label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(69, 12);
-            label8.TabIndex = 58;
-            label8.Text = "제품 원가 : ";
-            // 
-            // label13
-            // 
-            label13.AutoSize = true;
-            label13.Location = new System.Drawing.Point(267, 95);
-            label13.Name = "label13";
-            label13.Size = new System.Drawing.Size(65, 12);
-            label13.TabIndex = 56;
-            label13.Text = "제품 수량 :";
-            // 
-            // label14
-            // 
-            label14.AutoSize = true;
-            label14.Location = new System.Drawing.Point(12, 60);
-            label14.Name = "label14";
-            label14.Size = new System.Drawing.Size(65, 12);
-            label14.TabIndex = 55;
-            label14.Text = "상품 이름 :";
-            // 
             // tb_StCate
             // 
             this.tb_StCate.Enabled = false;
-            this.tb_StCate.Location = new System.Drawing.Point(338, 57);
+            this.tb_StCate.Location = new System.Drawing.Point(417, 91);
             this.tb_StCate.Name = "tb_StCate";
             this.tb_StCate.Size = new System.Drawing.Size(66, 21);
             this.tb_StCate.TabIndex = 57;
             // 
-            // label15
-            // 
-            label15.AutoSize = true;
-            label15.Location = new System.Drawing.Point(267, 60);
-            label15.Name = "label15";
-            label15.Size = new System.Drawing.Size(65, 12);
-            label15.TabIndex = 54;
-            label15.Text = "상품 종류 :";
-            // 
             // btn_StUpdate
             // 
-            this.btn_StUpdate.Location = new System.Drawing.Point(553, 15);
+            this.btn_StUpdate.Location = new System.Drawing.Point(565, 522);
             this.btn_StUpdate.Name = "btn_StUpdate";
-            this.btn_StUpdate.Size = new System.Drawing.Size(119, 102);
+            this.btn_StUpdate.Size = new System.Drawing.Size(75, 75);
             this.btn_StUpdate.TabIndex = 53;
             this.btn_StUpdate.Text = "폐기 추가";
             this.btn_StUpdate.UseVisualStyleBackColor = true;
@@ -336,6 +339,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.tb_Expire);
+            this.groupBox2.Controls.Add(label1);
             this.groupBox2.Controls.Add(this.tb_StQunt);
             this.groupBox2.Controls.Add(this.tb_StPrice);
             this.groupBox2.Controls.Add(this.btn_search);
@@ -347,7 +352,6 @@
             this.groupBox2.Controls.Add(label8);
             this.groupBox2.Controls.Add(this.tb_StBar);
             this.groupBox2.Controls.Add(label10);
-            this.groupBox2.Controls.Add(this.btn_StUpdate);
             this.groupBox2.Controls.Add(label14);
             this.groupBox2.Location = new System.Drawing.Point(0, 59);
             this.groupBox2.Name = "groupBox2";
@@ -357,13 +361,30 @@
             // 
             // btn_search
             // 
-            this.btn_search.Location = new System.Drawing.Point(293, 21);
+            this.btn_search.Location = new System.Drawing.Point(99, 52);
             this.btn_search.Name = "btn_search";
             this.btn_search.Size = new System.Drawing.Size(111, 23);
             this.btn_search.TabIndex = 72;
             this.btn_search.Text = "찾기";
             this.btn_search.UseVisualStyleBackColor = true;
             this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
+            // 
+            // tb_Expire
+            // 
+            this.tb_Expire.Enabled = false;
+            this.tb_Expire.Location = new System.Drawing.Point(564, 89);
+            this.tb_Expire.Name = "tb_Expire";
+            this.tb_Expire.Size = new System.Drawing.Size(66, 21);
+            this.tb_Expire.TabIndex = 74;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(489, 94);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(65, 12);
+            label1.TabIndex = 73;
+            label1.Text = "유통 기한 :";
             // 
             // Form_Disposal
             // 
@@ -381,6 +402,7 @@
             this.Controls.Add(this.startDate);
             this.Controls.Add(this.btn_Exit);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btn_StUpdate);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.groupBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -402,7 +424,7 @@
         private System.Windows.Forms.Button btn_Exit;
         private System.Windows.Forms.GroupBox groupBox1;
         internal System.Windows.Forms.Label lbl_User;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbl_Timer;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DateTimePicker startDate;
         private System.Windows.Forms.DateTimePicker endDate;
@@ -420,5 +442,6 @@
         private System.Windows.Forms.Button btn_StUpdate;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btn_search;
+        private System.Windows.Forms.TextBox tb_Expire;
     }
 }

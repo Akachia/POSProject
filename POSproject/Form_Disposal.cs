@@ -18,8 +18,14 @@ namespace POSproject_KSM
         int ProductNO = 0;
         DataSet ds = null;
         DataTable ds2 = null;
+        /// <summary>
+        /// 전체내역 페이지 0, 폐기페이지 1, 상세페이지 2
+        /// </summary>
         int modeSwitch = 0;
         SqlDataAdapter dataAdapter = null;
+        Timer timer;
+        private string valid_barcode;
+
         public Form_Disposal()
         {
             InitializeComponent();
@@ -54,11 +60,6 @@ namespace POSproject_KSM
             }
         }
 
-        private void btn_Send_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Disposal_Load(object sender, EventArgs e)
         {
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -66,6 +67,16 @@ namespace POSproject_KSM
             tb_StQunt.Text = "0";
             dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             DisposalSelect();
+            lbl_Timer.Text = DateTime.Now.ToLongTimeString();
+            timer = new Timer();
+            timer.Tick += Timer1_Tick1;
+            timer.Interval = 1000;
+            timer.Start();
+        }
+
+        private void Timer1_Tick1(object sender, EventArgs e)
+        {
+            lbl_Timer.Text = DateTime.Now.ToLongTimeString();
         }
 
         private void DisposalSelect()
@@ -88,6 +99,7 @@ namespace POSproject_KSM
 
         private void btn_Exit_Click(object sender, EventArgs e)
         {
+            this.timer.Stop();
             this.Dispose();
             this.Close();
         }
@@ -199,28 +211,31 @@ namespace POSproject_KSM
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand("InsertDisposal", con))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@IProductNo", ProductNO);
-                    cmd.Parameters.AddWithValue("@IDisposalCount", int.Parse(tb_StQunt.Text));
-
-                    int i = cmd.ExecuteNonQuery();//insert문 1=저장 0=저장 안됨
-
-                    if (i == 0)
+                    foreach (DataRow item in ds2.Rows)
                     {
-                        MessageBox.Show("저장 안됨");
-                        con.Close();
-                        return;
-                    }
-                    else
-                    {
-                        MessageBox.Show("데이터 반영됨");
-                        DisposalSelect();
-                        ProductNO = 0;
-                        tb_StBar.Text = null;
-                        tb_StCate.Text = null;
-                        tb_StName.Text = null;
-                        tb_StPrice.Text = null;
-                        tb_StQunt.Text = null;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@IProductNo", item["제품번호"]);
+                        cmd.Parameters.AddWithValue("@IDisposalCount", item["제품수량"]);
+
+                        int i = cmd.ExecuteNonQuery();//insert문 1=저장 0=저장 안됨
+
+                        if (i == 0)
+                        {
+                            MessageBox.Show("저장 안됨");
+                            con.Close();
+                            return;
+                        }
+                        else
+                        {
+                            MessageBox.Show("데이터 반영됨");
+                            DisposalSelect();
+                            ProductNO = 0;
+                            tb_StBar.Text = null;
+                            tb_StCate.Text = null;
+                            tb_StName.Text = null;
+                            tb_StPrice.Text = null;
+                            tb_StQunt.Text = null;
+                        }
                     }
                 }
             }
@@ -249,24 +264,92 @@ namespace POSproject_KSM
         {
             ///modeSwitch가 0이면 모든 폐기 모드 
             ///1이면 폐기추가 모드
-            if (modeSwitch == 0 && tb_StBar.Text.Length == 13)
+            string sPattern = "^[0-9]{0,18}$";
+            if (tb_StBar.Text.Length < 19)
             {
-                modeSwitch = 1;
-                SelectDisposalItem(tb_StBar.Text);
-                dataGridView1.DataSource = ds2;
-                tb_StBar.SelectAll();
+                if (System.Text.RegularExpressions.Regex.IsMatch(tb_StBar.Text, sPattern))
+                {
+                    valid_barcode = tb_StBar.Text;
+                }
+                else
+                {
+                    tb_StBar.Text = valid_barcode;
+                    tb_StBar.Select(tb_StBar.Text.Length, tb_StBar.Text.Length);
+                    MessageBox.Show("숫자만 입력해주세요");
+                }
             }
             else
             {
-                if (tb_StBar.Text.Length == 13)
+                tb_StBar.Text = valid_barcode;
+                tb_StBar.Select(tb_StBar.Text.Length, tb_StBar.Text.Length);
+                MessageBox.Show("인식 가능한 바코드는 최대18자리입니다.");
+            }
+
+            if (modeSwitch == 0 && tb_StBar.Text.Length == 18)
+            {
+                MessageBox.Show("1.Test");
+                if (IsValidBarcode(tb_StBar.Text))
                 {
-                    SelectDisposalItem(tb_StBar.Text);
+                    modeSwitch = 1;
+                    SelectDisposalItem(BarcodeInit(tb_StBar.Text));
+                    dataGridView1.DataSource = ds2;
                     tb_StBar.SelectAll();
                 }
-                else if (tb_StBar.Text.Length == 18)
+                else
                 {
-                    SelectDisposalItem(BarcodeInit(tb_StBar.Text));
+                    MessageBox.Show("유통기한이 지나지 않았습니다.");
+                    return;
                 }
+            }
+            else
+            {
+                MessageBox.Show("2.Test");
+                if (tb_StBar.Text.Length == 18)
+                {
+                    if (IsValidBarcode(tb_StBar.Text))
+                    {
+                        SelectDisposalItem(BarcodeInit(tb_StBar.Text));
+                        tb_StBar.SelectAll();
+                    }
+                    else
+                    {
+                        MessageBox.Show("유통기한이 지나지 않았습니다.");
+                        return;
+                    }
+                }
+            }
+        }
+
+        private bool IsValidBarcode(string expire)
+        {
+            char[] shf = expire.ToCharArray();
+
+            string shf_Day = shf[14].ToString() + shf[15].ToString();
+            string shf_Hour = shf[16].ToString() + shf[17].ToString();
+
+            DateTime date = DateTime.Now;
+            DateTime shf_time;
+            if (int.Parse(shf_Day) - int.Parse(shf[13].ToString()) < 0)
+            {
+                shf_time = new DateTime(
+                date.Year, date.Month + 1, int.Parse(shf_Day),
+                int.Parse(shf_Hour), date.Minute, date.Second);
+            }
+            else
+            {
+                shf_time = new DateTime(
+                date.Year, date.Month, int.Parse(shf_Day),
+                int.Parse(shf_Hour), date.Minute, date.Second);
+            }
+
+            if (date > shf_time)
+            {
+                tb_Expire.Text = shf_Day + "일 " + shf_time.Hour.ToString() + "시";
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -315,7 +398,7 @@ namespace POSproject_KSM
 
         private void btn_search_Click(object sender, EventArgs e)
         {
-            SelectDisposalItem(tb_StBar.Text);
+            SelectDisposalItem(BarcodeInit(tb_StBar.Text));
         }
 
         private void btn_Cancle_Click(object sender, EventArgs e)
@@ -329,5 +412,12 @@ namespace POSproject_KSM
         {
             DisposalItem();
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }

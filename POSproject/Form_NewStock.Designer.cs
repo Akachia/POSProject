@@ -43,12 +43,12 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btn_search = new System.Windows.Forms.Button();
             this.cb_quantiy = new System.Windows.Forms.ComboBox();
-            this.tb_category = new System.Windows.Forms.TextBox();
             this.tb_barcode = new System.Windows.Forms.TextBox();
             this.tb_price = new System.Windows.Forms.TextBox();
             this.tb_name = new System.Windows.Forms.TextBox();
             this.tb_primePrice = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.cb_category = new System.Windows.Forms.ComboBox();
             label2 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
@@ -209,14 +209,6 @@
             this.cb_quantiy.Size = new System.Drawing.Size(100, 20);
             this.cb_quantiy.TabIndex = 5;
             // 
-            // tb_category
-            // 
-            this.tb_category.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.tb_category.Location = new System.Drawing.Point(286, 184);
-            this.tb_category.Name = "tb_category";
-            this.tb_category.Size = new System.Drawing.Size(100, 22);
-            this.tb_category.TabIndex = 4;
-            // 
             // tb_barcode
             // 
             this.tb_barcode.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -234,6 +226,7 @@
             this.tb_price.Name = "tb_price";
             this.tb_price.Size = new System.Drawing.Size(100, 22);
             this.tb_price.TabIndex = 3;
+            this.tb_price.TextChanged += new System.EventHandler(this.tb_price_TextChanged);
             // 
             // tb_name
             // 
@@ -242,6 +235,7 @@
             this.tb_name.Name = "tb_name";
             this.tb_name.Size = new System.Drawing.Size(178, 22);
             this.tb_name.TabIndex = 1;
+            this.tb_name.TextChanged += new System.EventHandler(this.tb_name_TextChanged);
             // 
             // tb_primePrice
             // 
@@ -250,20 +244,30 @@
             this.tb_primePrice.Name = "tb_primePrice";
             this.tb_primePrice.Size = new System.Drawing.Size(100, 22);
             this.tb_primePrice.TabIndex = 2;
+            this.tb_primePrice.TextChanged += new System.EventHandler(this.tb_primePrice_TextChanged);
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // cb_category
+            // 
+            this.cb_category.FormattingEnabled = true;
+            this.cb_category.Location = new System.Drawing.Point(286, 186);
+            this.cb_category.Name = "cb_category";
+            this.cb_category.Size = new System.Drawing.Size(100, 20);
+            this.cb_category.TabIndex = 101;
+            this.cb_category.TextChanged += new System.EventHandler(this.cb_category_TextChanged);
             // 
             // Form_NewStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 500);
+            this.Controls.Add(this.cb_category);
             this.Controls.Add(this.cb_quantiy);
             this.Controls.Add(label7);
             this.Controls.Add(label6);
-            this.Controls.Add(this.tb_category);
             this.Controls.Add(label5);
             this.Controls.Add(this.tb_barcode);
             this.Controls.Add(this.tb_price);
@@ -299,11 +303,11 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btn_search;
         private System.Windows.Forms.ComboBox cb_quantiy;
-        private System.Windows.Forms.TextBox tb_category;
         private System.Windows.Forms.TextBox tb_barcode;
         private System.Windows.Forms.TextBox tb_price;
         private System.Windows.Forms.TextBox tb_name;
         private System.Windows.Forms.TextBox tb_primePrice;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.ComboBox cb_category;
     }
 }
