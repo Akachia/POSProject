@@ -38,7 +38,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.Location = new System.Drawing.Point(12, 25);
+            this.label1.Location = new System.Drawing.Point(12, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(82, 16);
             this.label1.TabIndex = 0;
@@ -47,7 +47,7 @@
             // txtCardNum
             // 
             this.txtCardNum.Font = new System.Drawing.Font("굴림", 16F);
-            this.txtCardNum.Location = new System.Drawing.Point(100, 18);
+            this.txtCardNum.Location = new System.Drawing.Point(123, 25);
             this.txtCardNum.Mask = "0000-0000-0000-0000";
             this.txtCardNum.Name = "txtCardNum";
             this.txtCardNum.Size = new System.Drawing.Size(215, 32);
@@ -55,33 +55,41 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(76, 72);
+            this.btnOk.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnOk.Font = new System.Drawing.Font("굴림", 11F, System.Drawing.FontStyle.Bold);
+            this.btnOk.ForeColor = System.Drawing.Color.White;
+            this.btnOk.Location = new System.Drawing.Point(93, 74);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 2;
             this.btnOk.Text = "확인";
-            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.UseVisualStyleBackColor = false;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // btnCancle
             // 
-            this.btnCancle.Location = new System.Drawing.Point(177, 72);
+            this.btnCancle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnCancle.Font = new System.Drawing.Font("굴림", 11F, System.Drawing.FontStyle.Bold);
+            this.btnCancle.ForeColor = System.Drawing.Color.White;
+            this.btnCancle.Location = new System.Drawing.Point(194, 74);
             this.btnCancle.Name = "btnCancle";
             this.btnCancle.Size = new System.Drawing.Size(75, 23);
             this.btnCancle.TabIndex = 3;
             this.btnCancle.Text = "취소";
-            this.btnCancle.UseVisualStyleBackColor = true;
+            this.btnCancle.UseVisualStyleBackColor = false;
             this.btnCancle.Click += new System.EventHandler(this.btnCancle_Click);
             // 
             // Form_Card
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(329, 114);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(235)))), ((int)(((byte)(247)))));
+            this.ClientSize = new System.Drawing.Size(350, 120);
             this.Controls.Add(this.btnCancle);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.txtCardNum);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form_Card";
             this.Text = "Form_Card";
             this.Load += new System.EventHandler(this.Form_Card_Load);

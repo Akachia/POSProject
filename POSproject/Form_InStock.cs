@@ -185,10 +185,5 @@ namespace POSproject_KSM
         {
             this.Close();
         }
-
-        private void Form_InStock_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

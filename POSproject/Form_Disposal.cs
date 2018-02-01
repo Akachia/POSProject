@@ -72,6 +72,12 @@ namespace POSproject_KSM
             timer.Tick += Timer1_Tick1;
             timer.Interval = 1000;
             timer.Start();
+            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            {
+                //col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                col.HeaderCell.Style.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Pixel);
+            }
         }
 
         private void Timer1_Tick1(object sender, EventArgs e)
@@ -155,7 +161,7 @@ namespace POSproject_KSM
                             }
                             else
                             {
-                                MessageBox.Show("Test");
+                                //MessageBox.Show("Test");
                                 ProductNO = (int)sdr["ProductNo"];
                                 tb_StCate.Text = sdr["ProductCategory"].ToString();
                                 tb_StName.Text = sdr["ProductName"].ToString();
@@ -287,7 +293,7 @@ namespace POSproject_KSM
 
             if (modeSwitch == 0 && tb_StBar.Text.Length == 18)
             {
-                MessageBox.Show("1.Test");
+               // MessageBox.Show("1.Test");
                 if (IsValidBarcode(tb_StBar.Text))
                 {
                     modeSwitch = 1;
@@ -303,7 +309,7 @@ namespace POSproject_KSM
             }
             else
             {
-                MessageBox.Show("2.Test");
+                //MessageBox.Show("2.Test");
                 if (tb_StBar.Text.Length == 18)
                 {
                     if (IsValidBarcode(tb_StBar.Text))
@@ -333,6 +339,19 @@ namespace POSproject_KSM
             {
                 shf_time = new DateTime(
                 date.Year, date.Month + 1, int.Parse(shf_Day),
+                int.Parse(shf_Hour), date.Minute, date.Second);
+            }
+            else
+            {
+                shf_time = new DateTime(
+                date.Year, date.Month, int.Parse(shf_Day),
+                int.Parse(shf_Hour), date.Minute, date.Second);
+            }
+
+            if (date.Day < int.Parse(shf_Day))
+            {
+                shf_time = new DateTime(
+                date.Year, date.Month - 1, int.Parse(shf_Day),
                 int.Parse(shf_Hour), date.Minute, date.Second);
             }
             else

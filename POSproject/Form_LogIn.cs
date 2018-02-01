@@ -15,6 +15,7 @@ namespace POSproject
         public Form_LogIn()
         {
             InitializeComponent();
+            
         }
 
       

@@ -22,7 +22,7 @@ namespace POSproject
             {
                 SqlDataAdapter adapter = new SqlDataAdapter();
                 adapter.SelectCommand = new SqlCommand("SelectPreferences", con);
-                
+
                 con.Open();
 
                 SqlCommand cmd = new SqlCommand("SelectPreferences", con);
@@ -53,11 +53,31 @@ namespace POSproject
                 bool ownerValid = false;
                 bool phoneValid = false;
                 bool businessNoValid = false;
+                bool addrValid = false;
+                bool nameValid = false;
                 string sPattern = "^[가-힣]{0,5}$";
+
+                if (txtStoreName.Text == "")
+                {
+                    MessageBox.Show("매장 이름을 입력해주세요");
+                }
+                else
+                {
+                    nameValid = true;
+                }
+
+                if (txtAddress.Text == "")
+                {
+                    MessageBox.Show("주소를 입력해주세요");
+                }
+                else
+                {
+                    addrValid = true;
+                }
 
                 if (txtOwner.Text == "")
                 {
-                    MessageBox.Show("빈칸을 채워주세요");
+                    MessageBox.Show("대표자 이름을 입력해주세요");
                 }
                 else
                 {
@@ -103,7 +123,7 @@ namespace POSproject
                     MessageBox.Show("사업자번호를 제대로 입력해 주세요");
                 }
 
-                if (ownerValid && phoneValid && businessNoValid)
+                if (ownerValid && phoneValid && businessNoValid && addrValid && nameValid)
                 {
                     using (var cmd = new SqlCommand("ModifyPreferences", con))
                     {

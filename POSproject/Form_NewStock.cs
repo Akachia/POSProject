@@ -28,6 +28,9 @@ namespace POSproject_KSM
         private string valid_category;
         private string valid_barcode;
         private string valid_name;
+        private string valid_price;
+        private string valid_primePrice;
+        private string valid_quantiy;
 
         public Form_NewStock()
         {
@@ -188,7 +191,7 @@ namespace POSproject_KSM
 
         private void tb_name_TextChanged(object sender, EventArgs e)
         {
-            string sPattern = "^[ㄱ-ㅎ가-힣0-9a-zA-Z()]*$";
+            string sPattern = "^[ㄱ-ㅎ가-힣0-9a-zA-Z()\\s]*$";
 
             if (System.Text.RegularExpressions.Regex.IsMatch(tb_name.Text, sPattern))
             {
@@ -222,14 +225,14 @@ namespace POSproject_KSM
         {
             string sPattern = "^[0-9]{0,6}$";
 
-            if (System.Text.RegularExpressions.Regex.IsMatch(cb_category.Text, sPattern))
+            if (System.Text.RegularExpressions.Regex.IsMatch(tb_price.Text, sPattern))
             {
-                valid_category = cb_category.Text;
+                valid_price = tb_price.Text;
             }
             else
             {
-                cb_category.Text = valid_category;
-                cb_category.Select(cb_category.Text.Length, cb_category.Text.Length);
+                tb_price.Text = valid_price;
+                tb_price.Select(tb_price.Text.Length, tb_price.Text.Length);
                 MessageBox.Show("6자리 이하 숫자만 입력해주세요");
             }
         }
@@ -238,15 +241,31 @@ namespace POSproject_KSM
         {
             string sPattern = "^[0-9]{0,6}$";
 
-            if (System.Text.RegularExpressions.Regex.IsMatch(cb_category.Text, sPattern))
+            if (System.Text.RegularExpressions.Regex.IsMatch(tb_primePrice.Text, sPattern))
             {
-                valid_category = cb_category.Text;
+                valid_primePrice = tb_primePrice.Text;
             }
             else
             {
-                cb_category.Text = valid_category;
-                cb_category.Select(cb_category.Text.Length, cb_category.Text.Length);
+                tb_primePrice.Text = valid_primePrice;
+                tb_primePrice.Select(tb_primePrice.Text.Length, tb_primePrice.Text.Length);
                 MessageBox.Show("6자리 이하 숫자만 입력해주세요");
+            }
+        }
+
+        private void cb_quantiy_TextChanged(object sender, EventArgs e)
+        {
+            string sPattern = "^[0-9]{0,2}$";
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(cb_quantiy.Text, sPattern))
+            {
+                valid_quantiy = cb_quantiy.Text;
+            }
+            else
+            {
+                cb_quantiy.Text = valid_quantiy;
+                cb_quantiy.Select(cb_quantiy.Text.Length, cb_quantiy.Text.Length);
+                MessageBox.Show("2자리 이하 숫자만 입력해주세요");
             }
         }
     }

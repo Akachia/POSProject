@@ -42,6 +42,11 @@ namespace POSproject
 
         private void btnSearch_Click(object sender, EventArgs e) // 거래번호로 판매기록 조회
         {
+            if (string.IsNullOrEmpty(txtSellNo.Text))
+            {
+                return;
+            }
+
             ds.Clear();
             ds2.Clear();
             dataGridView1.DataSource = null;
@@ -243,6 +248,11 @@ namespace POSproject
 
         private void btnRecount_Click(object sender, EventArgs e) // 선택상품 일부 환불
         {
+            if (string.IsNullOrEmpty(txtReCount.Text))
+            {
+                return;
+            }
+
             try
             {
                 int Count = (int)dataGridView1.CurrentRow.Cells[2].Value; // 기존 수량 보존
@@ -287,6 +297,12 @@ namespace POSproject
 
         private void btnSelectRefund_Click(object sender, EventArgs e) // 선택한 상품 모두 환불
         {
+            if (dataGridView1.Rows.Count == 0)
+            {
+                txtSellNo.Focus();
+                return;
+            }
+
             try
             {
                 int Count = (int)dataGridView1.CurrentRow.Cells[2].Value; // 기존 수량, 반품할 수량
@@ -317,13 +333,19 @@ namespace POSproject
             catch (Exception g)
             {
                 MessageBox.Show(g.Message);
-                MessageBox.Show("오류발생 - 환불되지 않음.");
+                MessageBox.Show("오류발생 - 상품이 선택되지 않음.");
                 return;
             }
         }
 
         private void btnRefundAll_Click(object sender, EventArgs e) // 모든 상품 환불
         {
+            if (dataGridView1.Rows.Count == 0)
+            {
+                txtSellNo.Focus();
+                return;
+            }
+
             try
             {
                 //MessageBox.Show(rows.ToString());
@@ -331,17 +353,13 @@ namespace POSproject
                 {
                     int prodNo = (int)dataGridView1.Rows[i].Cells[0].Value;
                     int count = (int)dataGridView1.Rows[i].Cells[2].Value;
-                    MessageBox.Show("환불시키는 상품번호 = " + prodNo);
-                    MessageBox.Show("해당 상품의 환불갯수 = " + count);
 
                     if (CheckRefund(prodNo) == 0)
                     {
-                        MessageBox.Show("Refund()");
                         Refund(prodNo, count, count); 
                     }
                     else
                     {
-                        MessageBox.Show("ModRefund()");
                         ModRefund(prodNo, count);
                     }
 
@@ -362,6 +380,19 @@ namespace POSproject
                 MessageBox.Show("오류발생 - 환불되지 않음.");
                 return;
             }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            txtSellNo.Text = "";
+            txtSellNo.Focus();
+            dataGridView1.DataSource = null;
+            dataGridView2.DataSource = null;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

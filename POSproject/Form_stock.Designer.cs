@@ -38,8 +38,8 @@
             System.Windows.Forms.Label label11;
             System.Windows.Forms.Label label12;
             System.Windows.Forms.Label label3;
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Stock_exit = new System.Windows.Forms.Button();
             this.btn_Order = new System.Windows.Forms.Button();
             this.btn_StUpdate = new System.Windows.Forms.Button();
@@ -64,7 +64,6 @@
             this.btn_NewStock = new System.Windows.Forms.Button();
             this.btn_InStock = new System.Windows.Forms.Button();
             this.btn_DIsposal = new System.Windows.Forms.Button();
-            this.btn_UpStock = new System.Windows.Forms.Button();
             this.tb_Search = new System.Windows.Forms.TextBox();
             this.btn_search = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -85,113 +84,131 @@
             // label4
             // 
             label4.AutoSize = true;
+            label4.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             label4.Location = new System.Drawing.Point(7, 69);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(65, 12);
+            label4.Size = new System.Drawing.Size(72, 12);
             label4.TabIndex = 3;
             label4.Text = "상품 종류 :";
             // 
             // label5
             // 
             label5.AutoSize = true;
+            label5.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             label5.Location = new System.Drawing.Point(7, 96);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(65, 12);
+            label5.Size = new System.Drawing.Size(72, 12);
             label5.TabIndex = 4;
             label5.Text = "상품 이름 :";
             // 
             // label6
             // 
             label6.AutoSize = true;
+            label6.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             label6.Location = new System.Drawing.Point(7, 123);
             label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(65, 12);
+            label6.Size = new System.Drawing.Size(72, 12);
             label6.TabIndex = 5;
             label6.Text = "제품 수량 :";
             // 
             // label7
             // 
             label7.AutoSize = true;
+            label7.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             label7.Location = new System.Drawing.Point(231, 69);
             label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(81, 12);
+            label7.Size = new System.Drawing.Size(90, 12);
             label7.TabIndex = 10;
             label7.Text = "총 판매 금액 :";
             // 
             // label8
             // 
             label8.AutoSize = true;
+            label8.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             label8.Location = new System.Drawing.Point(7, 150);
             label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(69, 12);
+            label8.Size = new System.Drawing.Size(77, 12);
             label8.TabIndex = 9;
             label8.Text = "제품 가격 : ";
             // 
             // label10
             // 
             label10.AutoSize = true;
+            label10.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             label10.Location = new System.Drawing.Point(231, 96);
             label10.Name = "label10";
-            label10.Size = new System.Drawing.Size(77, 12);
+            label10.Size = new System.Drawing.Size(85, 12);
             label10.TabIndex = 12;
             label10.Text = "제품 바코드 :";
             // 
             // label11
             // 
             label11.AutoSize = true;
+            label11.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             label11.Location = new System.Drawing.Point(231, 123);
             label11.Name = "label11";
-            label11.Size = new System.Drawing.Size(49, 12);
+            label11.Size = new System.Drawing.Size(54, 12);
             label11.TabIndex = 13;
             label11.Text = "할인율 :";
             // 
             // label12
             // 
             label12.AutoSize = true;
+            label12.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             label12.Location = new System.Drawing.Point(231, 150);
             label12.Name = "label12";
-            label12.Size = new System.Drawing.Size(77, 12);
+            label12.Size = new System.Drawing.Size(85, 12);
             label12.TabIndex = 15;
             label12.Text = "누적 판매량 :";
             // 
             // label3
             // 
             label3.AutoSize = true;
+            label3.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             label3.Location = new System.Drawing.Point(7, 182);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(65, 12);
+            label3.Size = new System.Drawing.Size(72, 12);
             label3.TabIndex = 28;
             label3.Text = "물품 검색 :";
             // 
             // Stock_exit
             // 
+            this.Stock_exit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
             this.Stock_exit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Stock_exit.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.Stock_exit.ForeColor = System.Drawing.Color.White;
             this.Stock_exit.Location = new System.Drawing.Point(722, 522);
             this.Stock_exit.Name = "Stock_exit";
             this.Stock_exit.Size = new System.Drawing.Size(75, 75);
             this.Stock_exit.TabIndex = 5;
             this.Stock_exit.Text = "나가기";
-            this.Stock_exit.UseVisualStyleBackColor = true;
+            this.Stock_exit.UseVisualStyleBackColor = false;
             this.Stock_exit.Click += new System.EventHandler(this.Stock_exit_Click);
             // 
             // btn_Order
             // 
+            this.btn_Order.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_Order.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_Order.ForeColor = System.Drawing.Color.White;
             this.btn_Order.Location = new System.Drawing.Point(722, 446);
             this.btn_Order.Name = "btn_Order";
             this.btn_Order.Size = new System.Drawing.Size(75, 75);
             this.btn_Order.TabIndex = 1;
             this.btn_Order.Text = "발주";
-            this.btn_Order.UseVisualStyleBackColor = true;
+            this.btn_Order.UseVisualStyleBackColor = false;
             this.btn_Order.Click += new System.EventHandler(this.btn_OrderClick);
             // 
             // btn_StUpdate
             // 
+            this.btn_StUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_StUpdate.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_StUpdate.ForeColor = System.Drawing.Color.White;
             this.btn_StUpdate.Location = new System.Drawing.Point(600, 66);
             this.btn_StUpdate.Name = "btn_StUpdate";
             this.btn_StUpdate.Size = new System.Drawing.Size(119, 102);
             this.btn_StUpdate.TabIndex = 0;
             this.btn_StUpdate.Text = "재고 수정";
-            this.btn_StUpdate.UseVisualStyleBackColor = true;
+            this.btn_StUpdate.UseVisualStyleBackColor = false;
             this.btn_StUpdate.Click += new System.EventHandler(this.btn_StUpdate_Click);
             // 
             // dataGridView1
@@ -200,21 +217,21 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedVertical;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView1.Location = new System.Drawing.Point(3, 208);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
@@ -267,20 +284,20 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label2.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold);
             this.label2.Location = new System.Drawing.Point(402, 22);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(136, 21);
+            this.label2.Size = new System.Drawing.Size(144, 21);
             this.label2.TabIndex = 1;
             this.label2.Text = "현재 접속자 :";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label1.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold);
             this.label1.Location = new System.Drawing.Point(14, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 21);
+            this.label1.Size = new System.Drawing.Size(64, 21);
             this.label1.TabIndex = 0;
             this.label1.Text = "label1";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -370,52 +387,55 @@
             // 
             // btn_LstOrd
             // 
+            this.btn_LstOrd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_LstOrd.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_LstOrd.ForeColor = System.Drawing.Color.White;
             this.btn_LstOrd.Location = new System.Drawing.Point(722, 370);
             this.btn_LstOrd.Name = "btn_LstOrd";
             this.btn_LstOrd.Size = new System.Drawing.Size(75, 75);
             this.btn_LstOrd.TabIndex = 23;
             this.btn_LstOrd.Text = "발주 내역";
-            this.btn_LstOrd.UseVisualStyleBackColor = true;
+            this.btn_LstOrd.UseVisualStyleBackColor = false;
             this.btn_LstOrd.Click += new System.EventHandler(this.btn_LstOrd_Click);
             // 
             // btn_NewStock
             // 
+            this.btn_NewStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_NewStock.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_NewStock.ForeColor = System.Drawing.Color.White;
             this.btn_NewStock.Location = new System.Drawing.Point(722, 294);
             this.btn_NewStock.Name = "btn_NewStock";
             this.btn_NewStock.Size = new System.Drawing.Size(75, 75);
             this.btn_NewStock.TabIndex = 24;
             this.btn_NewStock.Text = "상품 추가";
-            this.btn_NewStock.UseVisualStyleBackColor = true;
+            this.btn_NewStock.UseVisualStyleBackColor = false;
             this.btn_NewStock.Click += new System.EventHandler(this.btn_NewStock_Click);
             // 
             // btn_InStock
             // 
+            this.btn_InStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_InStock.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_InStock.ForeColor = System.Drawing.Color.White;
             this.btn_InStock.Location = new System.Drawing.Point(722, 218);
             this.btn_InStock.Name = "btn_InStock";
             this.btn_InStock.Size = new System.Drawing.Size(75, 75);
             this.btn_InStock.TabIndex = 25;
             this.btn_InStock.Text = "입고";
-            this.btn_InStock.UseVisualStyleBackColor = true;
+            this.btn_InStock.UseVisualStyleBackColor = false;
             this.btn_InStock.Click += new System.EventHandler(this.btn_InStock_Click);
             // 
             // btn_DIsposal
             // 
+            this.btn_DIsposal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_DIsposal.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_DIsposal.ForeColor = System.Drawing.Color.White;
             this.btn_DIsposal.Location = new System.Drawing.Point(722, 142);
             this.btn_DIsposal.Name = "btn_DIsposal";
             this.btn_DIsposal.Size = new System.Drawing.Size(75, 75);
             this.btn_DIsposal.TabIndex = 26;
             this.btn_DIsposal.Text = "폐기";
-            this.btn_DIsposal.UseVisualStyleBackColor = true;
+            this.btn_DIsposal.UseVisualStyleBackColor = false;
             this.btn_DIsposal.Click += new System.EventHandler(this.btn_DIsposal_Click);
-            // 
-            // btn_UpStock
-            // 
-            this.btn_UpStock.Location = new System.Drawing.Point(722, 66);
-            this.btn_UpStock.Name = "btn_UpStock";
-            this.btn_UpStock.Size = new System.Drawing.Size(75, 75);
-            this.btn_UpStock.TabIndex = 27;
-            this.btn_UpStock.Text = "상품 업데이트";
-            this.btn_UpStock.UseVisualStyleBackColor = true;
             // 
             // tb_Search
             // 
@@ -427,12 +447,15 @@
             // 
             // btn_search
             // 
+            this.btn_search.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_search.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_search.ForeColor = System.Drawing.Color.White;
             this.btn_search.Location = new System.Drawing.Point(452, 177);
             this.btn_search.Name = "btn_search";
             this.btn_search.Size = new System.Drawing.Size(75, 23);
             this.btn_search.TabIndex = 30;
             this.btn_search.Text = "검색";
-            this.btn_search.UseVisualStyleBackColor = true;
+            this.btn_search.UseVisualStyleBackColor = false;
             this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
             // 
             // groupBox2
@@ -447,13 +470,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(235)))), ((int)(((byte)(247)))));
             this.CancelButton = this.Stock_exit;
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.ControlBox = false;
             this.Controls.Add(this.tb_Search);
             this.Controls.Add(this.btn_search);
             this.Controls.Add(label3);
-            this.Controls.Add(this.btn_UpStock);
             this.Controls.Add(this.btn_DIsposal);
             this.Controls.Add(this.btn_InStock);
             this.Controls.Add(this.btn_NewStock);
@@ -524,7 +547,6 @@
         private System.Windows.Forms.Button btn_InStock;
         internal System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btn_DIsposal;
-        private System.Windows.Forms.Button btn_UpStock;
         private System.Windows.Forms.TextBox tb_Search;
         private System.Windows.Forms.Button btn_search;
         private System.Windows.Forms.GroupBox groupBox2;

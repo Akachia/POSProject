@@ -112,6 +112,14 @@ namespace TF
                         orderList.Add(orderArr);
                         orderDate = date[0] + " - " + date[1];
                         order = int.Parse(row.ItemArray[1].ToString());
+                        if (table2.Rows.Count == rowCount)
+                        {
+                            orderArr = new string[2];
+                            orderArr[0] = orderDate;
+                            orderArr[1] = order.ToString();
+
+                            orderList.Add(orderArr);
+                        }
                     }
                 }
 
@@ -147,6 +155,14 @@ namespace TF
 
                         workDate = date[0] + " - " + date[1];
                         salary = int.Parse(row.ItemArray[1].ToString()) * int.Parse(row.ItemArray[2].ToString());
+                        if (table3.Rows.Count == rowCount2)
+                        {
+                            salaryArr = new string[2];
+                            salaryArr[0] = workDate;
+                            salaryArr[1] = salary.ToString();
+
+                            list.Add(salaryArr);
+                        }
                     }
                 }
 
@@ -451,19 +467,19 @@ namespace TF
             this.Close();
         }
 
-        private void btnGoMain2_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void timer1_Tick_1(object sender, EventArgs e)
         {
             lblTime.Text = DateTime.Now.ToString();
+        }
+
+        private void btnGoMain2_Click_1(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnGoMain3_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

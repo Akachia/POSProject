@@ -65,6 +65,7 @@ namespace POSproject_KSM
             dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             //dataGridView2.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             OrderedStock();
+
         }
 
         private void Timer1_Tick1(object sender, EventArgs e)
@@ -96,6 +97,12 @@ namespace POSproject_KSM
                 }
                 con.Close();
             }
+            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            {
+                //col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                col.HeaderCell.Style.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Pixel);
+            }
         }
         /// <summary>
         /// 해당 발주의 자세한 내용을 나타낸다.
@@ -119,6 +126,14 @@ namespace POSproject_KSM
 
                     dataGridView1.DataSource = ds2.Tables[0];
                 }
+
+            }
+            dataGridView1.Sort(dataGridView1.Columns[2], ListSortDirection.Ascending);
+            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            {
+                col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                col.HeaderCell.Style.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Pixel);
             }
         }
 
@@ -159,7 +174,7 @@ namespace POSproject_KSM
         private void btn_orderb_Click(object sender, EventArgs e)
         {
             dataGridView1.Columns.RemoveAt(7);
-            textBoxCell.Dispose();
+            //textBoxCell.Dispose();
             OrderedStock();
         }
 
@@ -168,8 +183,15 @@ namespace POSproject_KSM
             dataGridView1_CellDoubleClick(null, null);
             order_From order_ = new order_From(ds2, lbl_User.Text);
             order_.Owner = this;
+            order_.FormClosed += Order__FormClosed;
+            //this.Visible = false;
             order_.Show();
             //this.Close();
+        }
+
+        private void Order__FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Visible = true;
         }
 
         private void btn_OrderDel_Click(object sender, EventArgs e)
@@ -180,7 +202,14 @@ namespace POSproject_KSM
                 using (SqlCommand cmd = new SqlCommand("DeleteOrders", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@DOrderNo", dataGridView1.CurrentRow.Cells[0].Value);
+                    try
+                    {
+                        cmd.Parameters.AddWithValue("@DOrderNo", dataGridView1.CurrentRow.Cells[0].Value);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("발주할 데이터가 없습니다.");
+                    }
                     //상세 발주 내역이면 물품을 삭제하고 전체 발주 내역에서는 전체 발주내역이 삭제되도록 한다.
                     if (switchOrderView == 1)
                     {
@@ -190,7 +219,7 @@ namespace POSproject_KSM
                     {
                         cmd.Parameters.AddWithValue("@DProductNo", 0);
                     }
-                    MessageBox.Show(dataGridView1.CurrentRow.Cells[0].Value.ToString());
+                    //MessageBox.Show(dataGridView1.CurrentRow.Cells[0].Value.ToString());
                     int c = cmd.ExecuteNonQuery();
                     
                     if (c == 0)
@@ -203,7 +232,7 @@ namespace POSproject_KSM
                     }
                 }
             }
-           
+            OrderedStock();
         }
 
         private void btn_Prod_Click(object sender, EventArgs e)
@@ -228,6 +257,11 @@ namespace POSproject_KSM
                 }
                 con.Close();
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DetailOrderedStock((int)dataGridView1.CurrentRow.Cells[0].Value);
         }
     }
 }

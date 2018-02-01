@@ -34,6 +34,7 @@
             this.btn_Chk = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.pnl_Modify = new System.Windows.Forms.Panel();
+            this.txt_Phone = new System.Windows.Forms.MaskedTextBox();
             this.lblTitle = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lbl_Pwd = new System.Windows.Forms.Label();
@@ -48,7 +49,6 @@
             this.txt_Id = new System.Windows.Forms.TextBox();
             this.txt_Name = new System.Windows.Forms.TextBox();
             this.openPic = new System.Windows.Forms.OpenFileDialog();
-            this.txt_Phone = new System.Windows.Forms.MaskedTextBox();
             this.pnl_CheckPwd.SuspendLayout();
             this.pnl_Modify.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picUser)).BeginInit();
@@ -105,7 +105,7 @@
             // 
             // pnl_Modify
             // 
-            this.pnl_Modify.BackColor = System.Drawing.Color.White;
+            this.pnl_Modify.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(174)))), ((int)(((byte)(214)))));
             this.pnl_Modify.Controls.Add(this.txt_Phone);
             this.pnl_Modify.Controls.Add(this.lblTitle);
             this.pnl_Modify.Controls.Add(this.label3);
@@ -124,6 +124,14 @@
             this.pnl_Modify.Name = "pnl_Modify";
             this.pnl_Modify.Size = new System.Drawing.Size(404, 403);
             this.pnl_Modify.TabIndex = 3;
+            // 
+            // txt_Phone
+            // 
+            this.txt_Phone.Location = new System.Drawing.Point(237, 242);
+            this.txt_Phone.Mask = "000-9000-0000";
+            this.txt_Phone.Name = "txt_Phone";
+            this.txt_Phone.Size = new System.Drawing.Size(100, 21);
+            this.txt_Phone.TabIndex = 30;
             // 
             // lblTitle
             // 
@@ -247,14 +255,6 @@
             // openPic
             // 
             this.openPic.FileName = "openFileDialog1";
-            // 
-            // txt_Phone
-            // 
-            this.txt_Phone.Location = new System.Drawing.Point(237, 242);
-            this.txt_Phone.Mask = "000-9000-0000";
-            this.txt_Phone.Name = "txt_Phone";
-            this.txt_Phone.Size = new System.Drawing.Size(100, 21);
-            this.txt_Phone.TabIndex = 30;
             // 
             // Form_UserModify
             // 

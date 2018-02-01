@@ -39,6 +39,8 @@
             this.btnSelectRefund = new System.Windows.Forms.Button();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnReset = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -78,12 +80,15 @@
             // 
             // btnSearch
             // 
+            this.btnSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnSearch.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSearch.ForeColor = System.Drawing.Color.White;
             this.btnSearch.Location = new System.Drawing.Point(585, 23);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(60, 29);
             this.btnSearch.TabIndex = 36;
             this.btnSearch.Text = "조회";
-            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // txtReCount
@@ -108,32 +113,41 @@
             // 
             // btnRecount
             // 
+            this.btnRecount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnRecount.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btnRecount.ForeColor = System.Drawing.Color.White;
             this.btnRecount.Location = new System.Drawing.Point(546, 75);
             this.btnRecount.Name = "btnRecount";
             this.btnRecount.Size = new System.Drawing.Size(99, 29);
             this.btnRecount.TabIndex = 39;
             this.btnRecount.Text = "일부 환불하기";
-            this.btnRecount.UseVisualStyleBackColor = true;
+            this.btnRecount.UseVisualStyleBackColor = false;
             this.btnRecount.Click += new System.EventHandler(this.btnRecount_Click);
             // 
             // btnRefundAll
             // 
+            this.btnRefundAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnRefundAll.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btnRefundAll.ForeColor = System.Drawing.Color.White;
             this.btnRefundAll.Location = new System.Drawing.Point(506, 128);
             this.btnRefundAll.Name = "btnRefundAll";
             this.btnRefundAll.Size = new System.Drawing.Size(139, 29);
             this.btnRefundAll.TabIndex = 40;
             this.btnRefundAll.Text = "전부 환불하기";
-            this.btnRefundAll.UseVisualStyleBackColor = true;
+            this.btnRefundAll.UseVisualStyleBackColor = false;
             this.btnRefundAll.Click += new System.EventHandler(this.btnRefundAll_Click);
             // 
             // btnSelectRefund
             // 
+            this.btnSelectRefund.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnSelectRefund.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSelectRefund.ForeColor = System.Drawing.Color.White;
             this.btnSelectRefund.Location = new System.Drawing.Point(355, 128);
             this.btnSelectRefund.Name = "btnSelectRefund";
             this.btnSelectRefund.Size = new System.Drawing.Size(139, 29);
             this.btnSelectRefund.TabIndex = 41;
             this.btnSelectRefund.Text = "선택상품 모두환불";
-            this.btnSelectRefund.UseVisualStyleBackColor = true;
+            this.btnSelectRefund.UseVisualStyleBackColor = false;
             this.btnSelectRefund.Click += new System.EventHandler(this.btnSelectRefund_Click);
             // 
             // dataGridView2
@@ -157,11 +171,40 @@
             this.label2.TabIndex = 43;
             this.label2.Text = "환불 기록";
             // 
+            // btnReset
+            // 
+            this.btnReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnReset.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btnReset.ForeColor = System.Drawing.Color.White;
+            this.btnReset.Location = new System.Drawing.Point(506, 163);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(139, 29);
+            this.btnReset.TabIndex = 44;
+            this.btnReset.Text = "초기화";
+            this.btnReset.UseVisualStyleBackColor = false;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnClose.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btnClose.ForeColor = System.Drawing.Color.White;
+            this.btnClose.Location = new System.Drawing.Point(565, 394);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 45;
+            this.btnClose.Text = "취소";
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // Form_Refund
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(662, 393);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(235)))), ((int)(((byte)(247)))));
+            this.ClientSize = new System.Drawing.Size(662, 429);
+            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.btnSelectRefund);
@@ -173,7 +216,9 @@
             this.Controls.Add(this.txtSellNo);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.dataGridView1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form_Refund";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Form_Refund";
             this.Load += new System.EventHandler(this.Form_Refund_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -196,5 +241,7 @@
         private System.Windows.Forms.Button btnSelectRefund;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Button btnClose;
     }
 }

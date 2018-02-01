@@ -47,39 +47,44 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            label1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             label1.Location = new System.Drawing.Point(12, 16);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(49, 12);
+            label1.Size = new System.Drawing.Size(54, 12);
             label1.TabIndex = 3;
             label1.Text = "바코드 :";
             // 
             // label2
             // 
             label2.AutoSize = true;
+            label2.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             label2.Location = new System.Drawing.Point(13, 63);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(65, 12);
+            label2.Size = new System.Drawing.Size(72, 12);
             label2.TabIndex = 5;
             label2.Text = "발주 총액 :";
             // 
             // label4
             // 
             label4.AutoSize = true;
+            label4.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             label4.Location = new System.Drawing.Point(284, 63);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(49, 12);
+            label4.Size = new System.Drawing.Size(54, 12);
             label4.TabIndex = 7;
             label4.Text = "발주자 :";
             // 
             // btn_check
             // 
+            this.btn_check.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_check.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_check.ForeColor = System.Drawing.Color.White;
             this.btn_check.Location = new System.Drawing.Point(207, 458);
             this.btn_check.Name = "btn_check";
             this.btn_check.Size = new System.Drawing.Size(75, 35);
             this.btn_check.TabIndex = 0;
             this.btn_check.Text = "확인";
-            this.btn_check.UseVisualStyleBackColor = true;
+            this.btn_check.UseVisualStyleBackColor = false;
             this.btn_check.Click += new System.EventHandler(this.btn_check_Click);
             // 
             // tb_Barcode
@@ -102,12 +107,15 @@
             // 
             // btn_BarCh
             // 
-            this.btn_BarCh.Location = new System.Drawing.Point(513, 10);
+            this.btn_BarCh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_BarCh.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_BarCh.ForeColor = System.Drawing.Color.White;
+            this.btn_BarCh.Location = new System.Drawing.Point(502, 10);
             this.btn_BarCh.Name = "btn_BarCh";
-            this.btn_BarCh.Size = new System.Drawing.Size(75, 25);
+            this.btn_BarCh.Size = new System.Drawing.Size(86, 25);
             this.btn_BarCh.TabIndex = 4;
             this.btn_BarCh.Text = "바코드확인";
-            this.btn_BarCh.UseVisualStyleBackColor = true;
+            this.btn_BarCh.UseVisualStyleBackColor = false;
             this.btn_BarCh.Click += new System.EventHandler(this.btn_BarCh_Click);
             // 
             // lbl_TtlOrder
@@ -121,9 +129,10 @@
             // lbl_OrderCus
             // 
             this.lbl_OrderCus.AutoSize = true;
+            this.lbl_OrderCus.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
             this.lbl_OrderCus.Location = new System.Drawing.Point(339, 63);
             this.lbl_OrderCus.Name = "lbl_OrderCus";
-            this.lbl_OrderCus.Size = new System.Drawing.Size(38, 12);
+            this.lbl_OrderCus.Size = new System.Drawing.Size(44, 12);
             this.lbl_OrderCus.TabIndex = 8;
             this.lbl_OrderCus.Text = "label5";
             // 
@@ -137,18 +146,22 @@
             // 
             // btn_Exit
             // 
+            this.btn_Exit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_Exit.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_Exit.ForeColor = System.Drawing.Color.White;
             this.btn_Exit.Location = new System.Drawing.Point(314, 458);
             this.btn_Exit.Name = "btn_Exit";
             this.btn_Exit.Size = new System.Drawing.Size(75, 35);
             this.btn_Exit.TabIndex = 12;
             this.btn_Exit.Text = "취소";
-            this.btn_Exit.UseVisualStyleBackColor = true;
+            this.btn_Exit.UseVisualStyleBackColor = false;
             this.btn_Exit.Click += new System.EventHandler(this.btn_Exit_Click);
             // 
             // Form_InStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(235)))), ((int)(((byte)(247)))));
             this.ClientSize = new System.Drawing.Size(600, 500);
             this.Controls.Add(this.btn_Exit);
             this.Controls.Add(this.lbl_OrderCus);
@@ -165,7 +178,6 @@
             this.Name = "Form_InStock";
             this.Text = "Form_InStock";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.Form_InStock_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

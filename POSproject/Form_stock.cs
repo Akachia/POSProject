@@ -176,6 +176,12 @@ namespace POSproject_KSM
                 dataGridView1.Columns[i].ReadOnly = true;
             }
             dataGridView1.Select();
+            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            {
+                //col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                col.HeaderCell.Style.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Pixel);
+            }
         }
 
         /// <summary>
@@ -312,9 +318,18 @@ namespace POSproject_KSM
         private void btn_OrderClick(object sender, EventArgs e)
         {
             order_From order_ = new order_From(id);
+            order_.FormClosed += Order__FormClosed;
             order_.Owner = this;
+            this.Visible = false;
             order_.ShowDialog();
         }
+
+        private void Order__FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Visible = true;
+            SelectStock("SelectStock");
+        }
+
         /// <summary>
         /// picturebox를 클릭하면 이미지 교체가 가능하게 했다.
         /// 실제 사용시에는 필요가 없는 기능이므로 완성시는 막아둔다.
@@ -338,38 +353,66 @@ namespace POSproject_KSM
 
         private void btn_LstOrd_Click(object sender, EventArgs e)
         {
-            new OrderDetail(id).ShowDialog();
+            OrderDetail orderDetail = new OrderDetail(id);
+            orderDetail.FormClosed += OrderDetail_FormClosed;
+            this.Visible = false;
+            orderDetail.ShowDialog();
+            
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void OrderDetail_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+            this.Visible = true;
+            SelectStock("SelectStock");
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
 
         private void btn_InStock_Click(object sender, EventArgs e)
         {
-            new Form_InStock(id).ShowDialog(); 
+            Form_InStock form_ = new Form_InStock(id);
+            form_.FormClosed += Form__FormClosed;
+            this.Visible = false;
+            form_.ShowDialog();
+        }
+
+        private void Form__FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Visible = true;
+            SelectStock("SelectStock");
         }
 
         private void btn_NewStock_Click(object sender, EventArgs e)
         {
-            new Form_NewStock(id).ShowDialog();
+           Form_NewStock form_NewStock =  new Form_NewStock(id);
+            form_NewStock.FormClosed += Form_NewStock_FormClosed;
+            this.Visible = false;
+            form_NewStock.ShowDialog();
+            
+        }
+
+        private void Form_NewStock_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Visible = true;
+            SelectStock("SelectStock");
         }
 
         private void btn_DIsposal_Click(object sender, EventArgs e)
         {
-            new Form_Disposal(id).ShowDialog();
+           Form_Disposal form_Disposal = new Form_Disposal(id);
+            form_Disposal.FormClosed += Form_Disposal_FormClosed;
+            this.Visible = false;
+            form_Disposal.ShowDialog();
+        }
+
+        private void Form_Disposal_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Visible = true;
+            SelectStock("SelectStock");
         }
 
         private void tb_ShelfLIfe_TextChanged(object sender, EventArgs e)
         {
             string sPattern = "^[0-9]{0,1}$|^[1-4]{0,1}[0-9]{0,1}$|^50$";
-
             if (tb_ShelfLIfe.Text != "0")
             {
                 if (System.Text.RegularExpressions.Regex.IsMatch(tb_ShelfLIfe.Text, sPattern))
@@ -388,7 +431,7 @@ namespace POSproject_KSM
 
         private void tb_Search_TextChanged(object sender, EventArgs e)
         {
-            string sPattern = "^[ㄱ-ㅎ가-힣0-9a-zA-Z()]*$";
+            string sPattern = "^[ㄱ-ㅎ가-힣0-9a-zA-Z()&\\s]*$";
 
             if (System.Text.RegularExpressions.Regex.IsMatch(tb_Search.Text, sPattern))
             {

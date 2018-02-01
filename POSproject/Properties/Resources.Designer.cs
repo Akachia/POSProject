@@ -63,6 +63,16 @@ namespace POSproject.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap _3KLMart {
+            get {
+                object obj = ResourceManager.GetObject("3KLMart", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap if_Enter_7289341 {
             get {
                 object obj = ResourceManager.GetObject("if_Enter_7289341", resourceCulture);

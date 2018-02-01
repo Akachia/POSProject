@@ -105,7 +105,10 @@ namespace POSproject
 
         private void btn_mgr_Click(object sender, EventArgs e)
         {
-            new Form_UserManagement(user).Show();
+            
+            Form_UserManagement fu= new Form_UserManagement(user);
+            fu.Owner = this;
+            fu.Show();
 
 
         }
@@ -129,6 +132,7 @@ namespace POSproject
             
             Prcd.EndWork(user,DateTime.Now);
             new Form_LogIn().Show();
+            FM.Close();
             this.Close();
         }
 
@@ -139,12 +143,12 @@ namespace POSproject
 
         private void btn_InfoModify_Click(object sender, EventArgs e)
         {
-            new Form_UserModify(user).Show();
+            new Form_UserModify(user).ShowDialog();
         }
 
         private void btnMail_Click(object sender, EventArgs e)
         {
-            new Form_mail(user).Show();
+            new Form_mail(user).ShowDialog();
         }
     }
 }

@@ -20,6 +20,7 @@ namespace formSales
     {
         Form_LogIn FL;
         string user;
+        string user_id;
         public Form_Main()
         {
             InitializeComponent();
@@ -28,8 +29,9 @@ namespace formSales
         public Form_Main(DateTime checkIn, string id)
         {
             InitializeComponent();
-            user = id;
-            lbl_user.Text = id + "님 환영합니다. ";
+            user = IdName(id);
+            user_id = id;
+            lbl_user.Text = IdName(id) + "님 환영합니다. ";
             lbl_time.Text = DateTime.Now.ToLongTimeString();
         }
         DataSet ds = new DataSet("SalesList");
@@ -61,6 +63,36 @@ namespace formSales
             timer1.Start();
         }
 
+        private string IdName(string id)
+        {
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand("SelectName", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@userid", id);
+
+                    SqlDataReader sdr = cmd.ExecuteReader(); // 상품 존재여부 확인
+                    if (!sdr.HasRows)
+                    {
+                        MessageBox.Show("등록되지 않은 상품입니다.");
+                        txtBarcode.Text = "";
+                        con.Close();
+                        return id;
+                    }
+                    else
+                    {
+                        while (sdr.Read())
+                        {
+                            id = sdr["UserName"].ToString();
+                        }
+                        return id;
+                    }
+                }
+            }
+
+        }
         private void btnRegister_Click(object sender, EventArgs e)
         {
             try
@@ -477,7 +509,7 @@ namespace formSales
 
         private void btnUserSet_Click(object sender, EventArgs e)
         {
-            UserAccount ua = new UserAccount(user);
+            UserAccount ua = new UserAccount(user_id);
             ua.Owner = this;
             ua.Show();
         }
@@ -490,7 +522,16 @@ namespace formSales
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new POSproject_KSM.POS_Stock(user).Show();
+            POSproject_KSM.POS_Stock pOS_ = new POSproject_KSM.POS_Stock(user);
+            pOS_.FormClosed += POS__FormClosed;
+            this.Visible = false;
+            pOS_.ShowDialog();
+
+        }
+
+        private void POS__FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Visible = true;
         }
 
         private void btnCalc_Click(object sender, EventArgs e)
@@ -637,10 +678,16 @@ namespace formSales
         private void btnPayReset_Click(object sender, EventArgs e)
         {
             txtPay.Text = "";
+            cardNum = "";
+            rbtCash.Checked = true;
         }
 
         private void paySet(object sender, EventArgs e)
         {
+            if (rbtCard.Checked)
+            {
+                return;
+            }
             int money = int.Parse(sender.ToString().Split(',')[1].Split(':')[1].Trim().ToString());
             int payMoney;
             if (txtPay.Text == "")
@@ -657,12 +704,15 @@ namespace formSales
         private void rbtCash_Click(object sender, EventArgs e)
         {
             txtPay.Text = "";
+            txtPay.ReadOnly = false;
         }
 
         private void rbtCard_Click(object sender, EventArgs e)
         {
             Form_Card fc = new Form_Card();
             fc.Show(this);
+            txtPay.ReadOnly = true;
+            txtPay.BackColor = Color.White;
         }
 
         public void getCardNum(string num)
@@ -751,7 +801,18 @@ namespace formSales
                 date.Year, date.Month, int.Parse(shf_Day),
                 int.Parse(shf_Hour), date.Minute, date.Second);
             }
-
+            if (date.Day < int.Parse(shf_Day))
+            {
+                shf_time = new DateTime(
+                date.Year, date.Month - 1, int.Parse(shf_Day),
+                int.Parse(shf_Hour), date.Minute, date.Second);
+            }
+            else
+            {
+                shf_time = new DateTime(
+                date.Year, date.Month, int.Parse(shf_Day),
+                int.Parse(shf_Hour), date.Minute, date.Second);
+            }
             if (date > shf_time)
             {
                 return true;
@@ -770,7 +831,16 @@ namespace formSales
 
         private void btnSetting_Click(object sender, EventArgs e)
         {
-            new Form_Preferences().Show();
+            new Form_Preferences().ShowDialog();
+        }
+
+        private void btnLock_Click(object sender, EventArgs e)
+        {
+            foreach (Control item in Controls)
+            {
+                item.Enabled = !item.Enabled;
+            }
+            btnLock.Enabled = true;
         }
     }
 }
