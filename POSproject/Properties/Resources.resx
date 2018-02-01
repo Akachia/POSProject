@@ -121,13 +121,16 @@
   <data name="if_lock-512x512px_345379" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\if_lock-512x512px_345379.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="nouserpic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nouserpic.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="if_Enter_7289341" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\if_Enter_7289341.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="noImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\noImage.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="nouserpic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\nouserpic.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="3KLMart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\3KLMart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

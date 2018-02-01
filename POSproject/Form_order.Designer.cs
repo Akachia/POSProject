@@ -52,6 +52,7 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1});
@@ -61,6 +62,7 @@
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(800, 385);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // Column1
             // 
@@ -68,6 +70,7 @@
             this.Column1.Name = "Column1";
             this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Column1.Width = 82;
             // 
             // groupBox1
             // 
@@ -93,42 +96,47 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label2.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold);
             this.label2.Location = new System.Drawing.Point(405, 22);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(136, 21);
+            this.label2.Size = new System.Drawing.Size(144, 21);
             this.label2.TabIndex = 3;
             this.label2.Text = "현재 접속자 :";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label1.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold);
             this.label1.Location = new System.Drawing.Point(14, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 21);
+            this.label1.Size = new System.Drawing.Size(64, 21);
             this.label1.TabIndex = 0;
             this.label1.Text = "label1";
             // 
             // btn_Exit
             // 
-            this.btn_Exit.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btn_Exit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_Exit.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_Exit.ForeColor = System.Drawing.Color.White;
             this.btn_Exit.Location = new System.Drawing.Point(721, 521);
             this.btn_Exit.Name = "btn_Exit";
             this.btn_Exit.Size = new System.Drawing.Size(75, 75);
             this.btn_Exit.TabIndex = 10;
             this.btn_Exit.Text = "나가기";
-            this.btn_Exit.UseVisualStyleBackColor = true;
+            this.btn_Exit.UseVisualStyleBackColor = false;
             this.btn_Exit.Click += new System.EventHandler(this.btn_Exit_Click);
             // 
             // btn_Send
             // 
+            this.btn_Send.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_Send.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_Send.ForeColor = System.Drawing.Color.White;
             this.btn_Send.Location = new System.Drawing.Point(643, 521);
             this.btn_Send.Name = "btn_Send";
             this.btn_Send.Size = new System.Drawing.Size(75, 75);
             this.btn_Send.TabIndex = 11;
             this.btn_Send.Text = "보내기";
-            this.btn_Send.UseVisualStyleBackColor = true;
+            this.btn_Send.UseVisualStyleBackColor = false;
             this.btn_Send.Click += new System.EventHandler(this.btn_Send_Click);
             // 
             // lbl_TtlPrice
@@ -173,28 +181,35 @@
             // 
             // btn_allCk
             // 
+            this.btn_allCk.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_allCk.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_allCk.ForeColor = System.Drawing.Color.White;
             this.btn_allCk.Location = new System.Drawing.Point(487, 521);
             this.btn_allCk.Name = "btn_allCk";
             this.btn_allCk.Size = new System.Drawing.Size(75, 75);
             this.btn_allCk.TabIndex = 16;
             this.btn_allCk.Text = "전체선택";
-            this.btn_allCk.UseVisualStyleBackColor = true;
+            this.btn_allCk.UseVisualStyleBackColor = false;
             this.btn_allCk.Click += new System.EventHandler(this.btn_allCk_Click);
             // 
             // btn_ExcelShow
             // 
+            this.btn_ExcelShow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_ExcelShow.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_ExcelShow.ForeColor = System.Drawing.Color.White;
             this.btn_ExcelShow.Location = new System.Drawing.Point(565, 521);
             this.btn_ExcelShow.Name = "btn_ExcelShow";
             this.btn_ExcelShow.Size = new System.Drawing.Size(75, 75);
             this.btn_ExcelShow.TabIndex = 17;
             this.btn_ExcelShow.Text = "엑셀파일 미리보기";
-            this.btn_ExcelShow.UseVisualStyleBackColor = true;
+            this.btn_ExcelShow.UseVisualStyleBackColor = false;
             this.btn_ExcelShow.Click += new System.EventHandler(this.btn_ExcelShow_Click);
             // 
             // order_From
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(235)))), ((int)(((byte)(247)))));
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.Controls.Add(this.btn_ExcelShow);
             this.Controls.Add(this.btn_allCk);

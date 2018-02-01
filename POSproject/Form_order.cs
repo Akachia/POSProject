@@ -8,9 +8,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Excel = Microsoft.Office.Interop.Excel;
 using System.Data.OleDb;
 using System.Windows.Forms;
+using System.Collections;
 /// <summary>
 /// 자주 발주하는 제품 선택 -> 제품테이블에 데이터가 있어야 되서 안됨
 /// 이 폼은 재고 테이블에서 데이터를 가져와 발주 데이터를 작성하고 발주 테이블에 커밋하는 역할을 한다.
@@ -19,34 +19,36 @@ namespace POSproject_KSM
 {
     public partial class order_From : Form
     {
-
-        Excel.Application excelApp = null;
-        Excel.Workbook wb = null;
-        Excel.Worksheet ws = null;
+        Timer timer;
+        private Hashtable hashtable = new Hashtable();
         DataTable ds = null;
         DataTable ds2 = null;
+        private Hashtable preference = new Hashtable();
+
         int orderTtl_Price = 0;
         int orderTtlSell_Price = 0;
         int massageCount = 0;
-        decimal barcodeNo = 0;
+        int productNo = 0;
+        //decimal barcodeNo = 0;
 
         public order_From()
         {
             InitializeComponent();
         }
 
-        public order_From(string ds) : this()
+        public order_From(string id) : this()
         {
-            lbl_User.Text = ds;
+            lbl_User.Text = id;
         }
 
-        public order_From(DataSet ds) : this()
+        public order_From(DataSet ds, string id) : this()
         {
+            lbl_User.Text = id;
             this.ds = ds.Tables[0];
             ds2 = this.ds.Copy();
             ds2.Columns.RemoveAt(0);
             ds2.Columns.RemoveAt(0);
-            
+
         }
         /// <summary>
         /// Dvg에 콤보박스를 만드는 함수
@@ -71,23 +73,24 @@ namespace POSproject_KSM
             boxColumn.Width = 75;
             boxColumn.DisplayStyle = DataGridViewComboBoxDisplayStyle.ComboBox;
             boxColumn.HeaderText = "발주 개수";
-            dataGridView1.Columns.Insert(5, boxColumn);
+            dataGridView1.Columns.Insert(6, boxColumn);
             boxColumn1.DataSource = columnList1;
             boxColumn1.Width = 75;
             boxColumn1.DisplayStyle = DataGridViewComboBoxDisplayStyle.ComboBox;
             boxColumn1.HeaderText = "발주 개수(box)";
-            dataGridView1.Columns.Insert(5, boxColumn1);
+            dataGridView1.Columns.Insert(6, boxColumn1);
             // 데이터가 없어서 초기 데이터를 설정한다.
             foreach (DataGridViewRow item in dataGridView1.Rows)
             {
-                item.Cells[5].Value = "0box";
-                item.Cells[6].Value = "0개";
+                item.Cells[6].Value = "0box";
+                item.Cells[7].Value = "0개";
             }
             dataGridView1.Columns[1].HeaderText = "상품번호";
             dataGridView1.Columns[2].HeaderText = "이름";
-            dataGridView1.Columns[3].HeaderText = "가격";
-            dataGridView1.Columns[4].HeaderText = "원가";
-            dataGridView1.Columns[7].HeaderText = "현재수량";
+            dataGridView1.Columns[3].HeaderText = "카테고리";
+            dataGridView1.Columns[4].HeaderText = "가격";
+            dataGridView1.Columns[5].HeaderText = "원가";
+            dataGridView1.Columns[8].HeaderText = "현재수량";
         }
 
         private decimal GenBarcode(decimal bar)
@@ -102,7 +105,6 @@ namespace POSproject_KSM
             str += str2;
 
             str += bar.ToString().Substring(10);
-            //MessageBox.Show(str);
             return decimal.Parse(str);
         }
 
@@ -115,11 +117,11 @@ namespace POSproject_KSM
             orderTtlSell_Price = 0;
             foreach (DataGridViewRow item in dataGridView1.Rows)
             {
-                orderTtl_Price += int.Parse(item.Cells[4].Value.ToString());
+                orderTtl_Price += int.Parse(item.Cells[5].Value.ToString());
             }
             foreach (DataGridViewRow item in dataGridView1.Rows)
             {
-                orderTtlSell_Price += int.Parse(item.Cells[3].Value.ToString());
+                orderTtlSell_Price += int.Parse(item.Cells[4].Value.ToString());
             }
             string ttlPrice = String.Format("{0:#,###}", orderTtl_Price);
             string ttlSellPrice = String.Format("{0:#,###}", orderTtlSell_Price);
@@ -130,16 +132,25 @@ namespace POSproject_KSM
 
         private void order_From_Load(object sender, EventArgs e)
         {
-            if (ds2!=null)
+
+            if (ds2 != null)
             {
                 Load_FromDOrder();
+                Dgv_MakeHash(ds2);
             }
             else
             {
                 Load_FromStock();
+                Dgv_MakeHash(ds);
             }
-
-            dataGridView1.Columns[1].SortMode = DataGridViewColumnSortMode.Automatic;
+            dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            {
+                col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                col.HeaderCell.Style.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Pixel);
+            }
+            MakePreference();
         }
         /// <summary>
         /// OrderDetail form에서 넘어올때 실행되는 함수
@@ -147,10 +158,11 @@ namespace POSproject_KSM
         private void Load_FromDOrder()
         {
             dataGridView1.DataSource = ds2;
-
+            MakePreference();
             dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
-            label1.Text = DateTime.Now.ToLongDateString();
-            Timer timer = new Timer();
+            dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+            label1.Text = DateTime.Now.ToLongTimeString();
+            timer = new Timer();
             timer.Tick += Timer1_Tick1;
             timer.Start();
             MakeComboCell();
@@ -172,10 +184,10 @@ namespace POSproject_KSM
             }
 
             dataGridView1.DataSource = ds2;
-
+            dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
             dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
             label1.Text = pOS_.label1.Text;
-            Timer timer = new Timer();
+            timer = new Timer();
             timer.Tick += Timer1_Tick1;
             timer.Start();
             MakeComboCell();
@@ -184,6 +196,21 @@ namespace POSproject_KSM
             //수량을 콤보박스로 표현하기 
             //dataGridView1.Columns["Column2"].DisplayIndex = 4;
         }
+
+        /// <summary>
+        /// 데이터 그리드뷰에서 원가랑 가격을 저장할 해시테이블을 사용한다.
+        /// 해시테이블의 구조는 key는 제품번호, value는 string배열을 사용해서 저장했다.
+        /// </summary>
+        /// <param name="dataSet"></param>
+        private void Dgv_MakeHash(DataTable dataSet)
+        {
+            foreach (DataRow item in dataSet.Rows)
+            {
+                string[] str = { item[3].ToString(), item[4].ToString() };
+                hashtable.Add(item[0].ToString(), str);
+            }
+        }
+
         /// <summary>
         /// 그리드뷰에서 셀의 값이 변경되면 실행되는 함수 콤보박스만 해당된다.
         /// </summary>
@@ -195,20 +222,23 @@ namespace POSproject_KSM
             {
                 if (dataGridView1.CurrentCell.GetType() == new DataGridViewComboBoxCell().GetType())
                 {
-                    int numVal = int.Parse(ds.Rows[dataGridView1.CurrentRow.Index].ItemArray[2].ToString());
-                    int numVal1 = int.Parse(ds.Rows[dataGridView1.CurrentRow.Index].ItemArray[3].ToString());
-                    int boxNum = int.Parse(dataGridView1.CurrentRow.Cells[5].Value.ToString().Split('b')[0]);
-                    int boxNum1 = int.Parse(dataGridView1.CurrentRow.Cells[6].Value.ToString().Split('개')[0]);
+                    string[] strs = (String[])hashtable[dataGridView1.CurrentRow.Cells[1].Value.ToString()];
+                    int numVal = int.Parse(strs[0]);
+                    int numVal1 = int.Parse(strs[1]);
+                    //int numVal = int.Parse(ds.Rows[dataGridView1.CurrentRow.Index].ItemArray[4].ToString());
+                    //int numVal1 = int.Parse(ds.Rows[dataGridView1.CurrentRow.Index].ItemArray[5].ToString());
+                    int boxNum = int.Parse(dataGridView1.CurrentRow.Cells[6].Value.ToString().Split('b')[0]);
+                    int boxNum1 = int.Parse(dataGridView1.CurrentRow.Cells[7].Value.ToString().Split('개')[0]);
 
                     if (boxNum == 0 && boxNum1 == 0)
                     {
-                        dataGridView1.CurrentRow.Cells[3].Value = numVal;
-                        dataGridView1.CurrentRow.Cells[4].Value = numVal1;
+                        dataGridView1.CurrentRow.Cells[4].Value = numVal;
+                        dataGridView1.CurrentRow.Cells[5].Value = numVal1;
                     }
                     else
                     {
-                        dataGridView1.CurrentRow.Cells[3].Value = (boxNum * 15) * numVal + (boxNum1 * numVal);
-                        dataGridView1.CurrentRow.Cells[4].Value = (boxNum * 15) * numVal1 + (boxNum1 * numVal1);
+                        dataGridView1.CurrentRow.Cells[4].Value = (boxNum * 15) * numVal + (boxNum1 * numVal);
+                        dataGridView1.CurrentRow.Cells[5].Value = (boxNum * 15) * numVal1 + (boxNum1 * numVal1);
                     }
                     Order_TtlPrice_Sum();
                 }
@@ -219,6 +249,7 @@ namespace POSproject_KSM
                 if (massageCount == 0)
                 {
                     MessageBox.Show("발주 물건을 선택해 주세요!", "알림", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
                     massageCount++;
                 }
             }
@@ -231,6 +262,8 @@ namespace POSproject_KSM
 
         private void btn_Exit_Click(object sender, EventArgs e)
         {
+            this.Dispose();
+            this.timer.Stop();
             this.Close();
         }
         /// <summary>
@@ -258,62 +291,45 @@ namespace POSproject_KSM
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
                 con.Open();
-                MessageBox.Show(last_idx.ToString());
-                using (SqlCommand cmd = new SqlCommand("SelectLastOrderNo", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter();
-                    dataAdapter.SelectCommand = cmd;
-
-                    dataAdapter.Fill(oDs);
-
-                    last_idx = int.Parse(oDs.Tables[0].Rows[0].ItemArray[0].ToString()) + 1;
-                    barcodeNo = decimal.Parse(oDs.Tables[0].Rows[0].ItemArray[5].ToString()) + 1;
-                }
+                //MessageBox.Show(last_idx.ToString());
 
                 using (SqlCommand cmd = new SqlCommand("InsertOrders2", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@UOrderTtlPrice", orderTtlSell_Price);
                     cmd.Parameters.AddWithValue("@UOrderCustomer", lbl_User.Text);
-                    cmd.Parameters.AddWithValue("@UOrderBarcode", GenBarcode(barcodeNo));
 
                     int i = cmd.ExecuteNonQuery();
-                    if (i==0)
+                    if (i == 0)
                     {
                         MessageBox.Show("통신실패 다시 해주세요");
                         return;
-                    }
+                    }//if
                 }
-            }
-            
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
-            {
-                con.Open();
-                int i = 0;
+                int hi = 0;
                 for (int j = 0; j < dataGridView1.Rows.Count; j++)
                 {
                     using (SqlCommand cmd = new SqlCommand("InsertStockOrder", con))
                     {
-                        
+
                         DataGridViewCheckBoxCell dgvCell = (DataGridViewCheckBoxCell)dataGridView1.Rows[j].Cells[0];
                         if (dgvCell.Value != new DataGridViewCheckBoxCell().FalseValue)
                         {
                             //MessageBox.Show(" : " + (dgvCell.RowIndex +1).ToString());
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@IOrderNo", last_idx);
+                            //cmd.Parameters.AddWithValue("@IOrderNo", last_idx);
                             cmd.Parameters.AddWithValue("@IProductNo", dataGridView1.Rows[j].Cells[1].Value);
 
-                            int boxNum = int.Parse(dataGridView1.Rows[j].Cells[5].Value.ToString().Split('b')[0]);
-                            int boxNum1 = int.Parse(dataGridView1.Rows[j].Cells[6].Value.ToString().Split('개')[0]);
+                            int boxNum = int.Parse(dataGridView1.Rows[j].Cells[6].Value.ToString().Split('b')[0]);
+                            int boxNum1 = int.Parse(dataGridView1.Rows[j].Cells[7].Value.ToString().Split('개')[0]);
 
                             cmd.Parameters.AddWithValue("@IProductOrderQuantity", ((boxNum * 15) + boxNum1));
-                            i = cmd.ExecuteNonQuery();
+                            hi = cmd.ExecuteNonQuery();
 
-                        }
+                        }//using
                     }
                 }
-                if (i > 0)
+                if (hi > 0)
                 {
                     MessageBox.Show("발주 성공");
                 }
@@ -325,73 +341,354 @@ namespace POSproject_KSM
             }
         }
 
+        private void MakePreference()
+        {
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("[dbo].SelectPerferences", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataReader sdr = cmd.ExecuteReader();
+                    while (sdr.Read())
+                    {
+                        preference.Add("BusinessNo", sdr["BusinessNo"].ToString());
+                        preference.Add("Addr", sdr["Addr"].ToString());
+                        preference.Add("StoreName", sdr["StoreName"].ToString());
+                        preference.Add("StoreOwner", sdr["StoreOwner"].ToString());
+                        preference.Add("CallNumber", sdr["CallNumber"].ToString());
+                    }
+                }
+                con.Close();
+            }
+        }
+        
+        private Image GenBarcodeImg()
+        {
+            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            string barcode = null;
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+
+                using (SqlCommand cmd = new SqlCommand("SelectOrderBarcode", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataReader sdr = cmd.ExecuteReader();
+                    while (sdr.Read())
+                    {
+                        barcode = sdr["OrderBarcode"].ToString();
+                        productNo = (int)sdr["OrderNo"]+1;
+                        //MessageBox.Show("Test : "+barcode);
+                    }
+
+                    barcode = (Int64.Parse(barcode) + 1).ToString();
+                }
+                con.Close();
+            }
+
+            int W = 300;//152.2
+            int H = 75;//41.4
+            b.Alignment = BarcodeLib.AlignmentPositions.CENTER;
+
+            //barcode alignment
+            b.Alignment = BarcodeLib.AlignmentPositions.CENTER;
+            //switch
+
+            BarcodeLib.TYPE type = BarcodeLib.TYPE.UNSPECIFIED;
+
+            type = BarcodeLib.TYPE.ITF14;
+
+            try
+            {
+
+                b.IncludeLabel = true;
+
+                b.RotateFlipType = (RotateFlipType)Enum.Parse(typeof(RotateFlipType), "rotatenoneflipnone", true);
+
+                b.LabelPosition = BarcodeLib.LabelPositions.BOTTOMCENTER;
+
+
+                //===== Encoding performed here =====
+                
+                return b.Encode(type, barcode, Color.Black, Color.White, W, H);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return POSproject.Properties.Resources.noImage;
+            }
+        }
+
         private void btn_ExcelShow_Click(object sender, EventArgs e)
         {
-            excelApp = new Excel.Application();
 
-            string excelPath = @"C:\Users\gd3-6\Documents\POSProject\POSproject\Resources\orderTemplate.xlsx";
+            string excelPath = System.IO.Path.GetTempPath();
+                //.Combine(System.Windows.Forms.Application.StartupPath, "Resources"); ;
+            string excelSave = excelPath+"order"
+            + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + ".xlsx";
 
-            string szConn = @"Provider=Microsoft.ACE.OLEDB.12.0;
-                Data Source=" + excelPath + ";Extended Properties='Excel 8.0;HDR=No'";
+            //MessageBox.Show(excelPath);
+            Clipboard.SetDataObject(GenBarcodeImg());
+            Microsoft.Office.Interop.Excel.Application excelApp = null;
+            Microsoft.Office.Interop.Excel.Workbook wb = null;
+            Microsoft.Office.Interop.Excel.Worksheet ws = null;
 
+            excelApp = new Microsoft.Office.Interop.Excel.Application();
+            //기존 데이터 불러오기
+            //wb = excelApp.Workbooks.Open(excelPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //    Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //    Type.Missing, Type.Missing, Type.Missing, Type.Missing);
 
-            //Excel.Workbook wb = excelApp.Workbooks.Open(excelPath);
-            //            //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-            //            //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-            //            //Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            //Excel.Worksheet ws = (Excel.Worksheet)wb.Worksheets[1];
-
-
-            excelApp = new Excel.Application();
-
-            // 엑셀 파일 열기
-            wb = excelApp.Workbooks.Open(excelPath);
-
+            wb = excelApp.Workbooks.Add();
             // 첫번째 Worksheet
-            ws = wb.Worksheets.get_Item(1) as Excel.Worksheet;
+            ws = wb.Worksheets.get_Item(1) as Microsoft.Office.Interop.Excel.Worksheet;
+            ///전체
+            Microsoft.Office.Interop.Excel.Range range = null;
+            ws.Columns.ColumnWidth = 10.75;
+            range = ws.Range[ws.Cells[1, 1], ws.Cells[43, 7]];
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThick;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThick;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeLeft].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThick;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThick;
+            ///헤더
+            range = ws.Range[ws.Cells[1, 1], ws.Cells[3, 7]];
+            range.Merge();
+            range.Value2 = "발주서";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.VerticalAlignment = Microsoft.Office.Interop.Excel.XlVAlign.xlVAlignCenter;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThick;
+            ///셀 나누기
+            range = ws.Range[ws.Cells[4, 1], ws.Cells[9, 7]];
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideVertical].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThick;
 
-            // 현재 Worksheet에서 사용된 Range 전체를 선택
-            //Excel.Range rng = ws.UsedRange;
+            range = ws.Range[ws.Cells[40, 1], ws.Cells[40, 7]];
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThick;
 
-            //int r = 10;
+            range = ws.Range[ws.Cells[4, 1], ws.Cells[40, 7]];
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.VerticalAlignment = Microsoft.Office.Interop.Excel.XlVAlign.xlVAlignCenter;
+            ///업주정보
+            range = ws.Range[ws.Cells[4, 1], ws.Cells[8, 1]];
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThick;
+
+            ws.Cells[4, 1] = "사업자번호";
+            range = ws.Range[ws.Cells[5, 1], ws.Cells[6, 1]];
+            range.Merge();
+            range.Value2 = "주소";
+            ws.Cells[7, 1] = "발주번호";
+            ws.Cells[8, 1] = "발주일자";
+            ///사업자번호
+            range = ws.Range[ws.Cells[4, 2], ws.Cells[4, 4]];
+            range.Merge();
+            range.Value2 = preference["BusinessNo"];
+
+            ///주소 병합칸
+            range = ws.Range[ws.Cells[5, 2], ws.Cells[6, 4]];
+            range.Merge();
+            range.Value2 = preference["Addr"];
+
+            ///발주번호
+            range = ws.Range[ws.Cells[7, 2], ws.Cells[7, 4]];
+            range.Merge();
+            range.Value2 = productNo;
+
+            ///발주일자
+            range = ws.Range[ws.Cells[8, 2], ws.Cells[8, 4]];
+            range.Merge();
+            range.Value2 = DateTime.Now.ToShortDateString();
+
+            range = ws.Range[ws.Cells[4, 5], ws.Cells[8, 5]];
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThick;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeLeft].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThick;
+
+            ws.Cells[4, 5] = "상호명";
+            range = ws.Range[ws.Cells[4, 6], ws.Cells[4, 7]];
+            range.Merge();
+            range.Value2 = preference["StoreName"]; 
+
+            ws.Cells[5, 5] = "대표자";
+            range = ws.Range[ws.Cells[5, 6], ws.Cells[5, 7]];
+            range.Merge();
+            range.Value2 = preference["StoreOwner"];
+
+            ws.Cells[6, 5] = "연락처";
+            range = ws.Range[ws.Cells[6, 6], ws.Cells[6, 7]];
+            range.Merge();
+            range.Value2 = preference["CallNumber"];
+
+            ws.Cells[7, 5] = "작성자";
+            range = ws.Range[ws.Cells[7, 6], ws.Cells[7, 7]];
+            range.Merge();
+            range.Value2 = "작성자";
+
+            ws.Cells[8, 5] = "발주금";
+            range = ws.Range[ws.Cells[8, 6], ws.Cells[8, 7]];
+            range.Merge();
+            range.Value2 = orderTtl_Price;
+
+            range = ws.Range[ws.Cells[9, 1], ws.Cells[9, 7]];
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThick;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThick;
+
+            ws.Cells[9, 1] = "상품번호";
+            ws.Cells[9, 2] = "상품명";
+            ws.Cells[9, 3] = "카테고리";
+            ws.Cells[9, 4] = "판매가";
+            ws.Cells[9, 5] = "원가";
+            ws.Cells[9, 6] = "수량";
+            ws.Cells[9, 7] = "발주가";
+
+
             DataGridViewRowCollection rows = dataGridView1.Rows;
-            for (int i = 10; i < rows.Count+10; i++)
+
+            for (int i = 10; i < rows.Count + 10; i++)
             {
-                for (int j = 1; j < 6; j++)
+                string[] strs = (String[])hashtable[rows[i - 10].Cells[1].Value.ToString()];
+                int numVal1 = int.Parse(strs[1]);
+                int numVal = int.Parse(strs[0]);
+                for (int j = 1; j < 8; j++)
                 {
-                    if (j == 6)
+                    if (j < 4)
                     {
-                        MessageBox.Show(ds2.Rows[i - 10].ItemArray[j - 1].ToString());
-                        ws.Cells[i, j] = ds2.Rows[i - 10].ItemArray[j - 1];
+                        ws.Cells[i, j] = rows[i - 10].Cells[j].Value;
                     }
-                    else if(j==7)
+                    else if (j == 4)
                     {
-                        MessageBox.Show(ds2.Rows[i - 10].ItemArray[j - 1].ToString());
-                        ws.Cells[i, j] = ds2.Rows[i - 10].ItemArray[j - 1];
+                        ws.Cells[i, j] = numVal;
+                    }
+                    else if (j == 5)
+                    {
+
+                        ws.Cells[i, j] = numVal1;
+                    }
+                    else if (j == 6)
+                    {
+                        ws.Cells[i, j] = (int.Parse(rows[i - 10].Cells[6].Value.ToString().Split('b')[0]) * 15)
+                            + int.Parse(rows[i - 10].Cells[7].Value.ToString().Split('개')[0]);
                     }
                     else
                     {
-                        MessageBox.Show(ds2.Rows[i - 10].ItemArray[j - 1].ToString());
-                        ws.Cells[i, j] = ds2.Rows[i - 10].ItemArray[j - 1];
+                        ws.Cells[i, j] = rows[i - 10].Cells[5].Value + "원";
                     }
                 }
             }
 
+            try
+            {
+                range = ws.Range[ws.Cells[rows.Count + 40, 3], ws.Cells[rows.Count + 43, 5]];
+                range.Select();
+                ws.Paste();
+                Clipboard.Clear();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("바코드 생성 실패");
+            }
+
             // 엑셀파일 저장
-            wb.SaveAs(excelPath, Excel.XlFileFormat.xlWorkbookNormal);
-            //excelApp.Visible = true;
-            //bool userDidntCancel = excelApp.Dialogs[Excel.XlBuiltInDialog.xlDialogPrintPreview].Show(
-            //                            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-            //                            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-            //                            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-            //                            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-            //                            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-            //                            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+           
+            // wb.Close();
+            //wb = excelApp.Workbooks.Open(excelPath, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //    Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //    Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            excelApp.Visible = true;
+            bool userDidntCancel = excelApp.Dialogs[Microsoft.Office.Interop.Excel.XlBuiltInDialog.xlDialogPrintPreview].Show(
+                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                                        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+            //wb.Close(false, Type.Missing, Type.Missing);
+            excelApp.Quit();
+            //MessageBox.Show("저장되었습니다.");
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
-            wb.Close(false, Type.Missing, Type.Missing);
-            excelApp.Quit();
+            //wb.Close(false, Type.Missing, Type.Missing);
+
+            this.Show();
+            ReleaseExcelObject(ws);
+            ReleaseExcelObject(wb);
+            ReleaseExcelObject(excelApp);
+
+            //this.Show();
+            //DialogResult dr = MessageBox.Show(excelPath + "에 저장됩니다. 저장하시겠습니까?", "알림", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            //this.Show();
+            //switch (dr)
+            //{
+            //    case DialogResult.Yes:
+            //        //wb.SaveAs(excelSave);
+            //        wb.Close(false, Type.Missing, Type.Missing);
+            //        excelApp.Quit();
+            //        MessageBox.Show("저장되었습니다.");
+                    
+            //        GC.Collect();
+            //        GC.WaitForPendingFinalizers();
+            //        //wb.Close(false, Type.Missing, Type.Missing);
+                    
+            //        this.Show();
+            //        ReleaseExcelObject(ws);
+            //        ReleaseExcelObject(wb);
+            //        ReleaseExcelObject(excelApp);
+            //        break;
+            //    case DialogResult.No:
+            //        MessageBox.Show("저장하지 않았습니다.");
+                    
+            //        GC.Collect();
+            //        GC.WaitForPendingFinalizers();
+                    
+            //        //excelApp.Quit();
+            //        this.Show();
+            //        ReleaseExcelObject(ws);
+            //        ReleaseExcelObject(wb);
+            //        ReleaseExcelObject(excelApp);
+            //        break;
+            //}
+            //return;
+        }
+
+        private static void ReleaseExcelObject(object obj)
+        {
+            try
+            {
+                if (obj != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                    obj = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                throw ex;
+            }
+            finally
+            {
+                GC.Collect();
+            }
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

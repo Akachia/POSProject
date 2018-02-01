@@ -8,9 +8,10 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>POSproject</RootNamespace>
     <AssemblyName>POSproject</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BarcodeLib">
+      <HintPath>.\BarcodeLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -55,11 +59,23 @@
     <Compile Include="Form_Card.Designer.cs">
       <DependentUpon>Form_Card.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Disposal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Disposal.Designer.cs">
+      <DependentUpon>Form_Disposal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_InStock.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form_InStock.Designer.cs">
       <DependentUpon>Form_InStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_mail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_mail.Designer.cs">
+      <DependentUpon>Form_mail.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_NewStock.cs">
       <SubType>Form</SubType>
@@ -73,11 +89,23 @@
     <Compile Include="Form_order.Designer.cs">
       <DependentUpon>Form_order.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Preferences.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Preferences.Designer.cs">
+      <DependentUpon>Form_Preferences.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Refund.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form_Refund.Designer.cs">
       <DependentUpon>Form_Refund.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_SalesList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_SalesList.Designer.cs">
+      <DependentUpon>Form_SalesList.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_stock.cs">
       <SubType>Form</SubType>
@@ -138,8 +166,14 @@
     <EmbeddedResource Include="Form_Card.resx">
       <DependentUpon>Form_Card.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_Disposal.resx">
+      <DependentUpon>Form_Disposal.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_InStock.resx">
       <DependentUpon>Form_InStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_mail.resx">
+      <DependentUpon>Form_mail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_NewStock.resx">
       <DependentUpon>Form_NewStock.cs</DependentUpon>
@@ -147,8 +181,14 @@
     <EmbeddedResource Include="Form_order.resx">
       <DependentUpon>Form_order.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_Preferences.resx">
+      <DependentUpon>Form_Preferences.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_Refund.resx">
       <DependentUpon>Form_Refund.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_SalesList.resx">
+      <DependentUpon>Form_SalesList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_stock.resx">
       <DependentUpon>Form_stock.cs</DependentUpon>

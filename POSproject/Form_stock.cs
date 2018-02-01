@@ -22,6 +22,11 @@ namespace POSproject_KSM
         DataTable data = null;
         int i = 0;
         string id = null;
+        string valid_discount = null;
+        string valid_Quantiy = null;
+        string[] autoCom = null;
+        private string valid_Search;
+
         public POS_Stock()
         {
             InitializeComponent();
@@ -66,6 +71,11 @@ namespace POSproject_KSM
             data.Columns.Add(column);
 
             column = new DataColumn();
+            column.DataType = System.Type.GetType("System.String");
+            column.ColumnName = "productCategory";
+            data.Columns.Add(column);
+
+            column = new DataColumn();
             column.DataType = System.Type.GetType("System.Int32");
             column.ColumnName = "productPrice";
             data.Columns.Add(column);
@@ -93,6 +103,7 @@ namespace POSproject_KSM
 
                     myRow["productNo"] = dataGridView1.Rows[i].Cells[1].Value;
                     myRow["productName"] = dataGridView1.Rows[i].Cells[3].Value;
+                    myRow["productCategory"] = dataGridView1.Rows[i].Cells[7].Value;
                     myRow["productPrice"] = dataGridView1.Rows[i].Cells[4].Value;
                     myRow["productPrimePrice"] = dataGridView1.Rows[i].Cells[5].Value;
                     myRow["productQuantity"] = dataGridView1.Rows[i].Cells[6].Value;
@@ -121,6 +132,11 @@ namespace POSproject_KSM
                     dataAdapter.Fill(ds);
 
                     dataGridView1.DataSource = ds.Tables[0];
+                    autoCom = new string[ds.Tables[0].Rows.Count];
+                    for (int i = 0; i < autoCom.Length; i++)
+                    {
+                        autoCom[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString();
+                    }
                 }
             }
         }
@@ -132,7 +148,15 @@ namespace POSproject_KSM
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
+
+
+            this.tb_Search.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.tb_Search.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             SelectStock("SelectStock");
+            AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
+            collection.AddRange(autoCom);
+            this.tb_Search.AutoCompleteCustomSource = collection;
             label1.Text = DateTime.Now.ToLongTimeString();
             lbl_User.Text = id;
             timer1.Start();
@@ -145,9 +169,19 @@ namespace POSproject_KSM
             dataGridView1.Columns[1].HeaderText = "상품번호";
             dataGridView1.Columns[8].HeaderText = "할인";
             dataGridView1.Columns[7].HeaderText = "종류";
-            dataGridView1.Columns[9].HeaderText = "유통기한";
-            dataGridView1.Columns[10].HeaderText = "누적 판매량";
+            dataGridView1.Columns[9].HeaderText = "누적 판매량";
+            dataGridView1.Columns[10].HeaderText = "상품 이미지";
+            for (int i = 1; i < dataGridView1.ColumnCount; i++)
+            {
+                dataGridView1.Columns[i].ReadOnly = true;
+            }
             dataGridView1.Select();
+            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            {
+                //col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                col.HeaderCell.Style.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Pixel);
+            }
         }
 
         /// <summary>
@@ -179,6 +213,8 @@ namespace POSproject_KSM
         /// <param name="e"></param>
         private void Stock_exit_Click(object sender, EventArgs e)
         {
+            this.timer1.Stop();
+            this.Dispose();
             this.Close();
         }
         /// <summary>
@@ -193,15 +229,16 @@ namespace POSproject_KSM
             if (i == 0)
             {
                 tb_StQunt.Enabled = true;
+                tb_ShelfLIfe.Enabled = true;
                 i++;
             }
             else if(i==1)
             {
                 tb_StQunt.Enabled = false;
+                tb_ShelfLIfe.Enabled = false;
                 i = 0;
                 using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
                 {
-                    
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand("UpdateStock", con))
                     {
@@ -258,6 +295,7 @@ namespace POSproject_KSM
             tb_TtlPrice.Text = (int.Parse(dataGridView1.CurrentRow.Cells[4].Value.ToString()) 
                 * int.Parse(dataGridView1.CurrentRow.Cells[6].Value.ToString())).ToString() + "원"; 
             tb_StBar.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+            tb_ShelfLIfe.Text = dataGridView1.CurrentRow.Cells[8].Value.ToString();
             tb_TtlSell.Text = dataGridView1.CurrentRow.Cells[9].Value.ToString();
             if (dataGridView1.CurrentRow.Cells[10].Value == DBNull.Value)
             {
@@ -269,6 +307,8 @@ namespace POSproject_KSM
                 Byte[] bImg = (byte[])dataGridView1.CurrentRow.Cells[10].Value;
                 pictureBox1.Image = new Bitmap(new MemoryStream(bImg));
             }
+            valid_Quantiy = tb_StQunt.Text;
+            valid_discount = tb_ShelfLIfe.Text;
         }
         /// <summary>
         /// 발주 폼으로 가게한다.
@@ -278,9 +318,18 @@ namespace POSproject_KSM
         private void btn_OrderClick(object sender, EventArgs e)
         {
             order_From order_ = new order_From(id);
+            order_.FormClosed += Order__FormClosed;
             order_.Owner = this;
+            this.Visible = false;
             order_.ShowDialog();
         }
+
+        private void Order__FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Visible = true;
+            SelectStock("SelectStock");
+        }
+
         /// <summary>
         /// picturebox를 클릭하면 이미지 교체가 가능하게 했다.
         /// 실제 사용시에는 필요가 없는 기능이므로 완성시는 막아둔다.
@@ -291,7 +340,10 @@ namespace POSproject_KSM
         {
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.ShowDialog();
-            pictureBox1.Image = new Bitmap(openFile.FileName);
+            if (openFile.FileName != "")
+            {
+                pictureBox1.Image = new Bitmap(openFile.FileName);
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -301,32 +353,126 @@ namespace POSproject_KSM
 
         private void btn_LstOrd_Click(object sender, EventArgs e)
         {
-            new OrderDetail().ShowDialog();
+            OrderDetail orderDetail = new OrderDetail(id);
+            orderDetail.FormClosed += OrderDetail_FormClosed;
+            this.Visible = false;
+            orderDetail.ShowDialog();
+            
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void OrderDetail_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+            this.Visible = true;
+            SelectStock("SelectStock");
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
 
         private void btn_InStock_Click(object sender, EventArgs e)
         {
-            new Form_InStock(id).ShowDialog(); 
+            Form_InStock form_ = new Form_InStock(id);
+            form_.FormClosed += Form__FormClosed;
+            this.Visible = false;
+            form_.ShowDialog();
+        }
+
+        private void Form__FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Visible = true;
+            SelectStock("SelectStock");
         }
 
         private void btn_NewStock_Click(object sender, EventArgs e)
         {
-            new Form_NewStock(id, 0).ShowDialog();
+           Form_NewStock form_NewStock =  new Form_NewStock(id);
+            form_NewStock.FormClosed += Form_NewStock_FormClosed;
+            this.Visible = false;
+            form_NewStock.ShowDialog();
+            
+        }
+
+        private void Form_NewStock_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Visible = true;
+            SelectStock("SelectStock");
         }
 
         private void btn_DIsposal_Click(object sender, EventArgs e)
         {
-            new Form_NewStock(id,1).ShowDialog();
+           Form_Disposal form_Disposal = new Form_Disposal(id);
+            form_Disposal.FormClosed += Form_Disposal_FormClosed;
+            this.Visible = false;
+            form_Disposal.ShowDialog();
+        }
+
+        private void Form_Disposal_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Visible = true;
+            SelectStock("SelectStock");
+        }
+
+        private void tb_ShelfLIfe_TextChanged(object sender, EventArgs e)
+        {
+            string sPattern = "^[0-9]{0,1}$|^[1-4]{0,1}[0-9]{0,1}$|^50$";
+            if (tb_ShelfLIfe.Text != "0")
+            {
+                if (System.Text.RegularExpressions.Regex.IsMatch(tb_ShelfLIfe.Text, sPattern))
+                {
+                    valid_discount = tb_ShelfLIfe.Text;
+                }
+                else
+                {
+                    tb_ShelfLIfe.Text = valid_discount;
+                    tb_ShelfLIfe.Select(tb_ShelfLIfe.Text.Length, tb_ShelfLIfe.Text.Length);
+                    MessageBox.Show("0~ 50의 숫자만 입력해주세요");
+                }
+            }
+
+        }
+
+        private void tb_Search_TextChanged(object sender, EventArgs e)
+        {
+            string sPattern = "^[ㄱ-ㅎ가-힣0-9a-zA-Z()&]*$";
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(tb_Search.Text, sPattern))
+            {
+                valid_Search = tb_Search.Text;
+            }
+            else
+            {
+                tb_Search.Text = valid_Search;
+                tb_Search.Select(tb_Search.Text.Length, tb_Search.Text.Length);
+                MessageBox.Show("괄호를 제외한 특수문자는 입력할 수 없습니다.");
+            }
+        }
+
+        private void btn_search_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow item in dataGridView1.Rows)
+            {
+                if (tb_Search.Text == item.Cells["ProductName"].Value.ToString())
+                {
+                    dataGridView1.ClearSelection();
+                    item.Selected = true;
+                    dataGridView1.CurrentCell = item.Cells[0];
+                    dataGridView1_Click(null, null);
+                }
+            }
+        }
+
+        private void tb_StQunt_TextChanged(object sender, EventArgs e)
+        {
+            string sPattern = "^[0-9]{0,4}$";
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(tb_StQunt.Text, sPattern))
+            {
+                valid_Quantiy = tb_StQunt.Text;
+            }
+            else
+            {
+                tb_StQunt.Text = valid_Quantiy;
+                tb_StQunt.Select(tb_StQunt.Text.Length, tb_StQunt.Text.Length);
+                MessageBox.Show("5자리 이하 숫자만 입력해주세요");
+            }
         }
     }
 }

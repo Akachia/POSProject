@@ -15,6 +15,7 @@ namespace POSproject
         public Form_LogIn()
         {
             InitializeComponent();
+            
         }
 
       
@@ -40,7 +41,7 @@ namespace POSproject
             }
             else
             {
-                MessageBox.Show("실패!");
+                txtPwd.Text = "";
             }
         }
     }

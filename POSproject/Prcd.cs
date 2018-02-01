@@ -234,6 +234,7 @@ namespace POSproject
         static public DataSet UserManagementLoad()
         {
             DataSet ds = new DataSet();
+            SqlDataAdapter adapter = new SqlDataAdapter();
 
             using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
             {
@@ -245,15 +246,66 @@ namespace POSproject
                     cmd.CommandType = CommandType.StoredProcedure;
 
 
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-
+                    adapter.SelectCommand = cmd;
 
                     adapter.Fill(ds);
 
                 }
+                con.Close();
+                
             }
             return ds;
 
+        }
+        static public DataSet SalesListLoad()
+        {
+            DataSet ds = new DataSet();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+
+                con.Open();
+                using (var cmd = new SqlCommand("SelectSalesList", con))
+                {
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+
+                    adapter.SelectCommand = cmd;
+
+                    adapter.Fill(ds);
+
+                }
+                con.Close();
+
+            }
+            return ds;
+
+        }
+        public static DataSet findUser(string find)
+        {
+            DataSet dset = new DataSet();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand("SearchUsers", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@name", find);
+                   
+                    
+                        adapter.SelectCommand = cmd;
+                        
+                        adapter.Fill(dset);
+                    
+
+                }
+
+                con.Close();
+                return dset;
+            }
         }
         static public Hashtable CheckUser(string id)
         {

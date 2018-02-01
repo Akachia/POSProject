@@ -53,20 +53,24 @@
             // 
             // button1
             // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.button1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.button1.ForeColor = System.Drawing.Color.White;
             this.button1.Location = new System.Drawing.Point(700, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 82);
             this.button1.TabIndex = 2;
             this.button1.Text = "뒤로가기";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(534, 296);
+            this.label1.Font = new System.Drawing.Font("굴림", 8F, System.Drawing.FontStyle.Bold);
+            this.label1.Location = new System.Drawing.Point(609, 305);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 12);
+            this.label1.Size = new System.Drawing.Size(87, 11);
             this.label1.TabIndex = 1;
             this.label1.Text = "금일 출근 현황";
             // 
@@ -178,12 +182,15 @@
             // 
             // btn_mgr
             // 
+            this.btn_mgr.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_mgr.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_mgr.ForeColor = System.Drawing.Color.White;
             this.btn_mgr.Location = new System.Drawing.Point(530, 12);
             this.btn_mgr.Name = "btn_mgr";
             this.btn_mgr.Size = new System.Drawing.Size(75, 82);
             this.btn_mgr.TabIndex = 5;
             this.btn_mgr.Text = "직원 관리";
-            this.btn_mgr.UseVisualStyleBackColor = true;
+            this.btn_mgr.UseVisualStyleBackColor = false;
             this.btn_mgr.Click += new System.EventHandler(this.btn_mgr_Click);
             // 
             // timer1
@@ -192,22 +199,28 @@
             // 
             // btn_CheckOut
             // 
+            this.btn_CheckOut.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_CheckOut.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_CheckOut.ForeColor = System.Drawing.Color.White;
             this.btn_CheckOut.Location = new System.Drawing.Point(611, 12);
             this.btn_CheckOut.Name = "btn_CheckOut";
             this.btn_CheckOut.Size = new System.Drawing.Size(75, 82);
             this.btn_CheckOut.TabIndex = 6;
             this.btn_CheckOut.Text = "퇴근";
-            this.btn_CheckOut.UseVisualStyleBackColor = true;
+            this.btn_CheckOut.UseVisualStyleBackColor = false;
             this.btn_CheckOut.Click += new System.EventHandler(this.btn_CheckOut_Click);
             // 
             // btn_InfoModify
             // 
+            this.btn_InfoModify.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btn_InfoModify.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btn_InfoModify.ForeColor = System.Drawing.Color.White;
             this.btn_InfoModify.Location = new System.Drawing.Point(700, 107);
             this.btn_InfoModify.Name = "btn_InfoModify";
             this.btn_InfoModify.Size = new System.Drawing.Size(75, 82);
             this.btn_InfoModify.TabIndex = 7;
             this.btn_InfoModify.Text = "정보 수정";
-            this.btn_InfoModify.UseVisualStyleBackColor = true;
+            this.btn_InfoModify.UseVisualStyleBackColor = false;
             this.btn_InfoModify.Click += new System.EventHandler(this.btn_InfoModify_Click);
             // 
             // textBox1
@@ -215,23 +228,28 @@
             this.textBox1.Location = new System.Drawing.Point(536, 319);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(239, 249);
             this.textBox1.TabIndex = 8;
             // 
             // btnMail
             // 
+            this.btnMail.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnMail.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold);
+            this.btnMail.ForeColor = System.Drawing.Color.White;
             this.btnMail.Location = new System.Drawing.Point(611, 109);
             this.btnMail.Name = "btnMail";
             this.btnMail.Size = new System.Drawing.Size(75, 82);
             this.btnMail.TabIndex = 9;
-            this.btnMail.Text = "사장에게 메일발송";
-            this.btnMail.UseVisualStyleBackColor = true;
+            this.btnMail.Text = "문의 하기";
+            this.btnMail.UseVisualStyleBackColor = false;
+            this.btnMail.Click += new System.EventHandler(this.btnMail_Click);
             // 
             // UserAccount
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(235)))), ((int)(((byte)(247)))));
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.Controls.Add(this.btnMail);
             this.Controls.Add(this.textBox1);

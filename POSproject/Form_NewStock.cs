@@ -15,42 +15,69 @@ namespace POSproject_KSM
 {
     public partial class Form_NewStock : Form
     {
-        string bar = null;
-        char[] cBar;
-        POS_Stock pOS_ = null;
-        // 폐기 1, 등록 0
-        string ProductNO = null;
-        Image img = POSproject.Properties.Resources.noImage;
-        int disOrNew;
+        private Timer timer;
+        private string bar = null;
+        private char[] cBar;
+        private POS_Stock pOS_ = null;
+        private Image img = POSproject.Properties.Resources.noImage;
+        private List<string> cb_list = new List<string>();
+
+        /// <summary>
+        /// 유효성검사 에 쓰일 스트링 변수
+        /// </summary>
+        private string valid_category;
+        private string valid_barcode;
+        private string valid_name;
+        private string valid_price;
+        private string valid_primePrice;
+        private string valid_quantiy;
+
         public Form_NewStock()
         {
             InitializeComponent();
         }
 
-        public Form_NewStock(string id, int i) : this()
+        public Form_NewStock(string id) : this()
         {
             lbl_user.Text = id;
-            disOrNew = i;
         }
 
         private void Form_NewStock_Load(object sender, EventArgs e)
         {
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pOS_ = Owner as POS_Stock;
-
-            //lbl_Timer.Text = pOS_.label1.Text;
-            Timer timer = new Timer();
+            for (int i = 0; i < 6; i++)
+            {
+                cb_quantiy.Items.Add(i);
+            }
+            SelectComboBox();
+            lbl_Timer.Text = DateTime.Now.ToLongTimeString();
+            timer = new Timer();
             timer.Tick += Timer1_Tick1;
             timer.Interval = 1000;
             timer.Start();
-            if (disOrNew == 1)
-            {
-                tb_category.Enabled = false;
-                tb_name.Enabled = false;
-                tb_price.Enabled = false;
-                tb_primePrice.Enabled = false;
-            }
         }
 
+        private void SelectComboBox()
+        {
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("SelectDistinctStock", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataReader sdr =  cmd.ExecuteReader();
+
+                    while (sdr.Read())
+                    {
+
+                            cb_list.Add(sdr["ProductCategory"].ToString());
+                    }
+                }
+                cb_category.DataSource = cb_list;
+            }
+        }
+        
         private void Timer1_Tick1(object sender, EventArgs e)
         {
             lbl_Timer.Text = DateTime.Now.ToLongTimeString();
@@ -58,108 +85,11 @@ namespace POSproject_KSM
 
         private void btn_NCh_Click(object sender, EventArgs e)
         {
-            if (disOrNew == 0)
-            {
-                InsertStock();
-                pOS_ = Owner as POS_Stock;
-                pOS_.SelectStock("SelectStock");
-                this.Close();
-            }
-            else
-            {
-                DisposalItem();
-            }
+            InsertStock();
+            pOS_ = Owner as POS_Stock;
+            //pOS_.SelectStock("SelectStock");
+            this.Close();
         }
-        /// <summary>
-        /// 폐기상품정보 가져오기
-        /// </summary>
-        private void SelectDisposalItem()
-        {
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
-            {
-                con.Open();
-                using (SqlCommand cmd = new SqlCommand("SelectStock2", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SProductBarcode", bar);
-                    SqlDataReader sdr = cmd.ExecuteReader();//select문 실행
-                    if (!sdr.HasRows)
-                    {
-                        MessageBox.Show("Not Data");
-                        return;
-                    }
-                    else
-                    {
-                        while (sdr.Read())
-                        {
-                            ProductNO = sdr["ProductNo"].ToString();
-                            tb_category.Text = sdr["ProductCategory"].ToString();
-                            tb_name.Text = sdr["ProductName"].ToString();
-                            tb_price.Text = sdr["ProductPrice"].ToString();
-                            tb_primePrice.Text = sdr["ProductPrimeCost"].ToString();
-                            Byte[] bImg = (Byte[])sdr["ProductImage"];
-                            pictureBox1.Image = new Bitmap(new MemoryStream(bImg));
-                            if (sdr["ProductQuantity"].ToString() == "0")
-                            {
-                                MessageBox.Show("재고가 없습니다.");
-                            }
-                        }
-                        
-                    }
-                }
-            }
-        }
-        /// <summary>
-        /// 폐기 테이블에 정보를 올리고 
-        /// 재고테이블에 -1을 한다.
-        /// </summary>
-        private void DisposalItem()
-        {
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
-            {
-                con.Open();
-                using (SqlCommand cmd = new SqlCommand("InsertDisposal", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    MessageBox.Show(ProductNO);
-                    cmd.Parameters.AddWithValue("@IProductNo",int.Parse(ProductNO));
-                    cmd.Parameters.AddWithValue("@IDisposalCount", 1);
-
-                    int i = cmd.ExecuteNonQuery();//insert문 1=저장 0=저장 안됨
-
-                    if (i == 0)
-                    { 
-                        MessageBox.Show("저장 안됨");
-                        con.Close();
-                        return;
-                    }
-                }
-
-                using (SqlCommand cmd = new SqlCommand("UpdateStock2", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cmd.Parameters.AddWithValue("@UProductNo", int.Parse(ProductNO));
-                    cmd.Parameters.AddWithValue("@UProductQuantity", -1);
-
-                    int i = cmd.ExecuteNonQuery();//insert문 1=저장 0=저장 안됨
-
-                    if (i == 1)
-                    {
-                        MessageBox.Show("저장");
-                        con.Close();
-                        return;
-                    }
-                    else
-                    {
-                        MessageBox.Show("저장 안됨2");
-                        con.Close();
-                        return;
-                    }
-                }
-            }
-        }
-
         private void InsertStock()
         {
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["PosSystem"].ConnectionString))
@@ -174,7 +104,7 @@ namespace POSproject_KSM
                     cmd.Parameters.AddWithValue("@UProductPrice", tb_price.Text);
                     cmd.Parameters.AddWithValue("@UProductPrimeCost", tb_primePrice.Text);
                     cmd.Parameters.AddWithValue("@UProductQuantity", int.Parse(cb_quantiy.Text));
-                    cmd.Parameters.AddWithValue("@UProductCategory", tb_category.Text);
+                    cmd.Parameters.AddWithValue("@UProductCategory", cb_category.Text);
                     ImageConverter converter = new ImageConverter();
                     byte[] bImg = (byte[])converter.ConvertTo(img, typeof(byte[]));
                     cmd.Parameters.AddWithValue("@UProductImage ", bImg);
@@ -198,6 +128,8 @@ namespace POSproject_KSM
         }
         private void btn_CC_Click(object sender, EventArgs e)
         {
+            this.Dispose();
+            this.timer.Stop();
             this.Close();
         }
 
@@ -213,7 +145,7 @@ namespace POSproject_KSM
 
         private void tb_barcode_Leave(object sender, EventArgs e)
         {
-            if (disOrNew == 0)
+            if (tb_barcode.Text.Length >= 13)
             {
                 BarcodeFit();
             }
@@ -221,10 +153,119 @@ namespace POSproject_KSM
 
         private void tb_barcode_TextChanged(object sender, EventArgs e)
         {
-            if (tb_barcode.TextLength == 18 && disOrNew==1)
+
+            string sPattern = "^[0-9]{0,18}$";
+            if (tb_barcode.Text.Length <19)
+            {
+                if (System.Text.RegularExpressions.Regex.IsMatch(tb_barcode.Text, sPattern))
+                {
+                    valid_barcode = tb_barcode.Text;
+                }
+                else
+                {
+                    tb_barcode.Text = valid_barcode;
+                    tb_barcode.Select(tb_barcode.Text.Length, tb_barcode.Text.Length);
+                    MessageBox.Show("숫자만 입력해주세요");
+                }
+            }
+            else
+            {
+                tb_barcode.Text = valid_barcode;
+                tb_barcode.Select(tb_barcode.Text.Length, tb_barcode.Text.Length);
+                MessageBox.Show("인식 가능한 바코드는 최대18자리입니다.");
+            }
+                    
+            if (tb_barcode.TextLength == 18)
             {
                 BarcodeFit();
-                SelectDisposalItem();
+            }
+        }
+
+        private void btn_search_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.ShowDialog();
+            pictureBox1.Image = new Bitmap(openFile.FileName);
+            img = pictureBox1.Image;
+        }
+
+        private void tb_name_TextChanged(object sender, EventArgs e)
+        {
+            string sPattern = "^[ㄱ-ㅎ가-힣0-9a-zA-Z()\\s]*$";
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(tb_name.Text, sPattern))
+            {
+                valid_name = tb_name.Text;
+            }
+            else
+            {
+                tb_name.Text = valid_name;
+                tb_name.Select(tb_name.Text.Length, tb_name.Text.Length);
+                MessageBox.Show("괄호를 제외한 특수문자는 입력할 수 없습니다.");
+            }
+        }
+
+        private void cb_category_TextChanged(object sender, EventArgs e)
+        {
+            string sPattern = "^[ㄱ-ㅎ가-힣]{0,5}$";
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(cb_category.Text, sPattern))
+            {
+                valid_category = cb_category.Text;
+            }
+            else
+            {
+                cb_category.Text = valid_category;
+                cb_category.Select(cb_category.Text.Length, cb_category.Text.Length);
+                MessageBox.Show("5자리 이하 한글만 입력해주세요");
+            }
+        }
+
+        private void tb_price_TextChanged(object sender, EventArgs e)
+        {
+            string sPattern = "^[0-9]{0,6}$";
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(tb_price.Text, sPattern))
+            {
+                valid_price = tb_price.Text;
+            }
+            else
+            {
+                tb_price.Text = valid_price;
+                tb_price.Select(tb_price.Text.Length, tb_price.Text.Length);
+                MessageBox.Show("6자리 이하 숫자만 입력해주세요");
+            }
+        }
+
+        private void tb_primePrice_TextChanged(object sender, EventArgs e)
+        {
+            string sPattern = "^[0-9]{0,6}$";
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(tb_primePrice.Text, sPattern))
+            {
+                valid_primePrice = tb_primePrice.Text;
+            }
+            else
+            {
+                tb_primePrice.Text = valid_primePrice;
+                tb_primePrice.Select(tb_primePrice.Text.Length, tb_primePrice.Text.Length);
+                MessageBox.Show("6자리 이하 숫자만 입력해주세요");
+            }
+        }
+
+        private void cb_quantiy_TextChanged(object sender, EventArgs e)
+        {
+            string sPattern = "^[0-9]{0,2}$";
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(cb_quantiy.Text, sPattern))
+            {
+                valid_quantiy = cb_quantiy.Text;
+            }
+            else
+            {
+                cb_quantiy.Text = valid_quantiy;
+                cb_quantiy.Select(cb_quantiy.Text.Length, cb_quantiy.Text.Length);
+                MessageBox.Show("2자리 이하 숫자만 입력해주세요");
             }
         }
     }

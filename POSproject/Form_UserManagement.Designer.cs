@@ -40,7 +40,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtPwd = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.txtPhone = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.openPic = new System.Windows.Forms.OpenFileDialog();
             this.btnModify = new System.Windows.Forms.Button();
@@ -49,6 +48,7 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtPhone = new System.Windows.Forms.MaskedTextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rbnMaster = new System.Windows.Forms.RadioButton();
@@ -73,9 +73,11 @@
             // 
             // dgvWorker
             // 
+            this.dgvWorker.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(158)))), ((int)(((byte)(202)))), ((int)(((byte)(225)))));
             this.dgvWorker.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvWorker.Location = new System.Drawing.Point(30, 343);
             this.dgvWorker.Name = "dgvWorker";
+            this.dgvWorker.ReadOnly = true;
             this.dgvWorker.RowTemplate.Height = 23;
             this.dgvWorker.Size = new System.Drawing.Size(591, 237);
             this.dgvWorker.TabIndex = 1;
@@ -83,9 +85,10 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.BackColor = System.Drawing.SystemColors.Info;
-            this.btnAdd.Font = new System.Drawing.Font("휴먼매직체", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnAdd.Location = new System.Drawing.Point(632, 52);
+            this.btnAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnAdd.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnAdd.ForeColor = System.Drawing.Color.White;
+            this.btnAdd.Location = new System.Drawing.Point(672, 41);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(100, 50);
             this.btnAdd.TabIndex = 3;
@@ -105,12 +108,15 @@
             // 
             // btnBack
             // 
-            this.btnBack.Location = new System.Drawing.Point(757, 0);
+            this.btnBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnBack.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
+            this.btnBack.ForeColor = System.Drawing.Color.White;
+            this.btnBack.Location = new System.Drawing.Point(672, 238);
             this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(44, 35);
+            this.btnBack.Size = new System.Drawing.Size(100, 50);
             this.btnBack.TabIndex = 7;
-            this.btnBack.Text = "X";
-            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Text = "뒤로 가기";
+            this.btnBack.UseVisualStyleBackColor = false;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
             // btnOpen
@@ -140,11 +146,12 @@
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(192, 25);
             this.txtName.TabIndex = 10;
+            this.txtName.Leave += new System.EventHandler(this.txtName_Leave);
             // 
             // txtID
             // 
             this.txtID.Font = new System.Drawing.Font("휴먼모음T", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txtID.Location = new System.Drawing.Point(16, 101);
+            this.txtID.Location = new System.Drawing.Point(16, 102);
             this.txtID.Name = "txtID";
             this.txtID.Size = new System.Drawing.Size(192, 25);
             this.txtID.TabIndex = 12;
@@ -162,10 +169,11 @@
             // txtPwd
             // 
             this.txtPwd.Font = new System.Drawing.Font("휴먼모음T", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txtPwd.Location = new System.Drawing.Point(16, 157);
+            this.txtPwd.Location = new System.Drawing.Point(16, 159);
             this.txtPwd.Name = "txtPwd";
             this.txtPwd.Size = new System.Drawing.Size(192, 25);
             this.txtPwd.TabIndex = 14;
+            this.txtPwd.Leave += new System.EventHandler(this.txtPwd_Leave);
             // 
             // label5
             // 
@@ -176,14 +184,6 @@
             this.label5.Size = new System.Drawing.Size(72, 17);
             this.label5.TabIndex = 13;
             this.label5.Text = "비밀번호";
-            // 
-            // txtPhone
-            // 
-            this.txtPhone.Font = new System.Drawing.Font("휴먼모음T", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txtPhone.Location = new System.Drawing.Point(16, 213);
-            this.txtPhone.Name = "txtPhone";
-            this.txtPhone.Size = new System.Drawing.Size(192, 25);
-            this.txtPhone.TabIndex = 16;
             // 
             // label6
             // 
@@ -201,9 +201,10 @@
             // 
             // btnModify
             // 
-            this.btnModify.BackColor = System.Drawing.SystemColors.Info;
-            this.btnModify.Font = new System.Drawing.Font("휴먼매직체", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnModify.Location = new System.Drawing.Point(632, 118);
+            this.btnModify.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnModify.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnModify.ForeColor = System.Drawing.Color.White;
+            this.btnModify.Location = new System.Drawing.Point(672, 107);
             this.btnModify.Name = "btnModify";
             this.btnModify.Size = new System.Drawing.Size(100, 50);
             this.btnModify.TabIndex = 18;
@@ -213,9 +214,10 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.BackColor = System.Drawing.SystemColors.Info;
-            this.btnDelete.Font = new System.Drawing.Font("휴먼매직체", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnDelete.Location = new System.Drawing.Point(632, 184);
+            this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(113)))), ((int)(((byte)(181)))));
+            this.btnDelete.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnDelete.ForeColor = System.Drawing.Color.White;
+            this.btnDelete.Location = new System.Drawing.Point(672, 173);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(100, 50);
             this.btnDelete.TabIndex = 19;
@@ -235,7 +237,7 @@
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(632, 370);
+            this.txtSearch.Location = new System.Drawing.Point(669, 370);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(105, 21);
             this.txtSearch.TabIndex = 22;
@@ -245,14 +247,15 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("휴먼모음T", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label2.Location = new System.Drawing.Point(632, 343);
+            this.label2.Location = new System.Drawing.Point(669, 343);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 17);
+            this.label2.Size = new System.Drawing.Size(69, 17);
             this.label2.TabIndex = 23;
-            this.label2.Text = "검색";
+            this.label2.Text = "이름 검색";
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txtPhone);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.label8);
@@ -264,7 +267,6 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.txtPwd);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.txtPhone);
             this.groupBox1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox1.Location = new System.Drawing.Point(244, 33);
             this.groupBox1.Name = "groupBox1";
@@ -273,15 +275,24 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "사용자 정보";
             // 
+            // txtPhone
+            // 
+            this.txtPhone.Font = new System.Drawing.Font("휴먼모음T", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.txtPhone.Location = new System.Drawing.Point(18, 216);
+            this.txtPhone.Mask = "000-9000-0000";
+            this.txtPhone.Name = "txtPhone";
+            this.txtPhone.Size = new System.Drawing.Size(190, 26);
+            this.txtPhone.TabIndex = 30;
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label9.Location = new System.Drawing.Point(214, 157);
+            this.label9.Font = new System.Drawing.Font("굴림", 8F, System.Drawing.FontStyle.Bold);
+            this.label9.Location = new System.Drawing.Point(214, 165);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(133, 36);
+            this.label9.Size = new System.Drawing.Size(134, 11);
             this.label9.TabIndex = 29;
-            this.label9.Text = "* 비밀번호를 바꾸지\r\n  않을때에는비워두시면\r\n  됩니다.";
+            this.label9.Text = "* 비밀번호 유지시 공백";
             // 
             // groupBox2
             // 
@@ -333,12 +344,13 @@
             this.txtPay.Name = "txtPay";
             this.txtPay.Size = new System.Drawing.Size(192, 25);
             this.txtPay.TabIndex = 18;
+            this.txtPay.Leave += new System.EventHandler(this.txtPay_Leave);
             // 
             // Form_UserManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(235)))), ((int)(((byte)(247)))));
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
@@ -381,7 +393,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtPwd;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox txtPhone;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.OpenFileDialog openPic;
         private System.Windows.Forms.Button btnModify;
@@ -394,7 +405,8 @@
         private System.Windows.Forms.RadioButton rbnMaster;
         private System.Windows.Forms.RadioButton rbnWorker;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox txtPay;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.MaskedTextBox txtPhone;
+        private System.Windows.Forms.TextBox txtPay;
     }
 }
